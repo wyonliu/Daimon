@@ -7,6 +7,7 @@ import { getProfile, saveProfile, UserProfile } from '@/lib/user-profile';
 import { isPro } from '@/lib/subscription';
 import InlinePaywall from '@/components/InlinePaywall';
 import { DailyDestiny } from '@/lib/bazi/daily';
+import { useLocale } from '@/components/LocaleProvider';
 
 // ==================== Score Ring Component ====================
 
@@ -112,6 +113,7 @@ function ScoreBar({ label, score, icon, delay = 0 }: { label: string; score: num
 
 export default function DailyPage() {
   const router = useRouter();
+  const { t, locale } = useLocale();
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [daily, setDaily] = useState<DailyDestiny | null>(null);
   const [aiReading, setAiReading] = useState('');
@@ -150,6 +152,7 @@ export default function DailyPage() {
           day: prof.day,
           hour: prof.hour,
           gender: prof.gender,
+          locale,
         }),
       });
 
@@ -207,7 +210,7 @@ export default function DailyPage() {
       setError('Failed to load your daily reading. Please try again.');
       setLoading(false);
     }
-  }, []);
+  }, [locale]);
 
   useEffect(() => {
     if (profileChecked && profile && !showForm) {
@@ -225,12 +228,16 @@ export default function DailyPage() {
     setShowForm(false);
   };
 
-  const todayStr = new Date().toLocaleDateString('en-US', {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
+  const todayStr = locale === 'zh-TW'
+    ? new Date().toLocaleDateString('zh-TW', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
+    : new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+  const getGreeting = () => {
+    const h = new Date().getHours();
+    if (h < 12) return t('daily.greeting.morning');
+    if (h < 17) return t('daily.greeting.afternoon');
+    return t('daily.greeting.evening');
+  };
 
   // ==================== Birth Form View ====================
   if (showForm) {
@@ -245,7 +252,7 @@ export default function DailyPage() {
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
-              <span className="text-sm hidden sm:inline">Home</span>
+              <span className="text-sm hidden sm:inline">{t('common.home')}</span>
             </button>
             <span className="text-gold-500 font-bold">Daimon</span>
             <div className="w-12" />
@@ -255,13 +262,13 @@ export default function DailyPage() {
         <div className="max-w-lg mx-auto px-4 py-12">
           <div className="text-center mb-10">
             <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-gradient-to-br from-gold-500/20 to-gold-700/10 border border-gold-500/30 flex items-center justify-center glow-gold-soft animate-float">
-              <span className="text-3xl chinese-char text-gold-500">运</span>
+              <span className="text-3xl chinese-char text-gold-500">{'\u904b'}</span>
             </div>
             <h1 className="font-display text-3xl font-bold text-gradient-gold mb-3">
-              Daily Destiny
+              {t('daily.formTitle')}
             </h1>
             <p className="text-sm text-gray-500">
-              Enter your birth details to unlock your personalized daily reading.
+              {t('daily.formSubtitle')}
             </p>
           </div>
           <BirthForm onSubmit={handleFormSubmit} loading={false} />
@@ -270,7 +277,7 @@ export default function DailyPage() {
               onClick={() => setShowForm(false)}
               className="mt-4 w-full text-center text-sm text-gray-500 hover:text-gold-500 transition-colors"
             >
-              Cancel — use saved profile
+              {t('daily.cancelProfile')}
             </button>
           )}
         </div>
@@ -291,7 +298,7 @@ export default function DailyPage() {
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
-              <span className="text-sm hidden sm:inline">Home</span>
+              <span className="text-sm hidden sm:inline">{t('common.home')}</span>
             </button>
             <span className="text-gold-500 font-bold">Daimon</span>
             <div className="w-12" />
@@ -299,14 +306,14 @@ export default function DailyPage() {
         </header>
         <div className="flex flex-col items-center justify-center py-32 fade-in">
           <div className="w-16 h-16 rounded-full bg-gradient-to-br from-gold-500/20 to-gold-700/10 border border-gold-500/30 flex items-center justify-center glow-pulse mb-6">
-            <span className="text-2xl chinese-char text-gold-500 animate-pulse-slow">运</span>
+            <span className="text-2xl chinese-char text-gold-500 animate-pulse-slow">{'\u904b'}</span>
           </div>
           <p className="text-gray-400 mb-2">
             {profile?.name
-              ? `Good ${(() => { const h = new Date().getHours(); if (h < 12) return 'morning'; if (h < 17) return 'afternoon'; return 'evening'; })()}, ${profile.name}. Reading today\u2019s cosmic energy...`
-              : 'Reading today\u2019s cosmic energy...'}
+              ? `${getGreeting()}, ${profile.name}. ${t('daily.loading')}`
+              : t('daily.loading')}
           </p>
-          <p className="text-xs text-gray-600 mb-6">Calculating {todayStr}</p>
+          <p className="text-xs text-gray-600 mb-6">{todayStr}</p>
           <div className="w-48 h-1 rounded-full overflow-hidden bg-white/[0.03]">
             <div className="h-full loading-shimmer rounded-full" />
           </div>
@@ -325,13 +332,13 @@ export default function DailyPage() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
             </svg>
           </div>
-          <h1 className="text-xl font-bold text-gray-200 mb-2">The Stars Are Unclear</h1>
+          <h1 className="text-xl font-bold text-gray-200 mb-2">{t('reading.error.title')}</h1>
           <p className="text-sm text-gray-400 mb-6 leading-relaxed">{error}</p>
           <button
             onClick={() => profile && fetchDaily(profile)}
             className="px-6 py-2.5 rounded-lg bg-gradient-to-r from-gold-700 via-gold-500 to-gold-700 text-void font-semibold hover:from-gold-600 hover:via-gold-400 hover:to-gold-600 transition-all press-effect"
           >
-            Try Again
+            {t('reading.error.retry')}
           </button>
         </div>
       </main>
@@ -353,14 +360,14 @@ export default function DailyPage() {
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
-            <span className="text-sm hidden sm:inline">Home</span>
+            <span className="text-sm hidden sm:inline">{t('common.home')}</span>
           </button>
           <div className="text-center">
-            <span className="text-gold-500 font-bold">Daily Destiny</span>
+            <span className="text-gold-500 font-bold">{t('daily.title')}</span>
           </div>
           <div className="w-12 text-right">
             {userIsPro && (
-              <span className="text-xs text-gold-500/70">Pro</span>
+              <span className="text-xs text-gold-500/70">{t('common.pro')}</span>
             )}
           </div>
         </div>
@@ -394,18 +401,18 @@ export default function DailyPage() {
                 : 'bg-gray-500/10 text-gray-400 border border-gray-500/20'
             }`}>
               {daily.dayMasterRelation.tenGod} ({daily.dayMasterRelation.tenGodEn})
-              {daily.dayMasterRelation.favorability === 'favorable' && ' — Auspicious'}
-              {daily.dayMasterRelation.favorability === 'unfavorable' && ' — Challenging'}
+              {daily.dayMasterRelation.favorability === 'favorable' && ' \u2014 Auspicious'}
+              {daily.dayMasterRelation.favorability === 'unfavorable' && ' \u2014 Challenging'}
             </span>
           </div>
         </div>
 
         {/* Score Bars */}
         <div className="glass-card rounded-2xl p-5 space-y-4 slide-up slide-up-delay-2">
-          <ScoreBar label="Career" score={daily.scores.career} icon="&#128188;" delay={0} />
-          <ScoreBar label="Relationships" score={daily.scores.relationships} icon="&#128150;" delay={100} />
-          <ScoreBar label="Health" score={daily.scores.health} icon="&#127807;" delay={200} />
-          <ScoreBar label="Wealth" score={daily.scores.wealth} icon="&#128176;" delay={300} />
+          <ScoreBar label={t('daily.career')} score={daily.scores.career} icon="&#128188;" delay={0} />
+          <ScoreBar label={t('daily.relationships')} score={daily.scores.relationships} icon="&#128150;" delay={100} />
+          <ScoreBar label={t('daily.health')} score={daily.scores.health} icon="&#127807;" delay={200} />
+          <ScoreBar label={t('daily.wealth')} score={daily.scores.wealth} icon="&#128176;" delay={300} />
         </div>
 
         {/* Branch Interaction Alerts */}
@@ -433,11 +440,11 @@ export default function DailyPage() {
 
         {/* Lucky Section */}
         <div className="glass-card rounded-2xl p-5 slide-up slide-up-delay-3">
-          <h3 className="text-sm font-medium text-gold-500 mb-4">Lucky Guide</h3>
+          <h3 className="text-sm font-medium text-gold-500 mb-4">{t('daily.lucky')}</h3>
 
           {/* Colors */}
           <div className="mb-4">
-            <div className="text-xs text-gray-500 mb-2">Colors</div>
+            <div className="text-xs text-gray-500 mb-2">{t('daily.colors')}</div>
             <div className="flex gap-2">
               {daily.luckyColors.map((color, i) => (
                 <div key={i} className="flex items-center gap-1.5">
@@ -453,7 +460,7 @@ export default function DailyPage() {
 
           {/* Directions */}
           <div className="mb-4">
-            <div className="text-xs text-gray-500 mb-2">Directions</div>
+            <div className="text-xs text-gray-500 mb-2">{t('daily.directions')}</div>
             <div className="flex flex-wrap gap-2">
               {daily.luckyDirections.map((dir, i) => (
                 <span key={i} className="text-xs bg-void-lighter px-2.5 py-1 rounded-full text-gray-300 border border-gray-700/50">
@@ -466,7 +473,7 @@ export default function DailyPage() {
           {/* Activities */}
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <div className="text-xs text-green-400/70 mb-2">Do</div>
+              <div className="text-xs text-green-400/70 mb-2">{t('daily.do')}</div>
               <ul className="space-y-1">
                 {daily.luckyActivities.map((act, i) => (
                   <li key={i} className="text-xs text-gray-300 flex items-start gap-1.5">
@@ -477,7 +484,7 @@ export default function DailyPage() {
               </ul>
             </div>
             <div>
-              <div className="text-xs text-red-400/70 mb-2">Avoid</div>
+              <div className="text-xs text-red-400/70 mb-2">{t('daily.avoid')}</div>
               <ul className="space-y-1">
                 {daily.avoidActivities.map((act, i) => (
                   <li key={i} className="text-xs text-gray-300 flex items-start gap-1.5">
@@ -493,7 +500,7 @@ export default function DailyPage() {
         {/* AI Reading */}
         {userIsPro ? (
           <div className="glass-card rounded-2xl p-5 slide-up">
-            <h3 className="text-sm font-medium text-gold-500 mb-3">Daily Reading</h3>
+            <h3 className="text-sm font-medium text-gold-500 mb-3">{t('daily.reading')}</h3>
             {aiReading ? (
               <div className="chat-content text-sm text-gray-300 leading-relaxed prose-sm">
                 {aiReading.split('\n').map((line, i) => {
@@ -529,13 +536,13 @@ export default function DailyPage() {
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-gold-500 opacity-75" />
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-gold-500" />
                 </span>
-                Generating personalized reading...
+                {t('daily.generating')}
               </div>
             )}
           </div>
         ) : (
           <div className="glass-card rounded-2xl p-5 slide-up">
-            <h3 className="text-sm font-medium text-gold-500 mb-3">Daily Reading</h3>
+            <h3 className="text-sm font-medium text-gold-500 mb-3">{t('daily.reading')}</h3>
             {aiReading ? (
               <div className="relative">
                 <div className="chat-content text-sm text-gray-300 leading-relaxed prose-sm">
@@ -551,7 +558,7 @@ export default function DailyPage() {
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-gold-500 opacity-75" />
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-gold-500" />
                 </span>
-                Generating personalized reading...
+                {t('daily.generating')}
               </div>
             )}
           </div>
@@ -563,7 +570,7 @@ export default function DailyPage() {
             onClick={() => setShowForm(true)}
             className="text-xs text-gray-600 hover:text-gold-500/70 transition-colors"
           >
-            Change Birth Data
+            {t('daily.changeBirth')}
           </button>
         </div>
       </div>

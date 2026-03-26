@@ -7,6 +7,7 @@ import { CompatibilityResult, CrossBranchInteraction } from '@/lib/bazi/compatib
 import MatchShareCard from '@/components/MatchShareCard';
 import InlinePaywall from '@/components/InlinePaywall';
 import { isPro } from '@/lib/subscription';
+import { useLocale } from '@/components/LocaleProvider';
 
 // ==================== Types ====================
 
@@ -365,6 +366,7 @@ function CrossBranchList({ interactions }: { interactions: CrossBranchInteractio
 
 export default function MatchPage() {
   const router = useRouter();
+  const { t, locale } = useLocale();
   const [personA, setPersonA] = useState<PersonData>(defaultPerson());
   const [personB, setPersonB] = useState<PersonData>({ ...defaultPerson(), gender: 'female' });
   const [loading, setLoading] = useState(false);
@@ -427,6 +429,7 @@ export default function MatchPage() {
             gender: personB.gender,
             name: personB.name || 'Person B',
           },
+          locale,
         }),
       });
 
@@ -505,12 +508,12 @@ export default function MatchPage() {
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
-            <span className="text-sm hidden sm:inline">Home</span>
+            <span className="text-sm hidden sm:inline">{t('common.home')}</span>
           </button>
 
           <div className="text-center">
-            <span className="text-gradient-gold font-bold text-lg font-display">Destiny Match</span>
-            <span className="text-xs text-gray-600 block chinese-char">合盘 · 缘分配对</span>
+            <span className="text-gradient-gold font-bold text-lg font-display">{t('match.title')}</span>
+            <span className="text-xs text-gray-600 block chinese-char">{t('match.titleCn')}</span>
           </div>
 
           <div className="w-12" />
@@ -522,14 +525,13 @@ export default function MatchPage() {
         <form onSubmit={handleSubmit} className="slide-up">
           {/* Description */}
           <p className="text-center text-sm text-gray-500 mb-6 max-w-md mx-auto leading-relaxed">
-            Enter two birth dates to reveal the cosmic threads connecting your destinies.
-            Precise mathematical analysis of Day Master harmony, branch interactions, and elemental balance.
+            {t('match.subtitle')}
           </p>
 
           {/* Two Person Forms */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-            <PersonForm label="Person A" labelCn="甲方" data={personA} onChange={setPersonA} />
-            <PersonForm label="Person B" labelCn="乙方" data={personB} onChange={setPersonB} />
+            <PersonForm label={t('match.personA')} labelCn={t('match.personACn')} data={personA} onChange={setPersonA} />
+            <PersonForm label={t('match.personB')} labelCn={t('match.personBCn')} data={personB} onChange={setPersonB} />
           </div>
 
           {/* Error */}
@@ -552,12 +554,12 @@ export default function MatchPage() {
                 <span className="loading-dot w-2 h-2 bg-void rounded-full inline-block"></span>
               </span>
             ) : (
-              'Reveal Your Destiny Together'
+              t('match.cta')
             )}
           </button>
 
           <p className="text-center text-xs text-gray-600 mt-3 tracking-wide">
-            Your data is processed locally. Nothing is stored.
+            {t('match.privacy')}
           </p>
         </form>
 

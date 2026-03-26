@@ -18,7 +18,7 @@ interface PersonInput {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { personA, personB } = body as { personA: PersonInput; personB: PersonInput };
+    const { personA, personB, locale } = body as { personA: PersonInput; personB: PersonInput; locale?: string };
 
     if (!personA || !personB) {
       return new Response(JSON.stringify({ error: 'Both persons data required' }), {
@@ -51,7 +51,8 @@ export async function POST(req: NextRequest) {
     // Step 3: Stream AI reading
     const systemPrompt = getCompatibilityPrompt(
       compatText, chartAText, chartBText,
-      personA.name || 'Person A', personB.name || 'Person B'
+      personA.name || 'Person A', personB.name || 'Person B',
+      locale
     );
 
     const response = await fetch(OPENROUTER_URL, {

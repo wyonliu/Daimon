@@ -9,7 +9,7 @@ const OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions';
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { year, month, day, hour, gender, targetDate } = body;
+    const { year, month, day, hour, gender, targetDate, locale } = body;
 
     if (!year || !month || !day) {
       return new Response(JSON.stringify({ error: 'Birth date is required' }), {
@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
     const dailyText = dailyDestinyToText(dailyDestiny, natalChart);
 
     // Build AI prompt
-    const systemPrompt = getDailyReadingPrompt(dailyDestiny, baziText);
+    const systemPrompt = getDailyReadingPrompt(dailyDestiny, baziText, locale);
 
     // Stream AI reading
     const response = await fetch(OPENROUTER_URL, {

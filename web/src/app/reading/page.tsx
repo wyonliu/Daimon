@@ -11,10 +11,12 @@ import InlinePaywall from '@/components/InlinePaywall';
 import { BaziResult } from '@/lib/bazi/calculator';
 import { ZodiacResult } from '@/lib/astro/zodiac';
 import { canUseReading, useReading, getUserPlan, getReadingsRemaining, isPro, activatePro } from '@/lib/subscription';
+import { useLocale } from '@/components/LocaleProvider';
 
 function ReadingContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const { t, locale } = useLocale();
 
   const year = searchParams.get('y');
   const month = searchParams.get('m');
@@ -106,6 +108,7 @@ function ReadingContent() {
             zodiacText: calcData.zodiacText,
             isInitial: true,
             truncated: isTruncated,
+            locale,
           }),
         });
 
@@ -187,13 +190,13 @@ function ReadingContent() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
             </svg>
           </div>
-          <h1 className="text-xl font-bold text-gray-200 mb-2">The Stars Are Unclear</h1>
+          <h1 className="text-xl font-bold text-gray-200 mb-2">{t('reading.error.title')}</h1>
           <p className="text-sm text-gray-400 mb-6 leading-relaxed">{error}</p>
           <button
             onClick={() => router.push('/')}
             className="px-6 py-2.5 rounded-lg bg-gradient-to-r from-gold-700 via-gold-500 to-gold-700 text-void font-semibold hover:from-gold-600 hover:via-gold-400 hover:to-gold-600 transition-all press-effect"
           >
-            Try Again
+            {t('reading.error.retry')}
           </button>
         </div>
       </main>
@@ -212,7 +215,7 @@ function ReadingContent() {
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
-            <span className="text-sm hidden sm:inline">Home</span>
+            <span className="text-sm hidden sm:inline">{t('reading.back')}</span>
           </button>
 
           <div className="text-center min-w-0">
@@ -226,11 +229,11 @@ function ReadingContent() {
             {!userIsPro && (
               <span className="text-xs text-gray-500">
                 <span className="text-gold-500/70">{readingsRemaining}</span>
-                <span className="hidden sm:inline">/{getUserPlan().maxFreeReadings} free</span>
+                <span className="hidden sm:inline">/{getUserPlan().maxFreeReadings} {t('reading.free')}</span>
               </span>
             )}
             {userIsPro && (
-              <span className="text-xs text-gold-500/70">Pro</span>
+              <span className="text-xs text-gold-500/70">{t('common.pro')}</span>
             )}
           </div>
         </div>
@@ -239,7 +242,7 @@ function ReadingContent() {
       {/* Trust Line */}
       <div className="max-w-6xl mx-auto px-4 py-1.5">
         <p className="text-[10px] text-gray-600 text-center tracking-wider uppercase">
-          Calculated by astronomical ephemeris engine &middot; 四柱命理 tradition &middot; Est. 2000+ years
+          {t('reading.trustLine')}
         </p>
       </div>
 
@@ -254,7 +257,7 @@ function ReadingContent() {
                 : 'border-transparent text-gray-500 hover:text-gray-300'
             }`}
           >
-            Chart Analysis
+            {t('reading.tab.chart')}
           </button>
           <button
             onClick={() => setActiveTab('reading')}
@@ -264,7 +267,7 @@ function ReadingContent() {
                 : 'border-transparent text-gray-500 hover:text-gray-300'
             }`}
           >
-            Your Reading
+            {t('reading.tab.reading')}
             {loading && initialReading === '' && (
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-gold-500 opacity-75"></span>
@@ -283,7 +286,7 @@ function ReadingContent() {
                 : 'border-transparent text-gray-500 hover:text-gray-300'
             }`}
           >
-            Share
+            {t('reading.tab.share')}
           </button>
           <button
             onClick={() => setActiveTab('verify')}
@@ -296,7 +299,7 @@ function ReadingContent() {
             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
             </svg>
-            How It Works
+            {t('reading.tab.verify')}
           </button>
         </div>
       </div>
@@ -306,10 +309,10 @@ function ReadingContent() {
         {loading && !bazi ? (
           <div className="flex flex-col items-center justify-center py-20 fade-in">
             <div className="w-16 h-16 rounded-full bg-gradient-to-br from-gold-500/20 to-gold-700/10 border border-gold-500/30 flex items-center justify-center glow-pulse mb-6">
-              <span className="text-2xl chinese-char text-gold-500 animate-pulse-slow">命</span>
+              <span className="text-2xl chinese-char text-gold-500 animate-pulse-slow">{'\u547d'}</span>
             </div>
-            <p className="text-gray-400 mb-2">Casting your destiny chart...</p>
-            <p className="text-xs text-gray-600 mb-6">Analyzing Four Pillars and planetary alignments</p>
+            <p className="text-gray-400 mb-2">{t('reading.loading')}</p>
+            <p className="text-xs text-gray-600 mb-6">{t('reading.loading.sub')}</p>
             <div className="w-48 h-1 rounded-full overflow-hidden bg-white/[0.03]">
               <div className="h-full loading-shimmer rounded-full" />
             </div>
@@ -325,7 +328,7 @@ function ReadingContent() {
                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-gold-500 opacity-75"></span>
                       <span className="relative inline-flex rounded-full h-2 w-2 bg-gold-500"></span>
                     </span>
-                    <span className="text-xs text-gold-500/70">Chart synthesis in progress...</span>
+                    <span className="text-xs text-gold-500/70">{t('reading.synthesis')}</span>
                   </div>
                 )}
                 {!loading && initialReading && activeTab === 'chart' && (
@@ -337,7 +340,7 @@ function ReadingContent() {
                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-gold-500 opacity-75"></span>
                       <span className="relative inline-flex rounded-full h-2 w-2 bg-gold-500"></span>
                     </span>
-                    Your reading is ready — tap to view
+                    {t('reading.ready')}
                   </button>
                 )}
               </div>
@@ -366,10 +369,10 @@ function ReadingContent() {
                 ) : (
                   <div className="flex flex-col items-center justify-center py-20">
                     <div className="w-12 h-12 rounded-full bg-gradient-to-br from-gold-500/20 to-gold-700/10 border border-gold-500/30 flex items-center justify-center glow-pulse mb-4">
-                      <span className="text-lg chinese-char text-gold-500">命</span>
+                      <span className="text-lg chinese-char text-gold-500">{'\u547d'}</span>
                     </div>
-                    <p className="text-gray-400 mt-2 mb-1">Synthesizing your chart...</p>
-                    <p className="text-xs text-gray-600">Synthesizing Eastern and Western traditions</p>
+                    <p className="text-gray-400 mt-2 mb-1">{t('reading.synthesizing')}</p>
+                    <p className="text-xs text-gray-600">{t('reading.synthesizingSub')}</p>
                   </div>
                 )}
               </div>
@@ -400,13 +403,14 @@ function ReadingContent() {
 }
 
 export default function ReadingPage() {
+  const { t } = useLocale();
   return (
     <Suspense fallback={
       <main className="min-h-screen flex flex-col items-center justify-center">
         <div className="w-14 h-14 rounded-full bg-gradient-to-br from-gold-500/20 to-gold-700/10 border border-gold-500/30 flex items-center justify-center glow-pulse mb-4">
-          <span className="text-xl chinese-char text-gold-500">命</span>
+          <span className="text-xl chinese-char text-gold-500">{'\u547d'}</span>
         </div>
-        <p className="text-sm text-gray-500">Preparing your reading...</p>
+        <p className="text-sm text-gray-500">{t('reading.preparing')}</p>
       </main>
     }>
       <ReadingContent />

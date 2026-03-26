@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface InlinePaywallProps {
   chartPattern?: string;
@@ -17,16 +18,19 @@ export default function InlinePaywall({
   branchClashes,
   onUpgrade,
 }: InlinePaywallProps) {
-  const [loading, setLoading] = useState(false);
+  const [loadingSingle, setLoadingSingle] = useState(false);
+  const [loadingPro, setLoadingPro] = useState(false);
+  const { t } = useLocale();
 
-  const handleUpgrade = async () => {
+  const handleCheckout = async (plan: 'single' | 'pro') => {
+    const setLoading = plan === 'single' ? setLoadingSingle : setLoadingPro;
     setLoading(true);
     try {
       const res = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          plan: 'pro',
+          plan,
           returnUrl: window.location.href,
         }),
       });
@@ -124,28 +128,47 @@ export default function InlinePaywall({
           ))}
         </div>
 
-        {/* CTA Button */}
+        {/* Primary CTA — Single Reading */}
         <button
-          onClick={handleUpgrade}
-          disabled={loading}
+          onClick={() => handleCheckout('single')}
+          disabled={loadingSingle}
           className="w-full max-w-xs mx-auto py-3 rounded-xl bg-gradient-to-r from-gold-700 via-gold-500 to-gold-700 text-void font-bold text-base hover:from-gold-600 hover:via-gold-400 hover:to-gold-600 transition-all press-effect disabled:opacity-50 disabled:cursor-not-allowed btn-shimmer block"
         >
-          {loading ? (
+          {loadingSingle ? (
             <span className="flex items-center justify-center gap-2">
               <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
               </svg>
-              Redirecting...
+              {t('paywall.redirecting')}
             </span>
           ) : (
-            'Reveal Full Reading \u2014 $9.99/mo'
+            'Unlock This Reading \u2014 $4.99'
+          )}
+        </button>
+
+        {/* Secondary CTA — Pro subscription */}
+        <button
+          onClick={() => handleCheckout('pro')}
+          disabled={loadingPro}
+          className="w-full max-w-xs mx-auto mt-3 py-2.5 rounded-xl border border-gold-500/30 text-gold-500 font-medium text-sm hover:bg-gold-500/5 hover:border-gold-500/50 transition-all press-effect disabled:opacity-50 disabled:cursor-not-allowed block"
+        >
+          {loadingPro ? (
+            <span className="flex items-center justify-center gap-2">
+              <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+              </svg>
+              {t('paywall.redirecting')}
+            </span>
+          ) : (
+            'Or get unlimited readings \u2014 $9.99/mo'
           )}
         </button>
 
         {/* Subtext */}
         <p className="text-xs text-gray-600 mt-3">
-          Cancel anytime &middot; Instant access &middot; All features unlocked
+          One-time purchase &middot; Instant access &middot; No subscription required
         </p>
       </div>
     </div>

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface BirthFormProps {
   onSubmit: (data: { year: number; month: number; day: number; hour: number | null; name: string; gender: 'male' | 'female' }) => void;
@@ -8,6 +9,7 @@ interface BirthFormProps {
 }
 
 export default function BirthForm({ onSubmit, loading }: BirthFormProps) {
+  const { t } = useLocale();
   const [name, setName] = useState('');
   const [year, setYear] = useState('');
   const [month, setMonth] = useState('');
@@ -26,8 +28,8 @@ export default function BirthForm({ onSubmit, loading }: BirthFormProps) {
 
   const hours = Array.from({ length: 24 }, (_, i) => {
     const label = `${String(i).padStart(2, '0')}:00`;
-    const shichen = ['子', '丑', '丑', '寅', '寅', '卯', '卯', '辰', '辰', '巳', '巳', '午', '午', '未', '未', '申', '申', '酉', '酉', '戌', '戌', '亥', '亥', '子'];
-    return { value: i, label: `${label} (${shichen[i]}时)` };
+    const shichen = ['\u5b50', '\u4e11', '\u4e11', '\u5bc5', '\u5bc5', '\u536f', '\u536f', '\u8fb0', '\u8fb0', '\u5df3', '\u5df3', '\u5348', '\u5348', '\u672a', '\u672a', '\u7533', '\u7533', '\u9149', '\u9149', '\u620c', '\u620c', '\u4ea5', '\u4ea5', '\u5b50'];
+    return { value: i, label: `${label} (${shichen[i]}\u6642)` };
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -50,13 +52,13 @@ export default function BirthForm({ onSubmit, loading }: BirthFormProps) {
       {/* Name */}
       <div>
         <label className="block text-sm text-gold-500 mb-2 font-medium">
-          Name <span className="text-gray-500">(optional)</span>
+          {t('form.name')} <span className="text-gray-500">{t('form.name.optional')}</span>
         </label>
         <input
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          placeholder="How should Daimon address you?"
+          placeholder={t('form.name.placeholder')}
           className="w-full bg-void-lighter border border-gray-700 rounded-lg px-4 py-3 text-gray-200 placeholder-gray-600 focus:border-gold-500 focus:outline-none focus:ring-1 focus:ring-gold-500/30 transition-colors"
         />
       </div>
@@ -64,7 +66,7 @@ export default function BirthForm({ onSubmit, loading }: BirthFormProps) {
       {/* Gender — needed for DaYun direction */}
       <div>
         <label className="block text-sm text-gold-500 mb-2 font-medium">
-          Gender <span className="text-gray-500 text-xs">(determines luck pillar direction)</span>
+          {t('form.gender')} <span className="text-gray-500 text-xs">{t('form.gender.note')}</span>
         </label>
         <div className="grid grid-cols-2 gap-3">
           <button
@@ -76,7 +78,7 @@ export default function BirthForm({ onSubmit, loading }: BirthFormProps) {
                 : 'bg-void-lighter border-gray-700 text-gray-400 hover:border-gray-600'
             }`}
           >
-            Male · 男
+            {t('form.gender.male')}
           </button>
           <button
             type="button"
@@ -87,7 +89,7 @@ export default function BirthForm({ onSubmit, loading }: BirthFormProps) {
                 : 'bg-void-lighter border-gray-700 text-gray-400 hover:border-gray-600'
             }`}
           >
-            Female · 女
+            {t('form.gender.female')}
           </button>
         </div>
       </div>
@@ -95,7 +97,7 @@ export default function BirthForm({ onSubmit, loading }: BirthFormProps) {
       {/* Date of Birth */}
       <div>
         <label className="block text-sm text-gold-500 mb-2 font-medium">
-          Date of Birth <span className="text-red-400">*</span>
+          {t('form.dob')} <span className="text-red-400">*</span>
         </label>
         <div className="grid grid-cols-3 gap-3">
           <div className="select-premium">
@@ -108,7 +110,7 @@ export default function BirthForm({ onSubmit, loading }: BirthFormProps) {
                 touched.year && !year ? 'border-red-500/50' : 'border-gray-700'
               }`}
             >
-              <option value="">Year</option>
+              <option value="">{t('form.year')}</option>
               {Array.from({ length: 100 }, (_, i) => currentYear - i).map((y) => (
                 <option key={y} value={y}>{y}</option>
               ))}
@@ -124,7 +126,7 @@ export default function BirthForm({ onSubmit, loading }: BirthFormProps) {
                 touched.month && !month ? 'border-red-500/50' : 'border-gray-700'
               }`}
             >
-              <option value="">Month</option>
+              <option value="">{t('form.month')}</option>
               {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => (
                 <option key={m} value={m}>{String(m).padStart(2, '0')}</option>
               ))}
@@ -140,7 +142,7 @@ export default function BirthForm({ onSubmit, loading }: BirthFormProps) {
                 touched.day && !day ? 'border-red-500/50' : 'border-gray-700'
               }`}
             >
-              <option value="">Day</option>
+              <option value="">{t('form.day')}</option>
               {Array.from({ length: getDaysInMonth() }, (_, i) => i + 1).map((d) => (
                 <option key={d} value={d}>{String(d).padStart(2, '0')}</option>
               ))}
@@ -159,26 +161,26 @@ export default function BirthForm({ onSubmit, loading }: BirthFormProps) {
           <svg className={`w-4 h-4 transition-transform ${showHour ? 'rotate-90' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
           </svg>
-          Add birth hour for deeper analysis
+          {t('form.hour.toggle')}
         </button>
 
         {showHour && (
           <div className="mt-3 fade-in">
             <label className="block text-sm text-gold-500 mb-2 font-medium">
-              Birth Hour <span className="text-gray-500">(时辰)</span>
+              {t('form.hour')} {t('form.hour.shichen') && <span className="text-gray-500">{t('form.hour.shichen')}</span>}
             </label>
             <div className="select-premium"><select
               value={hour}
               onChange={(e) => setHour(e.target.value)}
               className="w-full bg-void-lighter border border-gray-700 rounded-lg px-3 py-3 text-gray-200 focus:border-gold-500 focus:outline-none focus:ring-1 focus:ring-gold-500/30 transition-colors appearance-none cursor-pointer input-glow"
             >
-              <option value="">Unknown</option>
+              <option value="">{t('form.hour.unknown')}</option>
               {hours.map((h) => (
                 <option key={h.value} value={h.value}>{h.label}</option>
               ))}
             </select></div>
             <p className="text-xs text-gray-500 mt-1">
-              The Hour Pillar reveals your inner self and later life. Without it, analysis focuses on Year, Month, and Day pillars.
+              {t('form.hour.note')}
             </p>
           </div>
         )}
@@ -197,12 +199,12 @@ export default function BirthForm({ onSubmit, loading }: BirthFormProps) {
             <span className="loading-dot w-2 h-2 bg-void rounded-full inline-block"></span>
           </span>
         ) : (
-          'Reveal Your Destiny'
+          t('form.submit')
         )}
       </button>
 
       <p className="text-center text-xs text-gray-600 tracking-wide">
-        Your data is processed locally. Nothing is stored.
+        {t('form.privacy')}
       </p>
     </form>
   );

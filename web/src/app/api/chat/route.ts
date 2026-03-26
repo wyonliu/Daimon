@@ -7,7 +7,7 @@ const OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions';
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { messages, baziText, zodiacText, isInitial, truncated } = body;
+    const { messages, baziText, zodiacText, isInitial, truncated, locale } = body;
 
     if (!baziText || !zodiacText) {
       return new Response(JSON.stringify({ error: 'Chart data required' }), {
@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    const systemPrompt = getSystemPrompt(baziText, zodiacText);
+    const systemPrompt = getSystemPrompt(baziText, zodiacText, locale);
 
     const chatMessages: { role: string; content: string }[] = [];
 

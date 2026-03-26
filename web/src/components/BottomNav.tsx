@@ -2,14 +2,14 @@
 
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
+import { useLocale } from '@/components/LocaleProvider';
 
 type NavItem = 'home' | 'daily' | 'match' | 'profile';
 
-const NAV_ITEMS: { key: NavItem; label: string; labelCn: string; href: string; icon: React.ReactNode }[] = [
+const NAV_ITEMS: { key: NavItem; labelKey: string; href: string; icon: React.ReactNode }[] = [
   {
     key: 'home',
-    label: 'Home',
-    labelCn: '命',
+    labelKey: 'nav.home',
     href: '/',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -19,8 +19,7 @@ const NAV_ITEMS: { key: NavItem; label: string; labelCn: string; href: string; i
   },
   {
     key: 'daily',
-    label: 'Daily',
-    labelCn: '日',
+    labelKey: 'nav.daily',
     href: '/daily',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -30,8 +29,7 @@ const NAV_ITEMS: { key: NavItem; label: string; labelCn: string; href: string; i
   },
   {
     key: 'match',
-    label: 'Match',
-    labelCn: '缘',
+    labelKey: 'nav.match',
     href: '/match',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -41,8 +39,7 @@ const NAV_ITEMS: { key: NavItem; label: string; labelCn: string; href: string; i
   },
   {
     key: 'profile',
-    label: 'Settings',
-    labelCn: '设',
+    labelKey: 'nav.settings',
     href: '/settings',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -63,6 +60,7 @@ function getActiveItem(pathname: string): NavItem {
 export default function BottomNav() {
   const pathname = usePathname();
   const active = getActiveItem(pathname);
+  const { t } = useLocale();
 
   // Only show bottom nav on app pages (/daily, /match)
   const showOnPaths = ['/daily', '/match'];
@@ -85,7 +83,7 @@ export default function BottomNav() {
             >
               {item.icon}
               <span className={`text-[10px] font-medium ${isActive ? 'text-gold-500' : 'text-gray-600'}`}>
-                {item.label}
+                {t(item.labelKey)}
               </span>
             </Link>
           );

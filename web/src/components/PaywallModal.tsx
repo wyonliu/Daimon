@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface PaywallModalProps {
   onDismiss: () => void;
@@ -12,6 +13,7 @@ interface PaywallModalProps {
 
 export default function PaywallModal({ onDismiss, readingsUsed = 3, maxReadings = 3, chartPattern, branchClashes }: PaywallModalProps) {
   const [loading, setLoading] = useState(false);
+  const { t } = useLocale();
 
   const handleUpgrade = async () => {
     setLoading(true);
@@ -69,11 +71,11 @@ export default function PaywallModal({ onDismiss, readingsUsed = 3, maxReadings 
 
         {/* Headline */}
         <h2 className="text-xl sm:text-2xl font-bold text-center text-gold-500 text-glow-gold mb-2">
-          Unlock Unlimited Readings
+          {t('paywall.title')}
         </h2>
         <p className="text-sm text-gray-400 text-center mb-4">
-          You&apos;ve used {readingsUsed}/{maxReadings} free readings this month.
-          Upgrade to continue exploring your destiny.
+          {t('paywall.subtitle.pre')}{readingsUsed}/{maxReadings}{t('paywall.subtitle.mid')}
+          {t('paywall.subtitle.post')}
         </p>
 
         {(chartPattern || (branchClashes && branchClashes > 0)) && (
@@ -95,46 +97,46 @@ export default function PaywallModal({ onDismiss, readingsUsed = 3, maxReadings 
         <div className="grid grid-cols-2 gap-3 mb-6 text-sm">
           {/* Free column */}
           <div className="rounded-xl border border-gray-700/50 bg-void/50 p-4">
-            <div className="text-gray-400 font-medium mb-3">Free</div>
+            <div className="text-gray-400 font-medium mb-3">{t('paywall.free')}</div>
             <ul className="space-y-2 text-gray-500 text-xs">
               <li className="flex items-start gap-1.5">
                 <span className="text-gray-600 mt-0.5">&#10003;</span>
-                <span>3 readings/month</span>
+                <span>{t('paywall.free.readings')}</span>
               </li>
               <li className="flex items-start gap-1.5">
                 <span className="text-gray-600 mt-0.5">&#10003;</span>
-                <span>BaZi + Astro chart</span>
+                <span>{t('paywall.free.chart')}</span>
               </li>
               <li className="flex items-start gap-1.5">
                 <span className="text-gray-600 mt-0.5">&#10003;</span>
-                <span>Chart overview</span>
+                <span>{t('paywall.free.overview')}</span>
               </li>
               <li className="flex items-start gap-1.5">
                 <span className="text-gray-600 mt-0.5">&#10007;</span>
-                <span className="line-through">Unlimited chat</span>
+                <span className="line-through">{t('paywall.free.noChat')}</span>
               </li>
             </ul>
           </div>
 
           {/* Pro column */}
           <div className="rounded-xl border border-gold-500/30 bg-gradient-to-b from-gold-500/5 to-transparent p-4">
-            <div className="text-gold-500 font-medium mb-3">Pro</div>
+            <div className="text-gold-500 font-medium mb-3">{t('paywall.pro')}</div>
             <ul className="space-y-2 text-gray-300 text-xs">
               <li className="flex items-start gap-1.5">
                 <span className="text-gold-500 mt-0.5">&#10003;</span>
-                <span>Unlimited readings</span>
+                <span>{t('paywall.pro.readings')}</span>
               </li>
               <li className="flex items-start gap-1.5">
                 <span className="text-gold-500 mt-0.5">&#10003;</span>
-                <span>Full chart analysis</span>
+                <span>{t('paywall.pro.chart')}</span>
               </li>
               <li className="flex items-start gap-1.5">
                 <span className="text-gold-500 mt-0.5">&#10003;</span>
-                <span>Deep chart synthesis</span>
+                <span>{t('paywall.pro.synthesis')}</span>
               </li>
               <li className="flex items-start gap-1.5">
                 <span className="text-gold-500 mt-0.5">&#10003;</span>
-                <span>Unlimited consultations</span>
+                <span>{t('paywall.pro.consultations')}</span>
               </li>
             </ul>
           </div>
@@ -152,10 +154,10 @@ export default function PaywallModal({ onDismiss, readingsUsed = 3, maxReadings 
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
               </svg>
-              Redirecting...
+              {t('paywall.redirecting')}
             </span>
           ) : (
-            'Upgrade to Pro \u2014 $9.99/mo'
+            t('paywall.cta')
           )}
         </button>
 
@@ -164,7 +166,7 @@ export default function PaywallModal({ onDismiss, readingsUsed = 3, maxReadings 
           onClick={onDismiss}
           className="w-full mt-3 py-2 text-sm text-gray-500 hover:text-gray-400 transition-colors press-effect"
         >
-          Not now
+          {t('paywall.notNow')}
         </button>
       </div>
     </div>

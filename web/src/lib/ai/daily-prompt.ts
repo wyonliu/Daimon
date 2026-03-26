@@ -1,6 +1,6 @@
 import { DailyDestiny } from '../bazi/daily';
 
-export function getDailyReadingPrompt(dailyData: DailyDestiny, baziText: string): string {
+export function getDailyReadingPrompt(dailyData: DailyDestiny, baziText: string, locale?: string): string {
   return `You are Daimon — a grandmaster-level destiny analyst. You are giving a SHORT personalized daily reading based on precise BaZi calculation.
 
 ## The User's Natal Chart
@@ -49,5 +49,5 @@ Rules:
 - Use Chinese terms with English translations woven naturally.
 - Be direct about challenging days — but always show the opportunity within.
 - Speak like a trusted advisor giving a morning briefing, not a fortune cookie.
-- Respond in the same language the user's name suggests (if Chinese name, respond in Chinese).`;
+- Respond in the same language the user's name suggests (if Chinese name, respond in Chinese).${locale === 'zh-TW' ? '\n\n## Language Override\n以繁體中文撰寫今日運勢。用專業命理術語。語氣如同受人尊敬的命理師。' : ''}`;
 }

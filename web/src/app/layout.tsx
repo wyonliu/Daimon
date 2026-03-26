@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import './globals.css'
 import BottomNav from '@/components/BottomNav'
 import InstallPrompt from '@/components/InstallPrompt'
+import { LocaleProvider } from '@/components/LocaleProvider'
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -11,11 +12,11 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
-  title: 'Daimon — East-West Destiny Engine',
+  title: 'Daimon \u2014 East-West Destiny Engine',
   description: 'The world\'s first cross-tradition AI destiny analysis. BaZi (Four Pillars) meets Western Astrology. Professional-grade metaphysical intelligence.',
-  keywords: 'bazi, four pillars, astrology, destiny, fate analysis, 八字, 命理, horoscope, zodiac',
+  keywords: 'bazi, four pillars, astrology, destiny, fate analysis, \u516b\u5b57, \u547d\u7406, horoscope, zodiac',
   openGraph: {
-    title: 'Daimon — Know Your Destiny',
+    title: 'Daimon \u2014 Know Your Destiny',
     description: 'Professional-grade BaZi + Astrology analysis powered by AI. Discover your fate through both Eastern and Western traditions.',
     type: 'website',
     siteName: 'Daimon',
@@ -23,7 +24,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Daimon — Know Your Destiny',
+    title: 'Daimon \u2014 Know Your Destiny',
     description: 'Professional-grade BaZi + Astrology analysis powered by AI',
   },
   appleWebApp: {
@@ -53,9 +54,11 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-pattern min-h-screen safe-bottom noise-overlay relative">
-        {children}
-        <BottomNav />
-        <InstallPrompt />
+        <LocaleProvider>
+          {children}
+          <BottomNav />
+          <InstallPrompt />
+        </LocaleProvider>
       </body>
     </html>
   )

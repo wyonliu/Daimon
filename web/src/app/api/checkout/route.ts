@@ -11,15 +11,15 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    if (!['pro', 'master'].includes(plan)) {
+    if (!['pro', 'master', 'single'].includes(plan)) {
       return NextResponse.json({ error: 'Invalid plan' }, { status: 400 });
     }
 
-    const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
+    const apiKey = process.env.LEMONSQUEEZY_API_KEY;
 
-    // Dev mode: no Stripe key configured — return mock success
-    if (!stripeSecretKey) {
-      console.log('[Checkout] Stripe not configured — returning mock session');
+    // Dev mode: no LemonSqueezy key configured — return mock success
+    if (!apiKey) {
+      console.log('[Checkout] LemonSqueezy not configured — returning mock session');
       const mockSessionId = `mock_session_${Date.now()}`;
       const successUrl = new URL(returnUrl);
       successUrl.pathname = '/success';
@@ -28,42 +28,80 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ url: successUrl.toString() });
     }
 
-    // Determine price ID based on plan
-    const priceId =
-      plan === 'master'
-        ? process.env.STRIPE_MASTER_PRICE_ID
-        : process.env.STRIPE_PRO_PRICE_ID;
+    // Determine variant ID based on plan
+    let variantId: string | undefined;
+    if (plan === 'single') {
+      variantId = process.env.LEMONSQUEEZY_SINGLE_VARIANT_ID;
+    } else if (plan === 'master') {
+      variantId = process.env.LEMONSQUEEZY_MASTER_VARIANT_ID;
+    } else {
+      variantId = process.env.LEMONSQUEEZY_PRO_VARIANT_ID;
+    }
 
-    if (!priceId) {
+    const storeId = process.env.LEMONSQUEEZY_STORE_ID;
+
+    if (!variantId) {
       return NextResponse.json(
-        { error: `Price ID not configured for plan: ${plan}` },
+        { error: `Variant ID not configured for plan: ${plan}` },
         { status: 500 }
       );
     }
 
-    // Dynamic import to avoid issues when stripe isn't configured
-    const Stripe = (await import('stripe')).default;
-    const stripe = new Stripe(stripeSecretKey, {
-      apiVersion: '2024-12-18.acacia' as unknown as '2026-03-25.dahlia',
-    });
+    if (!storeId) {
+      return NextResponse.json(
+        { error: 'Store ID not configured' },
+        { status: 500 }
+      );
+    }
 
     const successUrl = new URL('/success', returnUrl);
-    successUrl.searchParams.set('session_id', '{CHECKOUT_SESSION_ID}');
+    successUrl.searchParams.set('session_id', '{checkout_id}');
     successUrl.searchParams.set('plan', plan);
 
-    const session = await stripe.checkout.sessions.create({
-      mode: 'subscription',
-      line_items: [
-        {
-          price: priceId,
-          quantity: 1,
+    const response = await fetch('https://api.lemonsqueezy.com/v1/checkouts', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/vnd.api+json',
+        'Accept': 'application/vnd.api+json',
+      },
+      body: JSON.stringify({
+        data: {
+          type: 'checkouts',
+          attributes: {
+            checkout_options: {
+              dark: true,
+              success_url: successUrl.toString(),
+              logo: false,
+            },
+            product_options: {
+              redirect_url: successUrl.toString(),
+            },
+          },
+          relationships: {
+            store: {
+              data: { type: 'stores', id: storeId },
+            },
+            variant: {
+              data: { type: 'variants', id: variantId },
+            },
+          },
         },
-      ],
-      success_url: successUrl.toString(),
-      cancel_url: returnUrl,
+      }),
     });
 
-    return NextResponse.json({ url: session.url });
+    const data = await response.json();
+
+    if (!response.ok) {
+      console.error('[Checkout] LemonSqueezy error:', JSON.stringify(data));
+      return NextResponse.json(
+        { error: 'Failed to create checkout session' },
+        { status: 500 }
+      );
+    }
+
+    const checkoutUrl = data.data.attributes.url;
+    return NextResponse.json({ url: checkoutUrl });
   } catch (error) {
     console.error('[Checkout] Error creating session:', error);
     return NextResponse.json(

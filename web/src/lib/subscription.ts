@@ -97,9 +97,16 @@ export function activatePro(sessionId: string, planType: 'pro' | 'master' = 'pro
     sessionId,
     monthKey: getCurrentMonthKey(),
     // Set expiry to ~30 days from now for MVP
-    // In production, this would be managed by Stripe webhooks
+    // In production, this would be managed by LemonSqueezy webhooks
     expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
   };
+  setUserPlan(plan);
+}
+
+export function grantSingleReading(): void {
+  const plan = getUserPlan();
+  // Add 1 extra reading to the user's allowance
+  plan.maxFreeReadings += 1;
   setUserPlan(plan);
 }
 

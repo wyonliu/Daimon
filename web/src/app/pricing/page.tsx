@@ -6,36 +6,38 @@ import { useRouter, useSearchParams } from 'next/navigation';
 function PricingContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [loadingSingle, setLoadingSingle] = useState(false);
   const [loadingPro, setLoadingPro] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
-  const handleProCheckout = async () => {
-    setLoadingPro(true);
+  const handleCheckout = async (plan: 'single' | 'pro') => {
+    const setLoading = plan === 'single' ? setLoadingSingle : setLoadingPro;
+    setLoading(true);
     try {
       const res = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ plan: 'pro', returnUrl: window.location.origin }),
+        body: JSON.stringify({ plan, returnUrl: window.location.origin }),
       });
       const data = await res.json();
       if (data.url) {
         window.location.href = data.url;
       } else {
         // Dev fallback
-        router.push('/success?session_id=dev_mock');
+        router.push(`/success?session_id=dev_mock&plan=${plan}`);
       }
     } catch {
       // Dev fallback
-      router.push('/success?session_id=dev_mock');
+      router.push(`/success?session_id=dev_mock&plan=${plan}`);
     } finally {
-      setLoadingPro(false);
+      setLoading(false);
     }
   };
 
   const faqs = [
     {
       q: 'How accurate is the BaZi analysis?',
-      a: 'Daimon uses a professional-grade Four Pillars engine with accurate Heavenly Stem and Earthly Branch calculations, Ten Gods mapping, Spirit Sha (神煞) identification, and Five Element strength analysis. The computational accuracy matches what a trained practitioner would produce.',
+      a: 'Daimon uses a professional-grade Four Pillars engine with accurate Heavenly Stem and Earthly Branch calculations, Ten Gods mapping, Spirit Sha identification, and Five Element strength analysis. The computational accuracy matches what a trained practitioner would produce.',
     },
     {
       q: 'What does the Cross-Tradition Synthesis add?',
@@ -43,7 +45,11 @@ function PricingContent() {
     },
     {
       q: 'Do I need to know my exact birth hour?',
-      a: 'The birth hour (时辰) unlocks the Hour Pillar, which reveals your inner self and later life trajectory. Without it, Daimon still provides a thorough analysis using Year, Month, and Day pillars. For the deepest reading, include your birth hour.',
+      a: 'The birth hour unlocks the Hour Pillar, which reveals your inner self and later life trajectory. Without it, Daimon still provides a thorough analysis using Year, Month, and Day pillars. For the deepest reading, include your birth hour.',
+    },
+    {
+      q: 'What is the difference between a single reading and Pro?',
+      a: 'A single reading ($4.99) gives you one full deep reading with complete chart analysis. Pro ($9.99/mo) gives you unlimited readings, unlimited consultations, and all features unlocked every month. If you just want to try the depth once, the single reading is perfect.',
     },
     {
       q: 'Can I cancel my Pro subscription anytime?',
@@ -89,13 +95,13 @@ function PricingContent() {
 
       {/* Pricing Cards */}
       <section className="px-4 pb-20 sm:pb-28">
-        <div className="max-w-5xl mx-auto grid md:grid-cols-3 gap-6 sm:gap-8 items-start">
+        <div className="max-w-5xl mx-auto grid md:grid-cols-4 gap-6 sm:gap-8 items-start">
 
           {/* ── Seeker (Free) ── */}
           <div className="glass-card rounded-2xl p-8 sm:p-10 card-hover slide-up">
             <div className="mb-8">
               <div className="w-14 h-14 rounded-2xl bg-gray-800/50 border border-gray-700 flex items-center justify-center mb-5">
-                <span className="text-2xl chinese-char text-gray-400">探</span>
+                <span className="text-2xl chinese-char text-gray-400">{'\u63A2'}</span>
               </div>
               <h3 className="font-display text-2xl font-semibold text-gray-200 mb-1">Seeker</h3>
               <p className="text-sm text-gray-500">Explore the basics</p>
@@ -128,10 +134,6 @@ function PricingContent() {
                 <svg className="w-5 h-5 text-gray-700 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
                 <span className="text-gray-600">No chat follow-up</span>
               </li>
-              <li className="flex items-start gap-3">
-                <svg className="w-5 h-5 text-gray-700 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
-                <span className="text-gray-600">No 神煞 or 格局 analysis</span>
-              </li>
             </ul>
 
             <button
@@ -142,25 +144,86 @@ function PricingContent() {
             </button>
           </div>
 
-          {/* ── Pro ($9.99) ── */}
+          {/* ── Single Reading ($4.99) ── */}
           <div className="relative glass-card rounded-2xl p-8 sm:p-10 card-hover border-gold-500/30 shadow-[0_0_60px_rgba(200,169,110,0.08)] slide-up slide-up-delay-1">
             {/* Badge */}
             <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
               <span className="px-5 py-1.5 rounded-full bg-gradient-to-r from-gold-700 via-gold-500 to-gold-700 text-void text-xs font-bold tracking-wider uppercase shadow-lg">
-                Most Popular
+                Lowest Barrier
               </span>
             </div>
 
             <div className="mb-8 mt-2">
               <div className="w-14 h-14 rounded-2xl bg-gold-500/10 border border-gold-500/25 flex items-center justify-center mb-5 glow-gold-soft">
-                <span className="text-2xl chinese-char text-gold-500">道</span>
+                <span className="text-2xl chinese-char text-gold-500">{'\u547D'}</span>
               </div>
-              <h3 className="font-display text-2xl font-semibold text-gold-500 mb-1">Pro</h3>
+              <h3 className="font-display text-2xl font-semibold text-gold-500 mb-1">Single Reading</h3>
+              <p className="text-sm text-gray-500">One deep reading, no commitment</p>
+            </div>
+
+            <div className="mb-8">
+              <span className="text-5xl font-bold text-gradient-gold font-display tracking-tight">$4.99</span>
+              <span className="text-sm text-gray-500 ml-2">one-time</span>
+            </div>
+
+            <div className="divider-gold mb-8" />
+
+            <ul className="space-y-4 text-sm text-gray-300 mb-10">
+              <li className="flex items-start gap-3">
+                <svg className="w-5 h-5 text-gold-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                <span><strong className="text-gold-500/90">1 full</strong> deep reading</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <svg className="w-5 h-5 text-gold-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                <span>Complete BaZi chart analysis</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <svg className="w-5 h-5 text-gold-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                <span>Cross-tradition East x West synthesis</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <svg className="w-5 h-5 text-gold-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                <span>No subscription required</span>
+              </li>
+            </ul>
+
+            <button
+              onClick={() => handleCheckout('single')}
+              disabled={loadingSingle}
+              className="block w-full text-center py-4 rounded-xl bg-gradient-to-r from-gold-700 via-gold-500 to-gold-700 hover:from-gold-600 hover:via-gold-400 hover:to-gold-600 text-void font-bold text-lg glow-gold-soft hover:glow-gold press-effect btn-shimmer transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed"
+            >
+              {loadingSingle ? (
+                <span className="flex items-center justify-center gap-2">
+                  <span className="loading-dot w-2 h-2 bg-void rounded-full inline-block" />
+                  <span className="loading-dot w-2 h-2 bg-void rounded-full inline-block" />
+                  <span className="loading-dot w-2 h-2 bg-void rounded-full inline-block" />
+                </span>
+              ) : (
+                'Get One Reading'
+              )}
+            </button>
+            <p className="text-xs text-gray-600 text-center mt-3">Pay once. No subscription.</p>
+          </div>
+
+          {/* ── Pro ($9.99) ── */}
+          <div className="relative glass-card rounded-2xl p-8 sm:p-10 card-hover slide-up slide-up-delay-2">
+            {/* Badge */}
+            <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
+              <span className="px-5 py-1.5 rounded-full bg-gray-800 border border-gold-500/30 text-gold-500 text-xs font-bold tracking-wider uppercase">
+                Best Value
+              </span>
+            </div>
+
+            <div className="mb-8 mt-2">
+              <div className="w-14 h-14 rounded-2xl bg-gold-500/10 border border-gold-500/25 flex items-center justify-center mb-5">
+                <span className="text-2xl chinese-char text-gold-500">{'\u9053'}</span>
+              </div>
+              <h3 className="font-display text-2xl font-semibold text-gray-200 mb-1">Pro</h3>
               <p className="text-sm text-gray-500">Full depth, unlimited power</p>
             </div>
 
             <div className="mb-8">
-              <span className="text-5xl font-bold text-gradient-gold font-display tracking-tight">$9.99</span>
+              <span className="text-5xl font-bold text-gray-100 font-display tracking-tight">$9.99</span>
               <span className="text-sm text-gray-500 ml-2">/month</span>
             </div>
 
@@ -173,11 +236,11 @@ function PricingContent() {
               </li>
               <li className="flex items-start gap-3">
                 <svg className="w-5 h-5 text-gold-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                <span>Full BaZi: 神煞, 格局, 大運, 流年</span>
+                <span>Full BaZi: spirit sha, chart patterns, luck pillars</span>
               </li>
               <li className="flex items-start gap-3">
                 <svg className="w-5 h-5 text-gold-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                <span>Cross-tradition East &times; West synthesis</span>
+                <span>Cross-tradition East x West synthesis</span>
               </li>
               <li className="flex items-start gap-3">
                 <svg className="w-5 h-5 text-gold-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
@@ -187,22 +250,18 @@ function PricingContent() {
                 <svg className="w-5 h-5 text-gold-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
                 <span>Shareable destiny cards</span>
               </li>
-              <li className="flex items-start gap-3">
-                <svg className="w-5 h-5 text-gold-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                <span>Ten Gods &amp; Five Element balance</span>
-              </li>
             </ul>
 
             <button
-              onClick={handleProCheckout}
+              onClick={() => handleCheckout('pro')}
               disabled={loadingPro}
-              className="block w-full text-center py-4 rounded-xl bg-gradient-to-r from-gold-700 via-gold-500 to-gold-700 hover:from-gold-600 hover:via-gold-400 hover:to-gold-600 text-void font-bold text-lg glow-gold-soft hover:glow-gold press-effect btn-shimmer transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed"
+              className="block w-full text-center py-3.5 rounded-xl border border-gold-500/30 text-gold-500 font-bold hover:bg-gold-500/5 hover:border-gold-500/50 transition-all duration-300 press-effect disabled:opacity-60 disabled:cursor-not-allowed"
             >
               {loadingPro ? (
                 <span className="flex items-center justify-center gap-2">
-                  <span className="loading-dot w-2 h-2 bg-void rounded-full inline-block" />
-                  <span className="loading-dot w-2 h-2 bg-void rounded-full inline-block" />
-                  <span className="loading-dot w-2 h-2 bg-void rounded-full inline-block" />
+                  <span className="loading-dot w-2 h-2 bg-gold-500 rounded-full inline-block" />
+                  <span className="loading-dot w-2 h-2 bg-gold-500 rounded-full inline-block" />
+                  <span className="loading-dot w-2 h-2 bg-gold-500 rounded-full inline-block" />
                 </span>
               ) : (
                 'Subscribe to Pro'
@@ -212,7 +271,7 @@ function PricingContent() {
           </div>
 
           {/* ── Master ($29.99) ── */}
-          <div className="relative glass-card rounded-2xl p-8 sm:p-10 card-hover slide-up slide-up-delay-2">
+          <div className="relative glass-card rounded-2xl p-8 sm:p-10 card-hover slide-up slide-up-delay-3">
             {/* Badge */}
             <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
               <span className="px-5 py-1.5 rounded-full bg-gray-800 border border-gray-700 text-gray-400 text-xs font-bold tracking-wider uppercase">
@@ -222,7 +281,7 @@ function PricingContent() {
 
             <div className="mb-8 mt-2">
               <div className="w-14 h-14 rounded-2xl bg-gray-800/50 border border-gray-700 flex items-center justify-center mb-5">
-                <span className="text-2xl chinese-char text-gray-400">師</span>
+                <span className="text-2xl chinese-char text-gray-400">{'\u5E2B'}</span>
               </div>
               <h3 className="font-display text-2xl font-semibold text-gray-200 mb-1">Master</h3>
               <p className="text-sm text-gray-500">The ultimate reading</p>
@@ -250,15 +309,11 @@ function PricingContent() {
               </li>
               <li className="flex items-start gap-3">
                 <svg className="w-5 h-5 text-gold-500/70 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                <span>Annual &amp; decade forecasting</span>
+                <span>Annual and decade forecasting</span>
               </li>
               <li className="flex items-start gap-3">
                 <svg className="w-5 h-5 text-gold-500/70 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                <span>Compatibility &amp; synastry analysis</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <svg className="w-5 h-5 text-gold-500/70 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                <span>Early access to new features</span>
+                <span>Compatibility and synastry analysis</span>
               </li>
             </ul>
 
@@ -272,10 +327,10 @@ function PricingContent() {
         </div>
       </section>
 
-      {/* ═══════════════════ DIVIDER ═══════════════════ */}
+      {/* DIVIDER */}
       <div className="divider-gold mx-auto w-full max-w-4xl" />
 
-      {/* ═══════════════════ FAQ ═══════════════════ */}
+      {/* FAQ */}
       <section className="px-4 py-20 sm:py-28">
         <div className="max-w-2xl mx-auto">
           <h2 className="font-display text-3xl sm:text-4xl font-bold text-gradient-gold text-center mb-14">
@@ -315,7 +370,7 @@ function PricingContent() {
         </div>
       </section>
 
-      {/* ═══════════════════ FOOTER ═══════════════════ */}
+      {/* FOOTER */}
       <div className="divider-gold mx-auto w-full" />
       <footer className="py-10 px-4">
         <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -324,7 +379,7 @@ function PricingContent() {
             className="flex items-center gap-3 hover:opacity-80 transition-opacity"
           >
             <div className="w-8 h-8 rounded-full bg-gradient-to-br from-gold-500/20 to-gold-700/10 border border-gold-500/20 flex items-center justify-center">
-              <span className="text-sm chinese-char text-gold-500">命</span>
+              <span className="text-sm chinese-char text-gold-500">{'\u547D'}</span>
             </div>
             <span className="text-sm font-display text-gray-400">Daimon</span>
           </button>
