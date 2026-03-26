@@ -377,10 +377,10 @@ export function getLocale(): Locale {
   if (typeof window === 'undefined') return 'en';
   const saved = localStorage.getItem(LOCALE_KEY);
   if (saved === 'zh-TW' || saved === 'en') return saved;
-  // Auto-detect from browser
+  // Default to zh-TW, only use en if browser explicitly English
   const browserLang = navigator.language;
-  if (browserLang.startsWith('zh')) return 'zh-TW';
-  return 'en';
+  if (browserLang.startsWith('en')) return 'en';
+  return 'zh-TW';
 }
 
 export function setLocale(locale: Locale): void {

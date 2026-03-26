@@ -12,20 +12,20 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
-  title: 'Daimon \u2014 East-West Destiny Engine',
-  description: 'The world\'s first cross-tradition AI destiny analysis. BaZi (Four Pillars) meets Western Astrology. Professional-grade metaphysical intelligence.',
-  keywords: 'bazi, four pillars, astrology, destiny, fate analysis, \u516b\u5b57, \u547d\u7406, horoscope, zodiac',
+  title: 'Daimon — 東西方命理引擎',
+  description: '全球首創跨傳統命理分析。八字四柱命理結合西方占星術，專業級命運解讀引擎。',
+  keywords: '八字, 四柱命理, 占星, 命運, 命理分析, bazi, astrology, 星座, 運勢, 合盤',
   openGraph: {
-    title: 'Daimon \u2014 Know Your Destiny',
-    description: 'Professional-grade BaZi + Astrology analysis powered by AI. Discover your fate through both Eastern and Western traditions.',
+    title: 'Daimon — 知命・改運',
+    description: '專業級八字命理 + 西方占星分析引擎。東西方命理傳統，一次深度解讀。',
     type: 'website',
     siteName: 'Daimon',
-    locale: 'en_US',
+    locale: 'zh_TW',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Daimon \u2014 Know Your Destiny',
-    description: 'Professional-grade BaZi + Astrology analysis powered by AI',
+    title: 'Daimon — 知命・改運',
+    description: '專業級八字命理 + 西方占星分析引擎',
   },
   appleWebApp: {
     capable: true,
@@ -40,7 +40,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className="antialiased">
+    <html lang="zh-Hant" className="antialiased">
       <head>
         <link rel="manifest" href="/manifest.json" />
         <link rel="icon" href="/favicon.ico" sizes="32x32" />
