@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import Link from 'next/link';
 import { useLocale } from '@/components/LocaleProvider';
 
 interface PaywallModalProps {
@@ -12,34 +12,9 @@ interface PaywallModalProps {
 }
 
 export default function PaywallModal({ onDismiss, readingsUsed = 3, maxReadings = 3, chartPattern, branchClashes }: PaywallModalProps) {
-  const [loading, setLoading] = useState(false);
   const { t } = useLocale();
 
-  const handleUpgrade = async () => {
-    setLoading(true);
-    try {
-      const res = await fetch('/api/checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          plan: 'pro',
-          returnUrl: window.location.origin,
-        }),
-      });
-
-      const data = await res.json();
-
-      if (data.url) {
-        window.location.href = data.url;
-      } else {
-        console.error('No checkout URL returned');
-        setLoading(false);
-      }
-    } catch (err) {
-      console.error('Checkout error:', err);
-      setLoading(false);
-    }
-  };
+  const proPayUrl = `/pay?plan=pro&returnUrl=${encodeURIComponent(typeof window !== 'undefined' ? window.location.pathname : '/')}`;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center px-4 fade-in">
@@ -65,7 +40,7 @@ export default function PaywallModal({ onDismiss, readingsUsed = 3, maxReadings 
         {/* Icon */}
         <div className="flex justify-center mb-5">
           <div className="w-16 h-16 rounded-full bg-gradient-to-br from-gold-500/20 to-gold-700/10 border border-gold-500/30 flex items-center justify-center glow-pulse">
-            <span className="text-3xl chinese-char text-gold-500">道</span>
+            <span className="text-3xl chinese-char text-gold-500">{'\u9053'}</span>
           </div>
         </div>
 
@@ -143,23 +118,12 @@ export default function PaywallModal({ onDismiss, readingsUsed = 3, maxReadings 
         </div>
 
         {/* CTA */}
-        <button
-          onClick={handleUpgrade}
-          disabled={loading}
-          className="w-full py-3 rounded-xl bg-gradient-to-r from-gold-700 via-gold-500 to-gold-700 text-void font-bold text-base hover:from-gold-600 hover:via-gold-400 hover:to-gold-600 transition-all press-effect disabled:opacity-50 disabled:cursor-not-allowed"
+        <Link
+          href={proPayUrl}
+          className="w-full py-3 rounded-xl bg-gradient-to-r from-gold-700 via-gold-500 to-gold-700 text-void font-bold text-base hover:from-gold-600 hover:via-gold-400 hover:to-gold-600 transition-all press-effect block text-center"
         >
-          {loading ? (
-            <span className="flex items-center justify-center gap-2">
-              <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-              </svg>
-              {t('paywall.redirecting')}
-            </span>
-          ) : (
-            t('paywall.cta')
-          )}
-        </button>
+          {t('paywall.cta')}
+        </Link>
 
         {/* Dismiss */}
         <button

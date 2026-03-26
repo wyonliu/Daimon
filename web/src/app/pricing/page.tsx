@@ -1,38 +1,12 @@
 'use client';
 
 import { useState, Suspense } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 function PricingContent() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const [loadingSingle, setLoadingSingle] = useState(false);
-  const [loadingPro, setLoadingPro] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
-
-  const handleCheckout = async (plan: 'single' | 'pro') => {
-    const setLoading = plan === 'single' ? setLoadingSingle : setLoadingPro;
-    setLoading(true);
-    try {
-      const res = await fetch('/api/checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ plan, returnUrl: window.location.origin }),
-      });
-      const data = await res.json();
-      if (data.url) {
-        window.location.href = data.url;
-      } else {
-        // Dev fallback
-        router.push(`/success?session_id=dev_mock&plan=${plan}`);
-      }
-    } catch {
-      // Dev fallback
-      router.push(`/success?session_id=dev_mock&plan=${plan}`);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const faqs = [
     {
@@ -49,11 +23,11 @@ function PricingContent() {
     },
     {
       q: 'What is the difference between a single reading and Pro?',
-      a: 'A single reading ($4.99) gives you one full deep reading with complete chart analysis. Pro ($9.99/mo) gives you unlimited readings, unlimited consultations, and all features unlocked every month. If you just want to try the depth once, the single reading is perfect.',
+      a: 'A single reading (\u00a535) gives you one full deep reading with complete chart analysis. Pro (\u00a570/mo) gives you unlimited readings, unlimited consultations, and all features unlocked every month. If you just want to try the depth once, the single reading is perfect.',
     },
     {
-      q: 'Can I cancel my Pro subscription anytime?',
-      a: 'Yes. Cancel anytime from your account settings. You keep Pro access through the end of your billing period. No contracts, no hidden fees.',
+      q: 'How do I pay?',
+      a: 'We accept Alipay (\u652f\u4ed8\u5bf6). After selecting a plan, you will see a QR code to scan with your Alipay app. Once payment is complete, click the unlock button to activate your plan instantly.',
     },
     {
       q: 'Is my birth data stored or shared?',
@@ -97,7 +71,7 @@ function PricingContent() {
       <section className="px-4 pb-20 sm:pb-28">
         <div className="max-w-5xl mx-auto grid md:grid-cols-4 gap-6 sm:gap-8 items-start">
 
-          {/* ── Seeker (Free) ── */}
+          {/* -- Seeker (Free) -- */}
           <div className="glass-card rounded-2xl p-8 sm:p-10 card-hover slide-up">
             <div className="mb-8">
               <div className="w-14 h-14 rounded-2xl bg-gray-800/50 border border-gray-700 flex items-center justify-center mb-5">
@@ -144,7 +118,7 @@ function PricingContent() {
             </button>
           </div>
 
-          {/* ── Single Reading ($4.99) ── */}
+          {/* -- Single Reading (¥35) -- */}
           <div className="relative glass-card rounded-2xl p-8 sm:p-10 card-hover border-gold-500/30 shadow-[0_0_60px_rgba(200,169,110,0.08)] slide-up slide-up-delay-1">
             {/* Badge */}
             <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
@@ -162,7 +136,7 @@ function PricingContent() {
             </div>
 
             <div className="mb-8">
-              <span className="text-5xl font-bold text-gradient-gold font-display tracking-tight">$4.99</span>
+              <span className="text-5xl font-bold text-gradient-gold font-display tracking-tight">&yen;35</span>
               <span className="text-sm text-gray-500 ml-2">one-time</span>
             </div>
 
@@ -187,25 +161,16 @@ function PricingContent() {
               </li>
             </ul>
 
-            <button
-              onClick={() => handleCheckout('single')}
-              disabled={loadingSingle}
-              className="block w-full text-center py-4 rounded-xl bg-gradient-to-r from-gold-700 via-gold-500 to-gold-700 hover:from-gold-600 hover:via-gold-400 hover:to-gold-600 text-void font-bold text-lg glow-gold-soft hover:glow-gold press-effect btn-shimmer transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed"
+            <Link
+              href="/pay?plan=single"
+              className="block w-full text-center py-4 rounded-xl bg-gradient-to-r from-gold-700 via-gold-500 to-gold-700 hover:from-gold-600 hover:via-gold-400 hover:to-gold-600 text-void font-bold text-lg glow-gold-soft hover:glow-gold press-effect btn-shimmer transition-all duration-300"
             >
-              {loadingSingle ? (
-                <span className="flex items-center justify-center gap-2">
-                  <span className="loading-dot w-2 h-2 bg-void rounded-full inline-block" />
-                  <span className="loading-dot w-2 h-2 bg-void rounded-full inline-block" />
-                  <span className="loading-dot w-2 h-2 bg-void rounded-full inline-block" />
-                </span>
-              ) : (
-                'Get One Reading'
-              )}
-            </button>
+              Get One Reading
+            </Link>
             <p className="text-xs text-gray-600 text-center mt-3">Pay once. No subscription.</p>
           </div>
 
-          {/* ── Pro ($9.99) ── */}
+          {/* -- Pro (¥70) -- */}
           <div className="relative glass-card rounded-2xl p-8 sm:p-10 card-hover slide-up slide-up-delay-2">
             {/* Badge */}
             <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
@@ -223,7 +188,7 @@ function PricingContent() {
             </div>
 
             <div className="mb-8">
-              <span className="text-5xl font-bold text-gray-100 font-display tracking-tight">$9.99</span>
+              <span className="text-5xl font-bold text-gray-100 font-display tracking-tight">&yen;70</span>
               <span className="text-sm text-gray-500 ml-2">/month</span>
             </div>
 
@@ -252,25 +217,16 @@ function PricingContent() {
               </li>
             </ul>
 
-            <button
-              onClick={() => handleCheckout('pro')}
-              disabled={loadingPro}
-              className="block w-full text-center py-3.5 rounded-xl border border-gold-500/30 text-gold-500 font-bold hover:bg-gold-500/5 hover:border-gold-500/50 transition-all duration-300 press-effect disabled:opacity-60 disabled:cursor-not-allowed"
+            <Link
+              href="/pay?plan=pro"
+              className="block w-full text-center py-3.5 rounded-xl border border-gold-500/30 text-gold-500 font-bold hover:bg-gold-500/5 hover:border-gold-500/50 transition-all duration-300 press-effect"
             >
-              {loadingPro ? (
-                <span className="flex items-center justify-center gap-2">
-                  <span className="loading-dot w-2 h-2 bg-gold-500 rounded-full inline-block" />
-                  <span className="loading-dot w-2 h-2 bg-gold-500 rounded-full inline-block" />
-                  <span className="loading-dot w-2 h-2 bg-gold-500 rounded-full inline-block" />
-                </span>
-              ) : (
-                'Subscribe to Pro'
-              )}
-            </button>
+              Subscribe to Pro
+            </Link>
             <p className="text-xs text-gray-600 text-center mt-3">Cancel anytime. No hidden fees.</p>
           </div>
 
-          {/* ── Master ($29.99) ── */}
+          {/* -- Master (¥199) -- */}
           <div className="relative glass-card rounded-2xl p-8 sm:p-10 card-hover slide-up slide-up-delay-3">
             {/* Badge */}
             <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
@@ -288,7 +244,7 @@ function PricingContent() {
             </div>
 
             <div className="mb-8">
-              <span className="text-5xl font-bold text-gray-100 font-display tracking-tight">$29.99</span>
+              <span className="text-5xl font-bold text-gray-100 font-display tracking-tight">&yen;199</span>
               <span className="text-sm text-gray-500 ml-2">/month</span>
             </div>
 

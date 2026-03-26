@@ -128,7 +128,7 @@ export const translations: Record<Locale, Record<string, string>> = {
     'paywall.subtitle.pre': "You've used ",
     'paywall.subtitle.mid': ' free readings this month. ',
     'paywall.subtitle.post': 'Upgrade to continue exploring your destiny.',
-    'paywall.cta': 'Upgrade to Pro \u2014 $9.99/mo',
+    'paywall.cta': 'Upgrade to Pro \u2014 \u00a570/mo',
     'paywall.cancel': 'Cancel anytime \u00b7 Instant access \u00b7 All features unlocked',
     'paywall.notNow': 'Not now',
     'paywall.free': 'Free',
@@ -144,7 +144,7 @@ export const translations: Record<Locale, Record<string, string>> = {
     'paywall.redirecting': 'Redirecting...',
 
     // InlinePaywall
-    'inline.cta': 'Reveal Full Reading \u2014 $9.99/mo',
+    'inline.cta': 'Reveal Full Reading \u2014 \u00a570/mo',
 
     // Settings
     'settings.title': 'Settings',
@@ -177,6 +177,26 @@ export const translations: Record<Locale, Record<string, string>> = {
     'pricing.current': 'Current Plan',
     'pricing.upgrade': 'Upgrade to Pro',
     'pricing.coming': 'Coming Soon',
+
+    // Pay page
+    'pay.back': 'Back',
+    'pay.plan.single': 'Unlock This Reading',
+    'pay.plan.pro': 'Pro Monthly',
+    'pay.scanQr': 'Open Alipay on your phone and scan the QR code to pay',
+    'pay.alipay': 'Alipay',
+    'pay.instructions.title': 'How to pay',
+    'pay.instructions.step1': 'Open Alipay app on your phone',
+    'pay.instructions.step2': 'Scan the QR code above and complete payment',
+    'pay.instructions.step3': 'After payment, click the unlock button below',
+    'pay.notice': 'After payment, please click the button below to unlock',
+    'pay.unlockBtn': 'Paid \u2014 Unlock Now',
+    'pay.unlocking': 'Unlocking...',
+    'pay.honor': 'Honor system \u00b7 Instant access after clicking unlock',
+
+    // Inline paywall
+    'inline.unlock.single': 'Unlock This Reading \u2014 \u00a535',
+    'inline.unlock.pro': 'Or get unlimited readings \u2014 \u00a570/mo',
+    'inline.subtext': 'One-time purchase \u00b7 Instant access \u00b7 No subscription required',
 
     // Common
     'common.loading': 'Loading...',
@@ -312,7 +332,7 @@ export const translations: Record<Locale, Record<string, string>> = {
     'paywall.subtitle.pre': '\u60a8\u5df2\u4f7f\u7528 ',
     'paywall.subtitle.mid': ' \u6b21\u514d\u8cbb\u89e3\u8b80\u3002',
     'paywall.subtitle.post': '\u5347\u7d1a\u4ee5\u7e7c\u7e8c\u63a2\u7d22\u60a8\u7684\u547d\u904b\u3002',
-    'paywall.cta': '\u5347\u7d1a\u5c08\u696d\u7248 \u2014 $9.99/\u6708',
+    'paywall.cta': '\u5347\u7d1a\u5c08\u696d\u7248 \u2014 \u00a570/\u6708',
     'paywall.cancel': '\u96a8\u6642\u53d6\u6d88 \u00b7 \u5373\u6642\u751f\u6548 \u00b7 \u89e3\u9396\u6240\u6709\u529f\u80fd',
     'paywall.notNow': '\u4e0b\u6b21\u518d\u8aaa',
     'paywall.free': '\u514d\u8cbb\u7248',
@@ -328,7 +348,7 @@ export const translations: Record<Locale, Record<string, string>> = {
     'paywall.redirecting': '\u8df3\u8f49\u4e2d...',
 
     // InlinePaywall
-    'inline.cta': '\u89e3\u9396\u5b8c\u6574\u89e3\u8b80 \u2014 $9.99/\u6708',
+    'inline.cta': '\u89e3\u9396\u5b8c\u6574\u89e3\u8b80 \u2014 \u00a570/\u6708',
 
     // Settings
     'settings.title': '\u8a2d\u5b9a',
@@ -361,6 +381,26 @@ export const translations: Record<Locale, Record<string, string>> = {
     'pricing.current': '\u76ee\u524d\u65b9\u6848',
     'pricing.upgrade': '\u5347\u7d1a\u5c08\u696d\u7248',
     'pricing.coming': '\u5373\u5c07\u63a8\u51fa',
+
+    // Pay page
+    'pay.back': '\u8fd4\u56de',
+    'pay.plan.single': '\u55ae\u6b21\u89e3\u9396\u89e3\u8b80',
+    'pay.plan.pro': 'Pro \u6708\u5ea6\u8a02\u95b1',
+    'pay.scanQr': '\u8acb\u6253\u958b\u652f\u4ed8\u5bf6 App\uff0c\u6383\u63cf\u4e0b\u65b9\u4e8c\u7dad\u78bc\u5b8c\u6210\u4ed8\u6b3e',
+    'pay.alipay': '\u652f\u4ed8\u5bf6',
+    'pay.instructions.title': '\u4ed8\u6b3e\u6b65\u9a5f',
+    'pay.instructions.step1': '\u6253\u958b\u624b\u6a5f\u652f\u4ed8\u5bf6 App',
+    'pay.instructions.step2': '\u6383\u63cf\u4e0a\u65b9\u4e8c\u7dad\u78bc\u4e26\u5b8c\u6210\u4ed8\u6b3e',
+    'pay.instructions.step3': '\u4ed8\u6b3e\u5f8c\u9ede\u64ca\u4e0b\u65b9\u300c\u5df2\u4ed8\u6b3e\uff0c\u89e3\u9396\u300d\u6309\u9215',
+    'pay.notice': '\u4ed8\u6b3e\u5f8c\u8acb\u9ede\u64ca\u4e0b\u65b9\u6309\u9215\u89e3\u9396',
+    'pay.unlockBtn': '\u5df2\u4ed8\u6b3e\uff0c\u89e3\u9396\u95b1\u8b80',
+    'pay.unlocking': '\u89e3\u9396\u4e2d...',
+    'pay.honor': '\u8aa0\u4fe1\u4ed8\u6b3e \u00b7 \u9ede\u64ca\u89e3\u9396\u5f8c\u5373\u6642\u751f\u6548',
+
+    // Inline paywall
+    'inline.unlock.single': '\u89e3\u9396\u672c\u6b21\u89e3\u8b80 \u2014 \u00a535',
+    'inline.unlock.pro': '\u7121\u9650\u89e3\u8b80 \u2014 \u00a570/\u6708',
+    'inline.subtext': '\u55ae\u6b21\u8cfc\u8cb7 \u00b7 \u5373\u6642\u89e3\u9396 \u00b7 \u7121\u9700\u8a02\u95b1',
 
     // Common
     'common.loading': '\u8f09\u5165\u4e2d...',
