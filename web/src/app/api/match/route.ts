@@ -3,6 +3,8 @@ import { calculateBazi, baziToText } from '@/lib/bazi/calculator';
 import { calculateCompatibility, compatibilityToText } from '@/lib/bazi/compatibility';
 import { getCompatibilityPrompt, getCompatibilityReadingPrompt } from '@/lib/ai/system-prompt';
 
+export const runtime = 'edge';
+
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY || '';
 const OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions';
 

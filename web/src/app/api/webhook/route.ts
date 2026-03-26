@@ -1,5 +1,25 @@
 import { NextRequest, NextResponse } from 'next/server';
-import crypto from 'crypto';
+
+export const runtime = 'edge';
+
+async function hmacSha256Hex(secret: string, message: string): Promise<string> {
+  const encoder = new TextEncoder();
+  const key = await globalThis.crypto.subtle.importKey(
+    'raw',
+    encoder.encode(secret),
+    { name: 'HMAC', hash: 'SHA-256' },
+    false,
+    ['sign']
+  );
+  const signature = await globalThis.crypto.subtle.sign(
+    'HMAC',
+    key,
+    encoder.encode(message)
+  );
+  return Array.from(new Uint8Array(signature))
+    .map(b => b.toString(16).padStart(2, '0'))
+    .join('');
+}
 
 export async function POST(req: NextRequest) {
   const secret = process.env.LEMONSQUEEZY_WEBHOOK_SECRET;
@@ -20,9 +40,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const hmac = crypto.createHmac('sha256', secret);
-    hmac.update(rawBody);
-    const digest = hmac.digest('hex');
+    const digest = await hmacSha256Hex(secret, rawBody);
 
     if (digest !== signature) {
       return NextResponse.json({ error: 'Invalid signature' }, { status: 401 });

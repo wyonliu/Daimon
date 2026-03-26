@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { calculateBazi, baziToText } from '@/lib/bazi/calculator';
 import { calculateZodiac, zodiacToText } from '@/lib/astro/zodiac';
 
+export const runtime = 'edge';
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();

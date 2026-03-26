@@ -1,6 +1,8 @@
 import { NextRequest } from 'next/server';
 import { getSystemPrompt, getInitialReadingPrompt, getTruncatedReadingPrompt } from '@/lib/ai/system-prompt';
 
+export const runtime = 'edge';
+
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY || '';
 const OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions';
 

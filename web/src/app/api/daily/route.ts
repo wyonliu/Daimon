@@ -3,6 +3,8 @@ import { calculateBazi, baziToText } from '@/lib/bazi/calculator';
 import { calculateDailyDestiny, dailyDestinyToText } from '@/lib/bazi/daily';
 import { getDailyReadingPrompt } from '@/lib/ai/daily-prompt';
 
+export const runtime = 'edge';
+
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY || '';
 const OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions';
 
