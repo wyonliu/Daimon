@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f0f1e"/>
+      <stop offset="100%" stop-color="#0a0a16"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#c8a96e"/>
+      <stop offset="50%" stop-color="#e8d5a3"/>
+      <stop offset="100%" stop-color="#c8a96e"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="108" fill="url(#bg)"/>
+  <circle cx="256" cy="230" r="120" fill="none" stroke="url(#gold)" stroke-width="2" opacity="0.3"/>
+  <text x="256" y="270" text-anchor="middle" font-family="serif" font-size="200" font-weight="bold" fill="url(#gold)">命</text>
+  <text x="256" y="420" text-anchor="middle" font-family="serif" font-size="48" font-weight="600" letter-spacing="8" fill="#c8a96e" opacity="0.8">DAIMON</text>
+</svg>
