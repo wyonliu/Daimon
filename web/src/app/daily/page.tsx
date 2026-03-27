@@ -122,6 +122,29 @@ export default function DailyPage() {
   const [showForm, setShowForm] = useState(false);
   const [userIsPro, setUserIsPro] = useState(false);
   const [profileChecked, setProfileChecked] = useState(false);
+  const [shareCopied, setShareCopied] = useState(false);
+
+  const handleShareDaily = async () => {
+    if (!daily) return;
+    const score = daily.scores.overall;
+    const ganZhi = daily.liuRi.ganZhi;
+    const text = `今日運勢 ${score}/100 | ${ganZhi}日 × 我的命盤 | 看看你的 👉 daimon-aqa.pages.dev/daily`;
+    if (navigator.share) {
+      try {
+        await navigator.share({ text });
+      } catch {
+        // user cancelled or error — fall through silently
+      }
+    } else {
+      try {
+        await navigator.clipboard.writeText(text);
+        setShareCopied(true);
+        setTimeout(() => setShareCopied(false), 2500);
+      } catch {
+        // clipboard not available
+      }
+    }
+  };
 
   // Check profile on mount
   useEffect(() => {
@@ -405,6 +428,19 @@ export default function DailyPage() {
               {daily.dayMasterRelation.favorability === 'unfavorable' && ' \u2014 Challenging'}
             </span>
           </div>
+        </div>
+
+        {/* Share Button */}
+        <div className="slide-up slide-up-delay-2">
+          <button
+            onClick={handleShareDaily}
+            className="w-full py-3 rounded-lg font-semibold text-sm transition-all duration-300 bg-gradient-to-r from-gold-500 to-gold-700 text-void hover:from-gold-400 hover:to-gold-600 glow-gold-soft press-effect flex items-center justify-center gap-2"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+            </svg>
+            {shareCopied ? t('share.copied') : t('share.daily')}
+          </button>
         </div>
 
         {/* Score Bars */}

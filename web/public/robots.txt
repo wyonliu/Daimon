@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Sitemap: https://daimon-app.vercel.app/sitemap.xml
+Sitemap: https://daimon-aqa.pages.dev/sitemap.xml

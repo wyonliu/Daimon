@@ -42,6 +42,26 @@ export default function RootLayout({
   return (
     <html lang="zh-Hant" className="antialiased">
       <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebApplication",
+              "name": "Daimon",
+              "description": "專業級八字命理與西洋占星分析引擎",
+              "url": "https://daimon-app.vercel.app",
+              "applicationCategory": "LifestyleApplication",
+              "operatingSystem": "Web",
+              "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "CNY"
+              },
+              "inLanguage": ["zh-TW", "en"]
+            })
+          }}
+        />
         <link rel="manifest" href="/manifest.json" />
         <link rel="icon" href="/favicon.ico" sizes="32x32" />
         <link rel="icon" href="/icon.svg" type="image/svg+xml" />

@@ -198,6 +198,12 @@ export const translations: Record<Locale, Record<string, string>> = {
     'inline.unlock.pro': 'Or get unlimited readings \u2014 \u00a570/mo',
     'inline.subtext': 'One-time purchase \u00b7 Instant access \u00b7 No subscription required',
 
+    // Share
+    'share.match': 'Share Match Results',
+    'share.daily': 'Share Today\'s Fortune',
+    'share.reading': 'Share Chart',
+    'share.copied': 'Copied to clipboard!',
+
     // Common
     'common.loading': 'Loading...',
     'common.error': 'Something went wrong',
@@ -401,6 +407,12 @@ export const translations: Record<Locale, Record<string, string>> = {
     'inline.unlock.single': '\u89e3\u9396\u672c\u6b21\u89e3\u8b80 \u2014 \u00a535',
     'inline.unlock.pro': '\u7121\u9650\u89e3\u8b80 \u2014 \u00a570/\u6708',
     'inline.subtext': '\u55ae\u6b21\u8cfc\u8cb7 \u00b7 \u5373\u6642\u89e3\u9396 \u00b7 \u7121\u9700\u8a02\u95b1',
+
+    // Share
+    'share.match': '\u5206\u4eab\u914d\u5c0d\u7d50\u679c',
+    'share.daily': '\u5206\u4eab\u4eca\u65e5\u904b\u52e2',
+    'share.reading': '\u5206\u4eab\u547d\u76e4',
+    'share.copied': '\u5df2\u8907\u88fd\u5230\u526a\u8cbc\u677f\uff01',
 
     // Common
     'common.loading': '\u8f09\u5165\u4e2d...',

@@ -496,6 +496,29 @@ export default function MatchPage() {
   const nameA = personA.name || 'Person A';
   const nameB = personB.name || 'Person B';
 
+  const [shareCopied, setShareCopied] = useState(false);
+
+  const handleShare = async () => {
+    if (!compatibility) return;
+    const score = compatibility.overallScore;
+    const text = `我和 ${nameB} 的八字配對分數是 ${score}/100！來看看你們的緣分 👉 daimon-aqa.pages.dev/match`;
+    if (navigator.share) {
+      try {
+        await navigator.share({ text });
+      } catch {
+        // user cancelled or error — fall through silently
+      }
+    } else {
+      try {
+        await navigator.clipboard.writeText(text);
+        setShareCopied(true);
+        setTimeout(() => setShareCopied(false), 2500);
+      } catch {
+        // clipboard not available
+      }
+    }
+  };
+
   return (
     <main className="min-h-screen bg-pattern">
       {/* Header */}
@@ -747,15 +770,21 @@ export default function MatchPage() {
             )}
 
             {/* Share Section */}
-            <div className="flex gap-3">
+            <div className="flex flex-col gap-3">
               <button
-                onClick={() => setShowShare(!showShare)}
-                className="flex-1 py-2.5 rounded-lg border border-gray-700 text-sm text-gray-300 hover:border-gold-500/50 hover:text-gold-500 hover:bg-gold-500/5 transition-all duration-200 flex items-center justify-center gap-2 press-effect"
+                onClick={handleShare}
+                className="w-full py-3.5 rounded-lg font-semibold text-base transition-all duration-300 bg-gradient-to-r from-gold-500 to-gold-700 text-void hover:from-gold-400 hover:to-gold-600 glow-gold-soft press-effect flex items-center justify-center gap-2"
               >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
                 </svg>
-                {showShare ? 'Hide Share Card' : 'Share Results'}
+                {shareCopied ? t('share.copied') : t('share.match')}
+              </button>
+              <button
+                onClick={() => setShowShare(!showShare)}
+                className="w-full py-2.5 rounded-lg border border-gray-700 text-sm text-gray-400 hover:border-gold-500/50 hover:text-gold-500 hover:bg-gold-500/5 transition-all duration-200 flex items-center justify-center gap-2 press-effect"
+              >
+                {showShare ? 'Hide Share Card' : 'Share Card'}
               </button>
             </div>
 
