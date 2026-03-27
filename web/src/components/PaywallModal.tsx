@@ -57,12 +57,12 @@ export default function PaywallModal({ onDismiss, readingsUsed = 3, maxReadings 
           <div className="mb-6 px-3 py-3 rounded-xl bg-gold-500/5 border border-gold-500/15">
             {chartPattern && (
               <p className="text-xs text-gold-500/90 leading-relaxed text-center">
-                Your chart reveals a <strong className="text-gold-500">{chartPattern}</strong> &mdash; understanding this pattern is key to your career and relationships.
+                您的命盤顯示<strong className="text-gold-500">「{chartPattern}」</strong>格局——理解此格局是事業與感情的關鍵。
               </p>
             )}
             {branchClashes && branchClashes > 0 && (
               <p className="text-xs text-gray-400 leading-relaxed text-center mt-1">
-                {branchClashes} branch clash{branchClashes > 1 ? 'es' : ''} detected &mdash; these shape your life&apos;s turning points.
+                檢測到 {branchClashes} 組地支沖剋——這些塑造了您人生的轉折點。
               </p>
             )}
           </div>

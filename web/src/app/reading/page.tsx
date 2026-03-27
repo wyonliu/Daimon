@@ -22,7 +22,7 @@ function ReadingContent() {
   const month = searchParams.get('m');
   const day = searchParams.get('d');
   const hour = searchParams.get('h');
-  const name = searchParams.get('n') || 'Seeker';
+  const name = searchParams.get('n') || '求問者';
   const gender = searchParams.get('g') || 'male';
 
   const [bazi, setBazi] = useState<BaziResult | null>(null);
@@ -183,7 +183,7 @@ function ReadingContent() {
         setLoading(false);
       } catch (err) {
         console.error('Error loading reading:', err);
-        setError('Failed to generate your reading. Please try again in a moment.');
+        setError('生成解讀失敗，請稍後再試。');
         setLoading(false);
       }
     }
@@ -247,7 +247,7 @@ function ReadingContent() {
           <div className="text-center min-w-0">
             <span className="text-gold-500 font-bold">Daimon</span>
             <span className="text-gray-600 text-sm ml-2 hidden sm:inline">
-              {`${name}\u2019s Reading \u00b7 ${year}/${month}/${day}`}
+              {`${name}的命盤 \u00b7 ${year}/${month}/${day}`}
             </span>
           </div>
 

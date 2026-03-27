@@ -10,28 +10,28 @@ function PricingContent() {
 
   const faqs = [
     {
-      q: 'How accurate is the BaZi analysis?',
-      a: 'Daimon uses a professional-grade Four Pillars engine with accurate Heavenly Stem and Earthly Branch calculations, Ten Gods mapping, Spirit Sha identification, and Five Element strength analysis. The computational accuracy matches what a trained practitioner would produce.',
+      q: '八字分析的準確度如何？',
+      a: 'Daimon 使用專業級四柱引擎，精確計算天干地支、十神、神煞及五行力量分析。計算精度達到專業命理師水準。',
     },
     {
-      q: 'What does the Cross-Tradition Synthesis add?',
-      a: 'Most destiny tools operate in one tradition. Daimon reads your chart through both BaZi and Western Astrology simultaneously, then synthesizes the results. Where both systems agree, the pattern is strongest. Where they diverge, hidden complexity emerges that neither tradition reveals alone.',
+      q: '跨傳統融合有什麼作用？',
+      a: '大多數命理工具僅使用單一體系。Daimon 同時通過八字和西方占星術解讀您的命盤，然後融合結果。兩套系統一致之處，模式最強。分歧之處，揭示隱藏的複雜性。',
     },
     {
-      q: 'Do I need to know my exact birth hour?',
-      a: 'The birth hour unlocks the Hour Pillar, which reveals your inner self and later life trajectory. Without it, Daimon still provides a thorough analysis using Year, Month, and Day pillars. For the deepest reading, include your birth hour.',
+      q: '我需要知道確切的出生時間嗎？',
+      a: '出生時辰開啟時柱，揭示您的內在自我和晚年運勢。沒有時辰，Daimon 仍能使用年、月、日三柱進行完整分析。要獲得最深入的解讀，請提供出生時辰。',
     },
     {
-      q: 'What is the difference between a single reading and Pro?',
-      a: 'A single reading (\u00a535) gives you one full deep reading with complete chart analysis. Pro (\u00a570/mo) gives you unlimited readings, unlimited consultations, and all features unlocked every month. If you just want to try the depth once, the single reading is perfect.',
+      q: '單次解讀和專業版有什麼區別？',
+      a: '單次解讀（¥35）為您提供一次完整的深度解讀和命盤分析。專業版（¥70/月）提供無限次解讀、無限次諮詢及所有功能。如果只想體驗一次深度解讀，單次購買非常適合。',
     },
     {
-      q: 'How do I pay?',
-      a: 'We accept Alipay (\u652f\u4ed8\u5bf6). After selecting a plan, you will see a QR code to scan with your Alipay app. Once payment is complete, click the unlock button to activate your plan instantly.',
+      q: '如何付款？',
+      a: '我們接受支付寶付款。選擇方案後，您會看到一個二維碼，用支付寶掃碼即可完成付款。付款後點擊解鎖按鈕即時生效。',
     },
     {
-      q: 'Is my birth data stored or shared?',
-      a: 'Your birth data is used only to generate your reading. We do not sell or share personal data. Readings are processed in real-time and you control what is saved to your account.',
+      q: '我的出生資料會被儲存或分享嗎？',
+      a: '您的出生資料僅用於生成解讀。我們不會出售或分享個人資料。解讀即時處理，您可以控制哪些資料被保存。',
     },
   ];
 
@@ -47,7 +47,7 @@ function PricingContent() {
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
-            Back
+            返回
           </button>
         </div>
       </nav>
@@ -59,10 +59,10 @@ function PricingContent() {
         </div>
         <div className="relative z-10">
           <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-gradient-gold mb-4 slide-up">
-            Choose Your Path
+            選擇你的道路
           </h1>
           <p className="text-lg text-gray-400 max-w-xl mx-auto slide-up slide-up-delay-1">
-            Every journey begins with a single step. Pick the depth that matches your quest.
+            每一段旅程都從第一步開始。選擇適合你的深度方案。
           </p>
         </div>
       </section>
@@ -77,12 +77,12 @@ function PricingContent() {
               <div className="w-14 h-14 rounded-2xl bg-gray-800/50 border border-gray-700 flex items-center justify-center mb-5">
                 <span className="text-2xl chinese-char text-gray-400">{'\u63A2'}</span>
               </div>
-              <h3 className="font-display text-2xl font-semibold text-gray-200 mb-1">Seeker</h3>
-              <p className="text-sm text-gray-500">Explore the basics</p>
+              <h3 className="font-display text-2xl font-semibold text-gray-200 mb-1">探索者</h3>
+              <p className="text-sm text-gray-500">體驗基礎功能</p>
             </div>
 
             <div className="mb-8">
-              <span className="text-5xl font-bold text-gray-100 font-display tracking-tight">Free</span>
+              <span className="text-5xl font-bold text-gray-100 font-display tracking-tight">免費</span>
             </div>
 
             <div className="divider-gold mb-8" />
@@ -90,23 +90,23 @@ function PricingContent() {
             <ul className="space-y-4 text-sm text-gray-400 mb-10">
               <li className="flex items-start gap-3">
                 <svg className="w-5 h-5 text-gold-500/70 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                <span>3 readings per month</span>
+                <span>每月 3 次解讀</span>
               </li>
               <li className="flex items-start gap-3">
                 <svg className="w-5 h-5 text-gold-500/70 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                <span>Basic BaZi four pillars chart</span>
+                <span>基礎八字四柱命盤</span>
               </li>
               <li className="flex items-start gap-3">
                 <svg className="w-5 h-5 text-gold-500/70 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                <span>Western Sun Sign overview</span>
+                <span>西洋太陽星座概覽</span>
               </li>
               <li className="flex items-start gap-3">
                 <svg className="w-5 h-5 text-gold-500/70 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                <span>Day Master identification</span>
+                <span>日主識別</span>
               </li>
               <li className="flex items-start gap-3">
                 <svg className="w-5 h-5 text-gray-700 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
-                <span className="text-gray-600">No chat follow-up</span>
+                <span className="text-gray-600">無對話追問</span>
               </li>
             </ul>
 
@@ -114,7 +114,7 @@ function PricingContent() {
               onClick={() => router.push('/#reading')}
               className="block w-full text-center py-3.5 rounded-xl border border-gray-700 text-gray-300 font-medium hover:border-gold-500/40 hover:text-gold-500 transition-all duration-300 press-effect"
             >
-              Start Free
+              免費開始
             </button>
           </div>
 
@@ -123,7 +123,7 @@ function PricingContent() {
             {/* Badge */}
             <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
               <span className="px-5 py-1.5 rounded-full bg-gradient-to-r from-gold-700 via-gold-500 to-gold-700 text-void text-xs font-bold tracking-wider uppercase shadow-lg">
-                Lowest Barrier
+                最低門檻
               </span>
             </div>
 
@@ -131,13 +131,13 @@ function PricingContent() {
               <div className="w-14 h-14 rounded-2xl bg-gold-500/10 border border-gold-500/25 flex items-center justify-center mb-5 glow-gold-soft">
                 <span className="text-2xl chinese-char text-gold-500">{'\u547D'}</span>
               </div>
-              <h3 className="font-display text-2xl font-semibold text-gold-500 mb-1">Single Reading</h3>
-              <p className="text-sm text-gray-500">One deep reading, no commitment</p>
+              <h3 className="font-display text-2xl font-semibold text-gold-500 mb-1">單次解讀</h3>
+              <p className="text-sm text-gray-500">一次深度解讀，無需訂閱</p>
             </div>
 
             <div className="mb-8">
               <span className="text-5xl font-bold text-gradient-gold font-display tracking-tight">&yen;35</span>
-              <span className="text-sm text-gray-500 ml-2">one-time</span>
+              <span className="text-sm text-gray-500 ml-2">一次性</span>
             </div>
 
             <div className="divider-gold mb-8" />
@@ -145,19 +145,19 @@ function PricingContent() {
             <ul className="space-y-4 text-sm text-gray-300 mb-10">
               <li className="flex items-start gap-3">
                 <svg className="w-5 h-5 text-gold-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                <span><strong className="text-gold-500/90">1 full</strong> deep reading</span>
+                <span><strong className="text-gold-500/90">1 次</strong>完整深度解讀</span>
               </li>
               <li className="flex items-start gap-3">
                 <svg className="w-5 h-5 text-gold-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                <span>Complete BaZi chart analysis</span>
+                <span>完整八字命盤分析</span>
               </li>
               <li className="flex items-start gap-3">
                 <svg className="w-5 h-5 text-gold-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                <span>Cross-tradition East x West synthesis</span>
+                <span>東西方跨傳統融合解讀</span>
               </li>
               <li className="flex items-start gap-3">
                 <svg className="w-5 h-5 text-gold-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                <span>No subscription required</span>
+                <span>無需訂閱</span>
               </li>
             </ul>
 
@@ -165,9 +165,9 @@ function PricingContent() {
               href="/pay?plan=single"
               className="block w-full text-center py-4 rounded-xl bg-gradient-to-r from-gold-700 via-gold-500 to-gold-700 hover:from-gold-600 hover:via-gold-400 hover:to-gold-600 text-void font-bold text-lg glow-gold-soft hover:glow-gold press-effect btn-shimmer transition-all duration-300"
             >
-              Get One Reading
+              購買一次解讀
             </Link>
-            <p className="text-xs text-gray-600 text-center mt-3">Pay once. No subscription.</p>
+            <p className="text-xs text-gray-600 text-center mt-3">一次付費，無需訂閱。</p>
           </div>
 
           {/* -- Pro (¥70) -- */}
@@ -175,7 +175,7 @@ function PricingContent() {
             {/* Badge */}
             <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
               <span className="px-5 py-1.5 rounded-full bg-gray-800 border border-gold-500/30 text-gold-500 text-xs font-bold tracking-wider uppercase">
-                Best Value
+                最超值
               </span>
             </div>
 
@@ -184,12 +184,12 @@ function PricingContent() {
                 <span className="text-2xl chinese-char text-gold-500">{'\u9053'}</span>
               </div>
               <h3 className="font-display text-2xl font-semibold text-gray-200 mb-1">Pro</h3>
-              <p className="text-sm text-gray-500">Full depth, unlimited power</p>
+              <p className="text-sm text-gray-500">全面深度，無限力量</p>
             </div>
 
             <div className="mb-8">
               <span className="text-5xl font-bold text-gray-100 font-display tracking-tight">&yen;70</span>
-              <span className="text-sm text-gray-500 ml-2">/month</span>
+              <span className="text-sm text-gray-500 ml-2">/月</span>
             </div>
 
             <div className="divider-gold mb-8" />
@@ -197,23 +197,23 @@ function PricingContent() {
             <ul className="space-y-4 text-sm text-gray-300 mb-10">
               <li className="flex items-start gap-3">
                 <svg className="w-5 h-5 text-gold-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                <span><strong className="text-gold-500/90">Unlimited</strong> readings</span>
+                <span><strong className="text-gold-500/90">無限次</strong>解讀</span>
               </li>
               <li className="flex items-start gap-3">
                 <svg className="w-5 h-5 text-gold-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                <span>Full BaZi: spirit sha, chart patterns, luck pillars</span>
+                <span>完整八字：神煞、格局、大運</span>
               </li>
               <li className="flex items-start gap-3">
                 <svg className="w-5 h-5 text-gold-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                <span>Cross-tradition East x West synthesis</span>
+                <span>東西方跨傳統融合解讀</span>
               </li>
               <li className="flex items-start gap-3">
                 <svg className="w-5 h-5 text-gold-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                <span>Unlimited consultations</span>
+                <span>無限次對話諮詢</span>
               </li>
               <li className="flex items-start gap-3">
                 <svg className="w-5 h-5 text-gold-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                <span>Shareable destiny cards</span>
+                <span>可分享的命運卡片</span>
               </li>
             </ul>
 
@@ -221,9 +221,9 @@ function PricingContent() {
               href="/pay?plan=pro"
               className="block w-full text-center py-3.5 rounded-xl border border-gold-500/30 text-gold-500 font-bold hover:bg-gold-500/5 hover:border-gold-500/50 transition-all duration-300 press-effect"
             >
-              Subscribe to Pro
+              訂閱專業版
             </Link>
-            <p className="text-xs text-gray-600 text-center mt-3">Cancel anytime. No hidden fees.</p>
+            <p className="text-xs text-gray-600 text-center mt-3">隨時取消，無隱藏費用。</p>
           </div>
 
           {/* -- Master (¥199) -- */}
@@ -231,7 +231,7 @@ function PricingContent() {
             {/* Badge */}
             <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
               <span className="px-5 py-1.5 rounded-full bg-gray-800 border border-gray-700 text-gray-400 text-xs font-bold tracking-wider uppercase">
-                Coming Soon
+                即將推出
               </span>
             </div>
 
@@ -239,13 +239,13 @@ function PricingContent() {
               <div className="w-14 h-14 rounded-2xl bg-gray-800/50 border border-gray-700 flex items-center justify-center mb-5">
                 <span className="text-2xl chinese-char text-gray-400">{'\u5E2B'}</span>
               </div>
-              <h3 className="font-display text-2xl font-semibold text-gray-200 mb-1">Master</h3>
-              <p className="text-sm text-gray-500">The ultimate reading</p>
+              <h3 className="font-display text-2xl font-semibold text-gray-200 mb-1">大師版</h3>
+              <p className="text-sm text-gray-500">終極命理解讀</p>
             </div>
 
             <div className="mb-8">
               <span className="text-5xl font-bold text-gray-100 font-display tracking-tight">&yen;199</span>
-              <span className="text-sm text-gray-500 ml-2">/month</span>
+              <span className="text-sm text-gray-500 ml-2">/月</span>
             </div>
 
             <div className="divider-gold mb-8" />
@@ -253,23 +253,23 @@ function PricingContent() {
             <ul className="space-y-4 text-sm text-gray-400 mb-10">
               <li className="flex items-start gap-3">
                 <svg className="w-5 h-5 text-gold-500/70 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                <span>Everything in Pro</span>
+                <span>包含專業版所有功能</span>
               </li>
               <li className="flex items-start gap-3">
                 <svg className="w-5 h-5 text-gold-500/70 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                <span>Priority analysis with extended context</span>
+                <span>優先分析與擴展深度解讀</span>
               </li>
               <li className="flex items-start gap-3">
                 <svg className="w-5 h-5 text-gold-500/70 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                <span>Downloadable PDF destiny reports</span>
+                <span>可下載 PDF 命理報告</span>
               </li>
               <li className="flex items-start gap-3">
                 <svg className="w-5 h-5 text-gold-500/70 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                <span>Annual and decade forecasting</span>
+                <span>流年與大運預測</span>
               </li>
               <li className="flex items-start gap-3">
                 <svg className="w-5 h-5 text-gold-500/70 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                <span>Compatibility and synastry analysis</span>
+                <span>合盤與緣分分析</span>
               </li>
             </ul>
 
@@ -277,7 +277,7 @@ function PricingContent() {
               disabled
               className="block w-full text-center py-3.5 rounded-xl border border-gray-700 text-gray-600 font-medium cursor-not-allowed"
             >
-              Notify Me
+              通知我
             </button>
           </div>
         </div>
@@ -290,7 +290,7 @@ function PricingContent() {
       <section className="px-4 py-20 sm:py-28">
         <div className="max-w-2xl mx-auto">
           <h2 className="font-display text-3xl sm:text-4xl font-bold text-gradient-gold text-center mb-14">
-            Frequently Asked
+            常見問題
           </h2>
 
           <div className="space-y-4">
@@ -340,12 +340,11 @@ function PricingContent() {
             <span className="text-sm font-display text-gray-400">Daimon</span>
           </button>
           <p className="text-xs text-gray-600 text-center sm:text-right max-w-sm">
-            Metaphysical analysis for self-reflection and personal insight.
-            Not a substitute for professional advice.
+            命理分析僅供自我反思與個人洞察之用，不能替代專業建議。
           </p>
         </div>
         <p className="text-xs text-gray-700 text-center mt-6">
-          &copy; {new Date().getFullYear()} Daimon &middot; Precision destiny engine
+          &copy; {new Date().getFullYear()} Daimon &middot; 精準命理引擎
         </p>
       </footer>
     </main>

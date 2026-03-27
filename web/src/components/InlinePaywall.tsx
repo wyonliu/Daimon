@@ -27,33 +27,33 @@ export default function InlinePaywall({
 
   if (chartPattern) {
     teasers.push(
-      `Your ${chartPattern} pattern has specific implications for career timing and life strategy...`
+      `「${chartPattern}」格局對您的事業時機和人生策略有特殊啟示⋯⋯`
     );
   }
 
   if (currentDaYun && nextDaYunYear) {
     teasers.push(
-      `Your current luck pillar transitions to ${currentDaYun} in ${nextDaYunYear} \u2014 a pivotal shift that reshapes your trajectory`
+      `您的大運即將在${nextDaYunYear}年轉入「${currentDaYun}」——命運軌跡的關鍵轉折`
     );
   } else if (currentDaYun) {
     teasers.push(
-      `Your current luck pillar (${currentDaYun}) carries energy that directly shapes this chapter of your life`
+      `當前大運「${currentDaYun}」正在塑造您這個階段的人生走向`
     );
   }
 
   if (branchClashes && branchClashes > 0) {
     teasers.push(
-      `${branchClashes} branch interaction${branchClashes > 1 ? 's' : ''} in your chart affect relationships and health \u2014 understanding them changes everything`
+      `命盤中有${branchClashes}組地支交互影響感情和健康——看懂它們，一切都不一樣`
     );
   }
 
   if (teasers.length === 0) {
     teasers.push(
-      'Your chart contains patterns that reveal critical timing for career, relationships, and personal growth'
+      '您的命盤蘊含著事業、感情和個人成長的關鍵時機'
     );
   }
 
-  teasers.push('Unlock your complete destiny analysis');
+  teasers.push('解鎖完整的命運分析');
 
   return (
     <div className="relative mt-0">

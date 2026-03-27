@@ -30,7 +30,7 @@ function PillarCard({ label, labelCn, pillar, isDayMaster }: {
     }`}>
       {isDayMaster && (
         <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-gold-700 via-gold-500 to-gold-700 text-void text-[9px] px-3 py-0.5 rounded-full font-semibold tracking-[0.15em] uppercase" style={{ letterSpacing: '0.15em' }}>
-          Day Master
+          日主
         </div>
       )}
 
@@ -118,7 +118,7 @@ function DaYunTimeline({ daYun, liuNian }: { daYun: DaYunPillar[]; liuNian: LiuN
     <div className="space-y-4">
       {/* 大运 */}
       <div>
-        <h4 className="text-xs text-gray-500 mb-3">Luck Pillars · 大运</h4>
+        <h4 className="text-xs text-gray-500 mb-3">大運</h4>
         <div className="flex gap-1 overflow-x-auto pb-2">
           {validDaYun.map((d, i) => (
             <div
@@ -139,7 +139,7 @@ function DaYunTimeline({ daYun, liuNian }: { daYun: DaYunPillar[]; liuNian: LiuN
               </div>
               <div className="text-[9px] text-gray-500">{d.startAge}-{d.endAge}</div>
               <div className="text-[9px] text-gray-600">{d.startYear}</div>
-              {d.isCurrent && <div className="text-[8px] text-gold-500 mt-0.5 font-medium">NOW</div>}
+              {d.isCurrent && <div className="text-[8px] text-gold-500 mt-0.5 font-medium">當前</div>}
             </div>
           ))}
         </div>
@@ -148,7 +148,7 @@ function DaYunTimeline({ daYun, liuNian }: { daYun: DaYunPillar[]; liuNian: LiuN
       {/* 流年 */}
       {liuNian.length > 0 && (
         <div>
-          <h4 className="text-xs text-gray-500 mb-3">Annual Fortune · 流年</h4>
+          <h4 className="text-xs text-gray-500 mb-3">流年</h4>
           <div className="grid grid-cols-5 gap-1.5">
             {liuNian.map((ln) => (
               <div
@@ -161,7 +161,7 @@ function DaYunTimeline({ daYun, liuNian }: { daYun: DaYunPillar[]; liuNian: LiuN
               >
                 <div className="text-xs chinese-char font-medium text-gray-300">{ln.ganZhi}</div>
                 <div className="text-[9px] text-gray-500">{ln.year}</div>
-                {ln.isCurrent && <div className="text-[8px] text-gold-500 font-medium">TODAY</div>}
+                {ln.isCurrent && <div className="text-[8px] text-gold-500 font-medium">今年</div>}
               </div>
             ))}
           </div>
@@ -242,7 +242,7 @@ function ShenShaGrid({ stars }: { stars: ShenShaType[] }) {
 function KongWangDisplay({ kongWang }: { kongWang: KongWang }) {
   return (
     <div className="flex items-center gap-3 text-sm">
-      <span className="text-gray-500">Void:</span>
+      <span className="text-gray-500">空亡:</span>
       <div className="flex gap-1.5">
         {kongWang.branches.map((b) => (
           <span key={b} className="text-base chinese-char text-gray-400 px-2 py-0.5 rounded bg-white/[0.03] border border-white/[0.06]">{b}</span>
@@ -250,7 +250,7 @@ function KongWangDisplay({ kongWang }: { kongWang: KongWang }) {
       </div>
       {kongWang.affectedPillars.length > 0 && (
         <span className="text-[10px] text-amber-400/70">
-          Affects: {kongWang.affectedPillars.join(', ')}
+          影響: {kongWang.affectedPillars.join(', ')}
         </span>
       )}
     </div>
@@ -270,11 +270,11 @@ export default function BaziChart({ bazi, zodiac }: BaziChartProps) {
         <svg className="w-4 h-4 text-gold-500/60 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
         </svg>
-        <span>Precision calculated</span>
+        <span>精準計算</span>
         <span className="text-gold-500/30">&middot;</span>
-        <span>Astronomical ephemeris engine</span>
+        <span>天文曆算引擎</span>
         <span className="text-gold-500/30">&middot;</span>
-        <span className="text-gold-500/70">Verified methodology</span>
+        <span className="text-gold-500/70">可驗證方法論</span>
       </div>
 
       {/* Header Card */}
@@ -284,7 +284,7 @@ export default function BaziChart({ bazi, zodiac }: BaziChartProps) {
             <span className="chinese-char text-gradient-gold text-4xl md:text-5xl font-bold leading-none mt-0.5">{bazi.dayMaster.stem}</span>
             <div>
               <h2 className="text-xl md:text-2xl font-bold text-gray-100 mb-1">
-                {bazi.dayMaster.elementEn} {bazi.dayMaster.polarity === 'yang' ? 'Yang' : 'Yin'} Day Master
+                {bazi.dayMaster.elementEn} {bazi.dayMaster.polarity === 'yang' ? '陽' : '陰'} 日主
               </h2>
               <p className="text-sm text-gray-500">
                 {zodiac.sunSign.symbol} {zodiac.sunSign.name} · {bazi.year.animalCn}{bazi.year.animal}年 · {bazi.birthInfo.lunarCn}
@@ -302,21 +302,21 @@ export default function BaziChart({ bazi, zodiac }: BaziChartProps) {
       {/* Four Pillars */}
       <div>
         <div className="flex items-center gap-2 mb-4">
-          <h3 className="text-sm font-semibold text-gray-300 uppercase" style={{ letterSpacing: '0.12em' }}>Four Pillars</h3>
+          <h3 className="text-sm font-semibold text-gray-300 uppercase" style={{ letterSpacing: '0.12em' }}>四柱八字</h3>
           <span className="text-sm text-gold-500/50 chinese-char">四柱八字</span>
         </div>
         <div className="pillars-grid grid grid-cols-4 gap-2 md:gap-3">
-          <PillarCard label="YEAR" labelCn="年柱" pillar={bazi.year} />
-          <PillarCard label="MONTH" labelCn="月柱" pillar={bazi.month} />
-          <PillarCard label="DAY" labelCn="日柱" pillar={bazi.day} isDayMaster />
-          <PillarCard label="HOUR" labelCn="时柱" pillar={bazi.hour} />
+          <PillarCard label="年" labelCn="年柱" pillar={bazi.year} />
+          <PillarCard label="月" labelCn="月柱" pillar={bazi.month} />
+          <PillarCard label="日" labelCn="日柱" pillar={bazi.day} isDayMaster />
+          <PillarCard label="時" labelCn="时柱" pillar={bazi.hour} />
         </div>
       </div>
 
       {/* Five Elements */}
       <div className="rounded-2xl bg-white/[0.02] border border-white/[0.06] p-5">
         <div className="flex items-center gap-2 mb-4">
-          <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wider">Five Elements</h3>
+          <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wider">五行</h3>
           <span className="text-sm text-gold-500/50 chinese-char">五行</span>
         </div>
         <div className="space-y-2.5 mb-5">
@@ -346,7 +346,7 @@ export default function BaziChart({ bazi, zodiac }: BaziChartProps) {
       {bazi.branchInteractions.length > 0 && (
         <div className="rounded-2xl bg-white/[0.02] border border-white/[0.06] p-5">
           <div className="flex items-center gap-2 mb-4">
-            <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wider">Branch Interactions</h3>
+            <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wider">地支關係</h3>
             <span className="text-sm text-gold-500/50 chinese-char">地支关系</span>
           </div>
           <BranchInteractions interactions={bazi.branchInteractions} />
@@ -356,7 +356,7 @@ export default function BaziChart({ bazi, zodiac }: BaziChartProps) {
       {/* Chart Pattern + ShenSha */}
       <div className="rounded-2xl bg-white/[0.02] border border-white/[0.06] p-5">
         <div className="flex items-center gap-2 mb-4">
-          <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wider">Chart Pattern</h3>
+          <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wider">格局</h3>
           <span className="text-sm text-gold-500/50 chinese-char">格局</span>
         </div>
         <ChartPatternCard pattern={bazi.chartPattern} />
@@ -367,7 +367,7 @@ export default function BaziChart({ bazi, zodiac }: BaziChartProps) {
         <div className="rounded-2xl bg-white/[0.02] border border-white/[0.06] p-5">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
-              <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wider">Special Stars</h3>
+              <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wider">神煞</h3>
               <span className="text-sm text-gold-500/50 chinese-char">神煞</span>
             </div>
             <KongWangDisplay kongWang={bazi.kongWang} />
@@ -379,7 +379,7 @@ export default function BaziChart({ bazi, zodiac }: BaziChartProps) {
       {/* DaYun + LiuNian */}
       <div className="rounded-2xl bg-white/[0.02] border border-white/[0.06] p-5">
         <div className="flex items-center gap-2 mb-4">
-          <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wider">Fate Timeline</h3>
+          <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wider">大運流年</h3>
           <span className="text-sm text-gold-500/50 chinese-char">大运流年</span>
         </div>
         <DaYunTimeline daYun={bazi.daYun} liuNian={bazi.liuNian} />
@@ -388,14 +388,14 @@ export default function BaziChart({ bazi, zodiac }: BaziChartProps) {
       {/* Western Astrology */}
       <div className="rounded-2xl bg-white/[0.02] border border-white/[0.06] p-5">
         <div className="flex items-center gap-2 mb-4">
-          <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wider">Western Astrology</h3>
+          <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wider">西洋占星</h3>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="rounded-xl bg-white/[0.02] p-4">
             <div className="flex items-center gap-2 mb-2">
               <span className="text-2xl">{zodiac.sunSign.symbol}</span>
               <div>
-                <span className="text-gold-500 font-semibold">Sun in {zodiac.sunSign.name}</span>
+                <span className="text-gold-500 font-semibold">太陽 {zodiac.sunSign.name}</span>
                 <span className="text-[10px] text-gray-500 block">{zodiac.sunSign.element} · {zodiac.sunSign.modality} · {zodiac.sunSign.rulingPlanet}</span>
               </div>
             </div>
@@ -411,7 +411,7 @@ export default function BaziChart({ bazi, zodiac }: BaziChartProps) {
               <div className="flex items-center gap-2 mb-2">
                 <span className="text-2xl">{zodiac.moonSign.symbol}</span>
                 <div>
-                  <span className="text-indigo-400 font-semibold">Moon in {zodiac.moonSign.name}</span>
+                  <span className="text-indigo-400 font-semibold">月亮 {zodiac.moonSign.name}</span>
                   <span className="text-[10px] text-gray-500 block">{zodiac.moonSign.element} · approx.</span>
                 </div>
               </div>

@@ -127,7 +127,7 @@ function PersonForm({ label, labelCn, data, onChange }: {
         type="text"
         value={data.name}
         onChange={(e) => onChange({ ...data, name: e.target.value })}
-        placeholder="Name"
+        placeholder="姓名"
         className="w-full bg-void-lighter border border-gray-700 rounded-lg px-3 py-2 text-sm text-gray-200 placeholder-gray-600 focus:border-gold-500 focus:outline-none focus:ring-1 focus:ring-gold-500/30 transition-colors"
       />
 
@@ -142,7 +142,7 @@ function PersonForm({ label, labelCn, data, onChange }: {
               : 'bg-void-lighter border-gray-700 text-gray-400 hover:border-gray-600'
           }`}
         >
-          Male
+          男
         </button>
         <button
           type="button"
@@ -153,7 +153,7 @@ function PersonForm({ label, labelCn, data, onChange }: {
               : 'bg-void-lighter border-gray-700 text-gray-400 hover:border-gray-600'
           }`}
         >
-          Female
+          女
         </button>
       </div>
 
@@ -166,7 +166,7 @@ function PersonForm({ label, labelCn, data, onChange }: {
             required
             className={selectClass}
           >
-            <option value="">Year</option>
+            <option value="">年</option>
             {Array.from({ length: 100 }, (_, i) => currentYear - i).map((y) => (
               <option key={y} value={y}>{y}</option>
             ))}
@@ -179,7 +179,7 @@ function PersonForm({ label, labelCn, data, onChange }: {
             required
             className={selectClass}
           >
-            <option value="">Mon</option>
+            <option value="">月</option>
             {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => (
               <option key={m} value={m}>{String(m).padStart(2, '0')}</option>
             ))}
@@ -192,7 +192,7 @@ function PersonForm({ label, labelCn, data, onChange }: {
             required
             className={selectClass}
           >
-            <option value="">Day</option>
+            <option value="">日</option>
             {Array.from({ length: getDaysInMonth() }, (_, i) => i + 1).map((d) => (
               <option key={d} value={d}>{String(d).padStart(2, '0')}</option>
             ))}
@@ -207,7 +207,7 @@ function PersonForm({ label, labelCn, data, onChange }: {
           onChange={(e) => onChange({ ...data, hour: e.target.value })}
           className={selectClass}
         >
-          <option value="">Hour (optional)</option>
+          <option value="">時辰（選填）</option>
           {hours.map((h) => (
             <option key={h.value} value={h.value}>{h.label}</option>
           ))}
@@ -324,7 +324,7 @@ function DayMasterFaceoff({ relation }: { relation: CompatibilityResult['dayMast
 
 function CrossBranchList({ interactions }: { interactions: CrossBranchInteraction[] }) {
   if (interactions.length === 0) {
-    return <p className="text-sm text-gray-500 text-center py-3">No significant branch interactions detected.</p>;
+    return <p className="text-sm text-gray-500 text-center py-3">未檢測到顯著的地支交互。</p>;
   }
 
   const typeColors = {
@@ -419,7 +419,7 @@ export default function MatchPage() {
             day: parseInt(personA.day),
             hour: personA.hour ? parseInt(personA.hour) : null,
             gender: personA.gender,
-            name: personA.name || 'Person A',
+            name: personA.name || '甲方',
           },
           personB: {
             year: parseInt(personB.year),
@@ -427,7 +427,7 @@ export default function MatchPage() {
             day: parseInt(personB.day),
             hour: personB.hour ? parseInt(personB.hour) : null,
             gender: personB.gender,
-            name: personB.name || 'Person B',
+            name: personB.name || '乙方',
           },
           locale,
         }),
@@ -488,13 +488,13 @@ export default function MatchPage() {
       }
     } catch (err) {
       console.error('Match error:', err);
-      setError('Failed to calculate compatibility. Please try again.');
+      setError('計算緣分配對失敗，請再試一次。');
       setLoading(false);
     }
   };
 
-  const nameA = personA.name || 'Person A';
-  const nameB = personB.name || 'Person B';
+  const nameA = personA.name || '甲方';
+  const nameB = personB.name || '乙方';
 
   const [shareCopied, setShareCopied] = useState(false);
 
@@ -591,7 +591,7 @@ export default function MatchPage() {
           <div ref={resultsRef} className="mt-10 space-y-6 fade-in">
             {/* Overall Score */}
             <div className="glass-card rounded-2xl p-6 text-center">
-              <div className="text-xs text-gray-500 uppercase tracking-wider mb-1">Compatibility Score</div>
+              <div className="text-xs text-gray-500 uppercase tracking-wider mb-1">契合度</div>
               <div className="text-xs text-gold-500/50 chinese-char mb-4">缘分指数</div>
               <ScoreRing score={compatibility.overallScore} size={140} />
               <div className="mt-4 flex items-center justify-center gap-3">
@@ -604,17 +604,17 @@ export default function MatchPage() {
             {/* Day Master Face-off */}
             <div className="glass-card rounded-2xl p-5">
               <div className="flex items-center gap-2 mb-2">
-                <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wider">Day Master Dynamic</h3>
-                <span className="text-sm text-gold-500/50 chinese-char">日主关系</span>
+                <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wider">日主關係</h3>
+                <span className="text-sm text-gold-500/50 chinese-char">日主關係</span>
               </div>
               <DayMasterFaceoff relation={compatibility.dayMasterRelation} />
               <div className="grid grid-cols-2 gap-3 text-center mb-3">
                 <div className="rounded-lg bg-white/[0.03] p-2">
-                  <div className="text-[10px] text-gray-500 mb-0.5">{nameB} is to {nameA}</div>
+                  <div className="text-[10px] text-gray-500 mb-0.5">{nameB} 對 {nameA}</div>
                   <div className="text-xs text-gray-300 font-medium">{compatibility.dayMasterRelation.tenGodAtoB}</div>
                 </div>
                 <div className="rounded-lg bg-white/[0.03] p-2">
-                  <div className="text-[10px] text-gray-500 mb-0.5">{nameA} is to {nameB}</div>
+                  <div className="text-[10px] text-gray-500 mb-0.5">{nameA} 對 {nameB}</div>
                   <div className="text-xs text-gray-300 font-medium">{compatibility.dayMasterRelation.tenGodBtoA}</div>
                 </div>
               </div>
@@ -626,22 +626,22 @@ export default function MatchPage() {
                 {/* Category Scores */}
                 <div className="glass-card rounded-2xl p-5">
                   <div className="flex items-center gap-2 mb-4">
-                    <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wider">Compatibility Dimensions</h3>
-                    <span className="text-sm text-gold-500/50 chinese-char">维度分析</span>
+                    <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wider">契合維度</h3>
+                    <span className="text-sm text-gold-500/50 chinese-char">維度分析</span>
                   </div>
                   <div className="space-y-3">
-                    <CategoryBar label="Emotional" labelCn="情感" score={compatibility.categoryScores.emotional} />
-                    <CategoryBar label="Intellectual" labelCn="智识" score={compatibility.categoryScores.intellectual} />
-                    <CategoryBar label="Physical" labelCn="感应" score={compatibility.categoryScores.physical} />
-                    <CategoryBar label="Spiritual" labelCn="灵性" score={compatibility.categoryScores.spiritual} />
-                    <CategoryBar label="Practical" labelCn="务实" score={compatibility.categoryScores.practical} />
+                    <CategoryBar label="情感" labelCn="情感" score={compatibility.categoryScores.emotional} />
+                    <CategoryBar label="智識" labelCn="智識" score={compatibility.categoryScores.intellectual} />
+                    <CategoryBar label="感應" labelCn="感應" score={compatibility.categoryScores.physical} />
+                    <CategoryBar label="靈性" labelCn="靈性" score={compatibility.categoryScores.spiritual} />
+                    <CategoryBar label="務實" labelCn="務實" score={compatibility.categoryScores.practical} />
                   </div>
                 </div>
 
                 {/* Branch Interactions */}
                 <div className="glass-card rounded-2xl p-5">
                   <div className="flex items-center gap-2 mb-4">
-                    <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wider">Branch Interactions</h3>
+                    <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wider">地支交互</h3>
                     <span className="text-sm text-gold-500/50 chinese-char">地支交互</span>
                   </div>
                   <CrossBranchList interactions={compatibility.branchInteractions} />
@@ -650,8 +650,8 @@ export default function MatchPage() {
                 {/* Element Balance */}
                 <div className="glass-card rounded-2xl p-5">
                   <div className="flex items-center gap-2 mb-4">
-                    <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wider">Element Balance</h3>
-                    <span className="text-sm text-gold-500/50 chinese-char">五行互补</span>
+                    <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wider">五行互補</h3>
+                    <span className="text-sm text-gold-500/50 chinese-char">五行互補</span>
                   </div>
 
                   {/* Side-by-side element comparison */}
@@ -700,7 +700,7 @@ export default function MatchPage() {
                     <div className="flex flex-wrap gap-1.5 mb-3">
                       {compatibility.elementBalance.complementary.map((el) => (
                         <span key={el} className="text-xs px-2.5 py-1 rounded-full bg-green-500/10 text-green-400 border border-green-500/20">
-                          Complementary: {el}
+                          互補: {el}
                         </span>
                       ))}
                     </div>
@@ -713,8 +713,8 @@ export default function MatchPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="glass-card rounded-2xl p-5">
                     <div className="flex items-center gap-2 mb-3">
-                      <h3 className="text-sm font-semibold text-green-400 uppercase tracking-wider">Strengths</h3>
-                      <span className="text-sm text-green-500/50 chinese-char">优势</span>
+                      <h3 className="text-sm font-semibold text-green-400 uppercase tracking-wider">優勢</h3>
+                      <span className="text-sm text-green-500/50 chinese-char">優勢</span>
                     </div>
                     <ul className="space-y-2">
                       {compatibility.strengths.map((s, i) => (
@@ -727,8 +727,8 @@ export default function MatchPage() {
                   </div>
                   <div className="glass-card rounded-2xl p-5">
                     <div className="flex items-center gap-2 mb-3">
-                      <h3 className="text-sm font-semibold text-amber-400 uppercase tracking-wider">Challenges</h3>
-                      <span className="text-sm text-amber-500/50 chinese-char">挑战</span>
+                      <h3 className="text-sm font-semibold text-amber-400 uppercase tracking-wider">挑戰</h3>
+                      <span className="text-sm text-amber-500/50 chinese-char">挑戰</span>
                     </div>
                     <ul className="space-y-2">
                       {compatibility.challenges.map((c, i) => (
@@ -745,8 +745,8 @@ export default function MatchPage() {
                 {aiReading && (
                   <div className="glass-card rounded-2xl p-5">
                     <div className="flex items-center gap-2 mb-4">
-                      <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wider">Daimon Reading</h3>
-                      <span className="text-sm text-gold-500/50 chinese-char">命理解读</span>
+                      <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wider">命理解讀</h3>
+                      <span className="text-sm text-gold-500/50 chinese-char">命理解讀</span>
                       {!aiReading.includes('\n\n') && (
                         <span className="relative flex h-2 w-2 ml-1">
                           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-gold-500 opacity-75"></span>
@@ -784,7 +784,7 @@ export default function MatchPage() {
                 onClick={() => setShowShare(!showShare)}
                 className="w-full py-2.5 rounded-lg border border-gray-700 text-sm text-gray-400 hover:border-gold-500/50 hover:text-gold-500 hover:bg-gold-500/5 transition-all duration-200 flex items-center justify-center gap-2 press-effect"
               >
-                {showShare ? 'Hide Share Card' : 'Share Card'}
+                {showShare ? '隱藏分享卡片' : '分享卡片'}
               </button>
             </div>
 

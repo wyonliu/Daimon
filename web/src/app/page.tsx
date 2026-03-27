@@ -15,7 +15,7 @@ export default function Home() {
     setLoading(true);
     // Save profile for Daily Destiny feature
     saveProfile({
-      name: data.name || 'Seeker',
+      name: data.name || '求問者',
       year: data.year,
       month: data.month,
       day: data.day,
@@ -126,19 +126,19 @@ export default function Home() {
               <ul className="space-y-2 text-sm text-gray-500">
                 <li className="flex items-center gap-2">
                   <span className="w-1 h-1 rounded-full bg-gold-500/60 flex-shrink-0" />
-                  <span>{'\u795e\u715e'} &mdash; Spirit Sha stars</span>
+                  <span>{'\u795e\u715e'} &mdash; 神煞星曜</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <span className="w-1 h-1 rounded-full bg-gold-500/60 flex-shrink-0" />
-                  <span>{'\u683c\u5c40'} &mdash; Chart structure type</span>
+                  <span>{'\u683c\u5c40'} &mdash; 命盤格局</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <span className="w-1 h-1 rounded-full bg-gold-500/60 flex-shrink-0" />
-                  <span>{'\u5927\u8fd0'} &mdash; Decade luck pillars</span>
+                  <span>{'\u5927\u8fd0'} &mdash; 十年大運</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <span className="w-1 h-1 rounded-full bg-gold-500/60 flex-shrink-0" />
-                  <span>{'\u6d41\u5e74'} &mdash; Annual forecasting</span>
+                  <span>{'\u6d41\u5e74'} &mdash; 流年預測</span>
                 </li>
               </ul>
             </div>
@@ -155,19 +155,19 @@ export default function Home() {
               <ul className="space-y-2 text-sm text-gray-500">
                 <li className="flex items-center gap-2">
                   <span className="w-1 h-1 rounded-full bg-indigo-400/60 flex-shrink-0" />
-                  BaZi Day Master + Sun Sign alignment
+                  八字日主 + 太陽星座對照
                 </li>
                 <li className="flex items-center gap-2">
                   <span className="w-1 h-1 rounded-full bg-indigo-400/60 flex-shrink-0" />
-                  Five Elements + Planetary influences
+                  五行 + 行星影響
                 </li>
                 <li className="flex items-center gap-2">
                   <span className="w-1 h-1 rounded-full bg-indigo-400/60 flex-shrink-0" />
-                  Ten Gods + Astrological houses
+                  十神 + 占星宮位
                 </li>
                 <li className="flex items-center gap-2">
                   <span className="w-1 h-1 rounded-full bg-indigo-400/60 flex-shrink-0" />
-                  Unified destiny narrative
+                  統一命運敘事
                 </li>
               </ul>
             </div>
@@ -184,19 +184,19 @@ export default function Home() {
               <ul className="space-y-2 text-sm text-gray-500">
                 <li className="flex items-center gap-2">
                   <span className="w-1 h-1 rounded-full bg-gold-500/60 flex-shrink-0" />
-                  Deep character and personality analysis
+                  深度性格與人格分析
                 </li>
                 <li className="flex items-center gap-2">
                   <span className="w-1 h-1 rounded-full bg-gold-500/60 flex-shrink-0" />
-                  Career, wealth, and relationship insights
+                  事業、財運、感情洞察
                 </li>
                 <li className="flex items-center gap-2">
                   <span className="w-1 h-1 rounded-full bg-gold-500/60 flex-shrink-0" />
-                  Timing guidance for major decisions
+                  重大決策的時機指引
                 </li>
                 <li className="flex items-center gap-2">
                   <span className="w-1 h-1 rounded-full bg-gold-500/60 flex-shrink-0" />
-                  Follow-up Q&amp;A consultations
+                  後續追問對話諮詢
                 </li>
               </ul>
             </div>
@@ -246,7 +246,7 @@ export default function Home() {
           </div>
         </div>
         <p className="text-xs text-gray-700 text-center mt-6">
-          &copy; {new Date().getFullYear()} Daimon &middot; Precision destiny engine
+          &copy; {new Date().getFullYear()} Daimon &middot; 精準命理引擎
         </p>
       </footer>
     </main>

@@ -25,10 +25,10 @@ function AccuracyShield({ engineInfo }: { engineInfo: VerificationData['engineIn
       </div>
 
       <h2 className="font-display text-2xl font-bold text-gradient-gold mb-2">
-        Precision Verified
+        精準驗證
       </h2>
       <p className="text-sm text-gray-400 mb-5">
-        Your chart was calculated by astronomical ephemeris with mathematical precision
+        您的命盤由天文曆算引擎以數學精度計算
       </p>
 
       <div className="flex flex-wrap justify-center gap-3">
@@ -72,7 +72,7 @@ function LLMComparisonCard({ point, index }: { point: VerificationData['llmFailP
                 <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
-                Common error
+                常見錯誤
               </span>
               <span className="text-gray-600">vs</span>
               <span className="flex items-center gap-1 text-gold-500/80">
@@ -102,7 +102,7 @@ function LLMComparisonCard({ point, index }: { point: VerificationData['llmFailP
               <svg className="w-3.5 h-3.5 text-red-400/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
-              <span className="text-[10px] font-semibold text-red-400/70 uppercase tracking-wider">Common calculation mistake</span>
+              <span className="text-[10px] font-semibold text-red-400/70 uppercase tracking-wider">常見計算錯誤</span>
             </div>
             <p className="text-xs text-red-300/60 leading-relaxed">{point.whatLLMsGetWrong}</p>
           </div>
@@ -113,7 +113,7 @@ function LLMComparisonCard({ point, index }: { point: VerificationData['llmFailP
               <svg className="w-3.5 h-3.5 text-gold-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
-              <span className="text-[10px] font-semibold text-gold-500/70 uppercase tracking-wider">Correct method</span>
+              <span className="text-[10px] font-semibold text-gold-500/70 uppercase tracking-wider">正確方法</span>
             </div>
             <p className="text-xs text-gold-500/60 leading-relaxed">{point.correctMethod}</p>
           </div>
@@ -124,14 +124,14 @@ function LLMComparisonCard({ point, index }: { point: VerificationData['llmFailP
               <svg className="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0" />
               </svg>
-              <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider">Your chart result</span>
+              <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider">您的命盤結果</span>
             </div>
             <p className="text-xs text-gray-400/80 leading-relaxed">{point.ourResult}</p>
           </div>
 
           {/* Typical error */}
           <p className="text-[10px] text-gray-600 italic leading-relaxed pl-1">
-            Typical incorrect output: {point.typicalLLMError}
+            常見錯誤輸出: {point.typicalLLMError}
           </p>
         </div>
       )}
@@ -203,9 +203,9 @@ function VerifyYourself() {
 
   return (
     <div className="rounded-xl border border-white/[0.08] bg-white/[0.02] p-5">
-      <h4 className="text-sm font-semibold text-gray-300 mb-2">Verify It Yourself</h4>
+      <h4 className="text-sm font-semibold text-gray-300 mb-2">自行驗證</h4>
       <p className="text-xs text-gray-500 mb-4 leading-relaxed">
-        Do not take our word for it. Cross-reference with these authoritative sources to confirm the precision of every calculation.
+        不必只聽我們說。與以下權威來源交叉驗證，確認每項計算的精度。
       </p>
       <div className="space-y-2">
         {links.map((link) => (
@@ -247,12 +247,11 @@ export default function PrecisionProof({ bazi, year, month, day, hour }: Precisi
       <div>
         <div className="flex items-center gap-2 mb-1">
           <h3 className="text-sm font-semibold text-gray-300 uppercase" style={{ letterSpacing: '0.12em' }}>
-            Why Precision Matters
+            為什麼精準很重要
           </h3>
         </div>
         <p className="text-xs text-gray-500 mb-5 leading-relaxed">
-          Traditional BaZi calculation requires astronomical precision. Month boundaries follow solar terms (节气), not calendar dates.
-          Here are 6 areas where common mistakes in manual or automated calculation produce wrong results for your chart.
+          傳統八字計算需要天文級精度。月份邊界遵循節氣而非日曆日期。以下是常見人工或自動計算錯誤導致命盤結果偏差的 6 個領域。
         </p>
 
         <div className="space-y-2">
@@ -266,11 +265,11 @@ export default function PrecisionProof({ bazi, year, month, day, hour }: Precisi
       <div>
         <div className="flex items-center gap-2 mb-1">
           <h3 className="text-sm font-semibold text-gray-300 uppercase" style={{ letterSpacing: '0.12em' }}>
-            Calculation Audit Trail
+            計算審計軌跡
           </h3>
         </div>
         <p className="text-xs text-gray-500 mb-5 leading-relaxed">
-          Every step from your birth date to your final chart, transparent and verifiable.
+          從您的出生日期到最終命盤的每一步，透明且可驗證。
         </p>
 
         <CalculationStepAccordion steps={verification.calculationSteps} />

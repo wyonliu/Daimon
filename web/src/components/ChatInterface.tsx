@@ -108,12 +108,12 @@ export default function ChatInterface({ baziText, zodiacText, initialReading, on
   }, [messages]);
 
   const quickQuestions = [
-    { label: 'Career Path', text: 'What does my chart say about my career path and ideal work environment?' },
-    { label: 'Relationships', text: 'Analyze my chart for relationship patterns and compatibility insights.' },
-    { label: 'This Year', text: 'What energies should I be aware of this year based on current transits and my chart?' },
-    { label: 'Health', text: 'What does my Five Elements balance suggest about health and wellbeing focus areas?' },
-    { label: 'Strengths', text: 'What are my greatest natural strengths according to both BaZi and Western astrology?' },
-    { label: 'Growth Areas', text: 'Where are my biggest growth opportunities? What challenging patterns should I be aware of?' },
+    { label: '事業方向', text: '我的命盤對事業路徑和理想工作環境有什麼指引？' },
+    { label: '感情運勢', text: '分析我的命盤中的感情模式和緣分洞察。' },
+    { label: '今年運勢', text: '根據當前流年和我的命盤，今年應注意哪些能量？' },
+    { label: '健康提示', text: '我的五行平衡對健康方面有什麼啟示？' },
+    { label: '天賦優勢', text: '根據八字和西洋占星，我最大的天賦優勢是什麼？' },
+    { label: '成長方向', text: '我最大的成長機會在哪裡？有哪些需要注意的挑戰模式？' },
   ];
 
   const sendMessage = async (text: string) => {
@@ -175,7 +175,7 @@ export default function ChatInterface({ baziText, zodiacText, initialReading, on
       console.error('Chat error:', error);
       setMessages([
         ...newMessages,
-        { role: 'assistant', content: 'I apologize, but I encountered an error. Please try again.' },
+        { role: 'assistant', content: '抱歉，遇到了一些問題。請再試一次。' },
       ]);
     } finally {
       setIsStreaming(false);
@@ -238,13 +238,13 @@ export default function ChatInterface({ baziText, zodiacText, initialReading, on
       {/* Post-reading CTA */}
       {messages.length === 1 && !disableChat && (
         <div className="px-4 py-3 space-y-2 border-t border-gray-800/30">
-          <p className="text-xs text-gray-500 text-center mb-2">Explore more</p>
+          <p className="text-xs text-gray-500 text-center mb-2">探索更多</p>
           <div className="flex gap-2">
             <a href="/daily" className="flex-1 py-2.5 rounded-lg bg-gold-500/10 border border-gold-500/20 text-gold-500 text-xs text-center hover:bg-gold-500/15 transition-colors press-effect">
-              Daily Destiny
+              今日運勢
             </a>
             <a href="/match" className="flex-1 py-2.5 rounded-lg bg-gold-500/10 border border-gold-500/20 text-gold-500 text-xs text-center hover:bg-gold-500/15 transition-colors press-effect">
-              Check Compatibility
+              緣分配對
             </a>
           </div>
         </div>
@@ -253,7 +253,7 @@ export default function ChatInterface({ baziText, zodiacText, initialReading, on
       {/* Quick Questions */}
       {messages.length <= 1 && !disableChat && (
         <div className="mb-4">
-          <p className="text-xs text-gray-500 mb-2.5">Explore your chart:</p>
+          <p className="text-xs text-gray-500 mb-2.5">深入了解你的命盤：</p>
           <div className="flex flex-wrap gap-2">
             {quickQuestions.map((q) => (
               <button
@@ -277,7 +277,7 @@ export default function ChatInterface({ baziText, zodiacText, initialReading, on
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Ask about your chart..."
+            placeholder="詢問關於你的命盤..."
             rows={1}
             className="flex-1 bg-void-lighter border border-gray-700 rounded-xl px-4 py-3 text-sm text-gray-200 placeholder-gray-600 focus:border-gold-500 focus:outline-none focus:ring-1 focus:ring-gold-500/30 resize-none transition-all duration-200 input-glow"
             style={{ minHeight: '44px', maxHeight: '120px' }}

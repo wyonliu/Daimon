@@ -19,6 +19,8 @@ function PayContent() {
   const price = isSingle ? '35' : '70';
   const planLabel = isSingle ? t('pay.plan.single') : t('pay.plan.pro');
 
+  const [showToast, setShowToast] = useState(false);
+
   const handleUnlock = () => {
     setUnlocking(true);
     if (isSingle) {
@@ -26,12 +28,22 @@ function PayContent() {
     } else {
       activatePro(`alipay_${Date.now()}`, 'pro');
     }
-    // Redirect to success page
-    router.push(`/success?session_id=alipay_${Date.now()}&plan=${plan}`);
+    // Show success toast then redirect directly back to content page
+    setShowToast(true);
+    setTimeout(() => {
+      router.push(returnUrl);
+    }, 500);
   };
 
   return (
     <main className="min-h-screen flex flex-col items-center justify-center px-4 py-12">
+      {/* Success Toast */}
+      {showToast && (
+        <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50 px-6 py-3 rounded-xl bg-gradient-to-r from-gold-700 via-gold-500 to-gold-700 text-void font-bold text-base shadow-lg animate-bounce">
+          解鎖成功！
+        </div>
+      )}
+
       <div className="w-full max-w-md">
         {/* Back button */}
         <button
@@ -63,6 +75,12 @@ function PayContent() {
 
           {/* QR Code */}
           <div className="flex flex-col items-center mb-6">
+            {/* Amount highlight */}
+            <div className="w-full mb-4 px-4 py-3 rounded-xl bg-gold-500/10 border-2 border-gold-500/40 text-center">
+              <p className="text-base font-bold text-gold-500">
+                請掃碼後輸入金額 &yen;{price}
+              </p>
+            </div>
             <p className="text-sm text-gray-400 mb-4 text-center">
               {t('pay.scanQr')}
             </p>

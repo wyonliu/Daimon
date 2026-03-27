@@ -30,11 +30,11 @@ function ScoreRing({ score, size = 140, strokeWidth = 8 }: { score: number; size
   };
 
   const getScoreLabel = (s: number) => {
-    if (s >= 85) return 'Excellent';
-    if (s >= 70) return 'Good';
-    if (s >= 50) return 'Fair';
-    if (s >= 35) return 'Caution';
-    return 'Challenging';
+    if (s >= 85) return '極佳';
+    if (s >= 70) return '良好';
+    if (s >= 50) return '平穩';
+    if (s >= 35) return '注意';
+    return '挑戰';
   };
 
   return (
@@ -230,7 +230,7 @@ export default function DailyPage() {
       setLoading(false);
     } catch (err) {
       console.error('Error loading daily destiny:', err);
-      setError('Failed to load your daily reading. Please try again.');
+      setError('載入每日運勢失敗，請再試一次。');
       setLoading(false);
     }
   }, [locale]);
@@ -405,10 +405,10 @@ export default function DailyPage() {
             <span className="text-3xl chinese-char text-gold-500">{daily.liuRi.ganZhi}</span>
           </div>
           <p className="text-xs text-gray-600">
-            {daily.liuRi.elementEn} Day &middot; {daily.liuRi.nayin} ({daily.liuRi.nayinEn})
+            {daily.liuRi.elementEn} 日 &middot; {daily.liuRi.nayin} ({daily.liuRi.nayinEn})
           </p>
           <p className="text-xs text-gray-700 mt-0.5">
-            {daily.liuYue.ganZhi} Month &middot; {daily.liuNian.ganZhi} Year
+            {daily.liuYue.ganZhi} 月 &middot; {daily.liuNian.ganZhi} 年
           </p>
         </div>
 
@@ -424,8 +424,8 @@ export default function DailyPage() {
                 : 'bg-gray-500/10 text-gray-400 border border-gray-500/20'
             }`}>
               {daily.dayMasterRelation.tenGod} ({daily.dayMasterRelation.tenGodEn})
-              {daily.dayMasterRelation.favorability === 'favorable' && ' \u2014 Auspicious'}
-              {daily.dayMasterRelation.favorability === 'unfavorable' && ' \u2014 Challenging'}
+              {daily.dayMasterRelation.favorability === 'favorable' && ' — 吉'}
+              {daily.dayMasterRelation.favorability === 'unfavorable' && ' — 凶'}
             </span>
           </div>
         </div>
@@ -467,7 +467,7 @@ export default function DailyPage() {
               >
                 <div className="font-medium">{bi.type}</div>
                 <div className="text-xs opacity-70 mt-0.5">
-                  {bi.branches} &middot; {bi.withPillar} Pillar
+                  {bi.branches} &middot; {bi.withPillar}柱
                 </div>
               </div>
             ))}
