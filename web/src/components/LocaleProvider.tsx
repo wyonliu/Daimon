@@ -15,7 +15,7 @@ const LocaleContext = createContext<LocaleContextType>({
 });
 
 export function LocaleProvider({ children }: { children: ReactNode }) {
-  const [locale, setLocaleState] = useState<Locale>('en');
+  const [locale, setLocaleState] = useState<Locale>('zh-TW');
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -31,9 +31,9 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
   const t = (key: string) => translate(key, locale);
 
   if (!mounted) {
-    // SSR: render with English to avoid hydration mismatch
+    // SSR: render with zh-TW to match default locale (avoids English flash)
     return (
-      <LocaleContext.Provider value={{ locale: 'en', setLocale, t: (key) => translate(key, 'en') }}>
+      <LocaleContext.Provider value={{ locale: 'zh-TW', setLocale, t: (key) => translate(key, 'zh-TW') }}>
         {children}
       </LocaleContext.Provider>
     );
