@@ -49,7 +49,8 @@ function ReadingContent() {
       .map((p) => `${p.stem}${p.branch}`)
       .join(' ');
     const pattern = bazi.chartPattern ? bazi.chartPattern.name : '';
-    const text = `我的八字：${pillars}${pattern ? ` | ${pattern}` : ''} | 來算算你的 👉 daimon-aqa.pages.dev`;
+    const origin = typeof window !== 'undefined' ? window.location.origin : 'https://daimon-app.vercel.app';
+    const text = `我的八字：${pillars}${pattern ? ` | ${pattern}` : ''} | 來算算你的 👉 ${origin}`;
     if (navigator.share) {
       try {
         await navigator.share({ text });

@@ -8,10 +8,24 @@ function PricingContent() {
   const router = useRouter();
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
+  const checkIcon = (
+    <svg className="w-5 h-5 text-gold-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+  );
+  const checkDim = (
+    <svg className="w-5 h-5 text-gold-500/50 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+  );
+  const crossIcon = (
+    <svg className="w-5 h-5 text-gray-700 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+  );
+
   const faqs = [
     {
       q: '八字分析的準確度如何？',
       a: 'Daimon 使用專業級四柱引擎，精確計算天干地支、十神、神煞及五行力量分析。計算精度達到專業命理師水準。',
+    },
+    {
+      q: '什麼是「結緣價」？',
+      a: '結緣價 ¥9.9 是您與命運報告建立連結的最低門檻。我們相信，深度的命理解讀不應是奢侈品。一杯咖啡的價格，即可查閱為您專屬推演的完整報告。',
     },
     {
       q: '跨傳統融合有什麼作用？',
@@ -22,12 +36,8 @@ function PricingContent() {
       a: '出生時辰開啟時柱，揭示您的內在自我和晚年運勢。沒有時辰，Daimon 仍能使用年、月、日三柱進行完整分析。要獲得最深入的解讀，請提供出生時辰。',
     },
     {
-      q: '單次解讀和專業版有什麼區別？',
-      a: '單次解讀（¥35）為您提供一次完整的深度解讀和命盤分析。專業版（¥70/月）提供無限次解讀、無限次諮詢及所有功能。如果只想體驗一次深度解讀，單次購買非常適合。',
-    },
-    {
       q: '如何付款？',
-      a: '我們接受支付寶付款。選擇方案後，您會看到一個二維碼，用支付寶掃碼即可完成付款。付款後點擊解鎖按鈕即時生效。',
+      a: '選擇方案後，您可以查看報告包含的具體內容，確認後通過支付寶完成支付，即時為您開啟完整的命理報告。',
     },
     {
       q: '我的出生資料會被儲存或分享嗎？',
@@ -59,226 +69,162 @@ function PricingContent() {
         </div>
         <div className="relative z-10">
           <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-gradient-gold mb-4 slide-up">
-            選擇你的道路
+            您的命盤已排定
           </h1>
           <p className="text-lg text-gray-400 max-w-xl mx-auto slide-up slide-up-delay-1">
-            每一段旅程都從第一步開始。選擇適合你的深度方案。
+            命運報告已生成，選擇查閱的深度。
           </p>
         </div>
       </section>
 
       {/* Pricing Cards */}
       <section className="px-4 pb-20 sm:pb-28">
-        <div className="max-w-5xl mx-auto grid md:grid-cols-4 gap-6 sm:gap-8 items-start">
+        <div className="max-w-5xl mx-auto grid md:grid-cols-4 gap-5 sm:gap-6 items-start">
 
-          {/* -- Seeker (Free) -- */}
-          <div className="glass-card rounded-2xl p-8 sm:p-10 card-hover slide-up">
-            <div className="mb-8">
-              <div className="w-14 h-14 rounded-2xl bg-gray-800/50 border border-gray-700 flex items-center justify-center mb-5">
-                <span className="text-2xl chinese-char text-gray-400">{'\u63A2'}</span>
+          {/* -- Free -- */}
+          <div className="glass-card rounded-2xl p-7 sm:p-8 card-hover slide-up">
+            <div className="mb-6">
+              <div className="w-12 h-12 rounded-2xl bg-gray-800/50 border border-gray-700 flex items-center justify-center mb-4">
+                <span className="text-xl chinese-char text-gray-400">{'\u63A2'}</span>
               </div>
-              <h3 className="font-display text-2xl font-semibold text-gray-200 mb-1">探索者</h3>
-              <p className="text-sm text-gray-500">體驗基礎功能</p>
+              <h3 className="font-display text-xl font-semibold text-gray-200 mb-1">探索者</h3>
+              <p className="text-xs text-gray-500">體驗基礎命盤</p>
             </div>
 
-            <div className="mb-8">
-              <span className="text-5xl font-bold text-gray-100 font-display tracking-tight">免費</span>
+            <div className="mb-6">
+              <span className="text-4xl font-bold text-gray-100 font-display">免費</span>
             </div>
 
-            <div className="divider-gold mb-8" />
+            <div className="divider-gold mb-6" />
 
-            <ul className="space-y-4 text-sm text-gray-400 mb-10">
-              <li className="flex items-start gap-3">
-                <svg className="w-5 h-5 text-gold-500/70 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                <span>每月 3 次解讀</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <svg className="w-5 h-5 text-gold-500/70 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                <span>基礎八字四柱命盤</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <svg className="w-5 h-5 text-gold-500/70 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                <span>西洋太陽星座概覽</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <svg className="w-5 h-5 text-gold-500/70 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                <span>日主識別</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <svg className="w-5 h-5 text-gray-700 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
-                <span className="text-gray-600">無對話追問</span>
-              </li>
+            <ul className="space-y-3 text-sm text-gray-400 mb-8">
+              <li className="flex items-start gap-3">{checkDim}<span>每日 2 次解讀</span></li>
+              <li className="flex items-start gap-3">{checkDim}<span>基礎八字四柱命盤</span></li>
+              <li className="flex items-start gap-3">{checkDim}<span>西洋太陽星座概覽</span></li>
+              <li className="flex items-start gap-3">{crossIcon}<span className="text-gray-600">無深度解讀報告</span></li>
+              <li className="flex items-start gap-3">{crossIcon}<span className="text-gray-600">無對話追問</span></li>
             </ul>
 
             <button
               onClick={() => router.push('/#reading')}
-              className="block w-full text-center py-3.5 rounded-xl border border-gray-700 text-gray-300 font-medium hover:border-gold-500/40 hover:text-gold-500 transition-all duration-300 press-effect"
+              className="block w-full text-center py-3 rounded-xl border border-gray-700 text-gray-300 font-medium hover:border-gold-500/40 hover:text-gold-500 transition-all duration-300 press-effect"
             >
-              免費開始
+              免費體驗
             </button>
           </div>
 
-          {/* -- Single Reading (¥35) -- */}
-          <div className="relative glass-card rounded-2xl p-8 sm:p-10 card-hover border-gold-500/30 shadow-[0_0_60px_rgba(200,169,110,0.08)] slide-up slide-up-delay-1">
-            {/* Badge */}
+          {/* -- 结缘价 ¥9.9 (PRIMARY) -- */}
+          <div className="relative glass-card rounded-2xl p-7 sm:p-8 card-hover border-gold-500/30 shadow-[0_0_60px_rgba(200,169,110,0.08)] slide-up slide-up-delay-1">
             <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
-              <span className="px-5 py-1.5 rounded-full bg-gradient-to-r from-gold-700 via-gold-500 to-gold-700 text-void text-xs font-bold tracking-wider uppercase shadow-lg">
-                最低門檻
+              <span className="px-5 py-1.5 rounded-full bg-gradient-to-r from-gold-700 via-gold-500 to-gold-700 text-void text-xs font-bold tracking-wider shadow-lg">
+                結緣價
               </span>
             </div>
 
-            <div className="mb-8 mt-2">
-              <div className="w-14 h-14 rounded-2xl bg-gold-500/10 border border-gold-500/25 flex items-center justify-center mb-5 glow-gold-soft">
-                <span className="text-2xl chinese-char text-gold-500">{'\u547D'}</span>
+            <div className="mb-6 mt-2">
+              <div className="w-12 h-12 rounded-2xl bg-gold-500/10 border border-gold-500/25 flex items-center justify-center mb-4 glow-gold-soft">
+                <span className="text-xl chinese-char text-gold-500">{'\u7B54'}</span>
               </div>
-              <h3 className="font-display text-2xl font-semibold text-gold-500 mb-1">單次解讀</h3>
-              <p className="text-sm text-gray-500">一次深度解讀，無需訂閱</p>
+              <h3 className="font-display text-xl font-semibold text-gold-500 mb-1">結緣解讀</h3>
+              <p className="text-xs text-gray-500">一杯咖啡，查閱一份命運報告</p>
             </div>
 
-            <div className="mb-8">
-              <span className="text-5xl font-bold text-gradient-gold font-display tracking-tight">&yen;35</span>
-              <span className="text-sm text-gray-500 ml-2">一次性</span>
+            <div className="mb-6">
+              <span className="text-4xl font-bold text-gradient-gold font-display">&yen;9.9</span>
+              <span className="text-sm text-gray-500 ml-2">/ 次</span>
             </div>
 
-            <div className="divider-gold mb-8" />
+            <div className="divider-gold mb-6" />
 
-            <ul className="space-y-4 text-sm text-gray-300 mb-10">
-              <li className="flex items-start gap-3">
-                <svg className="w-5 h-5 text-gold-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                <span><strong className="text-gold-500/90">1 次</strong>完整深度解讀</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <svg className="w-5 h-5 text-gold-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                <span>完整八字命盤分析</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <svg className="w-5 h-5 text-gold-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                <span>東西方跨傳統融合解讀</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <svg className="w-5 h-5 text-gold-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                <span>無需訂閱</span>
-              </li>
+            <ul className="space-y-3 text-sm text-gray-300 mb-8">
+              <li className="flex items-start gap-3">{checkIcon}<span><strong className="text-gold-500/90">1 次</strong>完整深度報告</span></li>
+              <li className="flex items-start gap-3">{checkIcon}<span>八字四柱 + 西洋占星雙引擎</span></li>
+              <li className="flex items-start gap-3">{checkIcon}<span>十神 · 五行 · 格局深度解讀</span></li>
+              <li className="flex items-start gap-3">{checkIcon}<span>AI 命理師個性化報告</span></li>
+              <li className="flex items-start gap-3">{checkIcon}<span>無需訂閱</span></li>
+            </ul>
+
+            <Link
+              href="/pay?plan=trial"
+              className="block w-full text-center py-3.5 rounded-xl bg-gradient-to-r from-gold-700 via-gold-500 to-gold-700 hover:from-gold-600 hover:via-gold-400 hover:to-gold-600 text-void font-bold text-base glow-gold-soft hover:glow-gold press-effect btn-shimmer transition-all duration-300"
+            >
+              結緣查閱
+            </Link>
+            <p className="text-xs text-gray-600 text-center mt-2.5">一次性費用，即時生效</p>
+          </div>
+
+          {/* -- ¥35 x3 -- */}
+          <div className="glass-card rounded-2xl p-7 sm:p-8 card-hover slide-up slide-up-delay-2">
+            <div className="mb-6">
+              <div className="w-12 h-12 rounded-2xl bg-gold-500/10 border border-gold-500/25 flex items-center justify-center mb-4">
+                <span className="text-xl chinese-char text-gold-500">{'\u547D'}</span>
+              </div>
+              <h3 className="font-display text-xl font-semibold text-gray-200 mb-1">深度解讀</h3>
+              <p className="text-xs text-gray-500">命盤 + 合盤 + 日運，各一次</p>
+            </div>
+
+            <div className="mb-6">
+              <span className="text-4xl font-bold text-gray-100 font-display">&yen;35</span>
+              <span className="text-sm text-gray-500 ml-2">3 次</span>
+            </div>
+
+            <div className="divider-gold mb-6" />
+
+            <ul className="space-y-3 text-sm text-gray-300 mb-8">
+              <li className="flex items-start gap-3">{checkIcon}<span><strong className="text-gold-500/90">3 次</strong>完整深度報告</span></li>
+              <li className="flex items-start gap-3">{checkIcon}<span>命盤 / 合盤 / 日運均可使用</span></li>
+              <li className="flex items-start gap-3">{checkIcon}<span>東西方跨傳統融合解讀</span></li>
+              <li className="flex items-start gap-3">{checkIcon}<span>AI 命理師個性化報告</span></li>
+              <li className="flex items-start gap-3">{checkIcon}<span>平均每次不到 ¥12</span></li>
             </ul>
 
             <Link
               href="/pay?plan=single"
-              className="block w-full text-center py-4 rounded-xl bg-gradient-to-r from-gold-700 via-gold-500 to-gold-700 hover:from-gold-600 hover:via-gold-400 hover:to-gold-600 text-void font-bold text-lg glow-gold-soft hover:glow-gold press-effect btn-shimmer transition-all duration-300"
+              className="block w-full text-center py-3 rounded-xl border border-gold-500/30 text-gold-500 font-bold hover:bg-gold-500/5 hover:border-gold-500/50 transition-all duration-300 press-effect"
             >
-              購買一次解讀
+              查閱 3 次報告
             </Link>
-            <p className="text-xs text-gray-600 text-center mt-3">一次付費，無需訂閱。</p>
+            <p className="text-xs text-gray-600 text-center mt-2.5">一次性費用，無需訂閱</p>
           </div>
 
-          {/* -- Pro (¥70) -- */}
-          <div className="relative glass-card rounded-2xl p-8 sm:p-10 card-hover slide-up slide-up-delay-2">
-            {/* Badge */}
+          {/* -- Pro ¥70/mo -- */}
+          <div className="relative glass-card rounded-2xl p-7 sm:p-8 card-hover slide-up slide-up-delay-3">
             <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
-              <span className="px-5 py-1.5 rounded-full bg-gray-800 border border-gold-500/30 text-gold-500 text-xs font-bold tracking-wider uppercase">
+              <span className="px-5 py-1.5 rounded-full bg-gray-800 border border-gold-500/30 text-gold-500 text-xs font-bold tracking-wider">
                 最超值
               </span>
             </div>
 
-            <div className="mb-8 mt-2">
-              <div className="w-14 h-14 rounded-2xl bg-gold-500/10 border border-gold-500/25 flex items-center justify-center mb-5">
-                <span className="text-2xl chinese-char text-gold-500">{'\u9053'}</span>
+            <div className="mb-6 mt-2">
+              <div className="w-12 h-12 rounded-2xl bg-gold-500/10 border border-gold-500/25 flex items-center justify-center mb-4">
+                <span className="text-xl chinese-char text-gold-500">{'\u9053'}</span>
               </div>
-              <h3 className="font-display text-2xl font-semibold text-gray-200 mb-1">Pro</h3>
-              <p className="text-sm text-gray-500">全面深度，無限力量</p>
+              <h3 className="font-display text-xl font-semibold text-gray-200 mb-1">專業通行</h3>
+              <p className="text-xs text-gray-500">無限次探索命運的每一個維度</p>
             </div>
 
-            <div className="mb-8">
-              <span className="text-5xl font-bold text-gray-100 font-display tracking-tight">&yen;70</span>
-              <span className="text-sm text-gray-500 ml-2">/月</span>
+            <div className="mb-6">
+              <span className="text-4xl font-bold text-gray-100 font-display">&yen;70</span>
+              <span className="text-sm text-gray-500 ml-2">/ 月</span>
             </div>
 
-            <div className="divider-gold mb-8" />
+            <div className="divider-gold mb-6" />
 
-            <ul className="space-y-4 text-sm text-gray-300 mb-10">
-              <li className="flex items-start gap-3">
-                <svg className="w-5 h-5 text-gold-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                <span><strong className="text-gold-500/90">無限次</strong>解讀</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <svg className="w-5 h-5 text-gold-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                <span>完整八字：神煞、格局、大運</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <svg className="w-5 h-5 text-gold-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                <span>東西方跨傳統融合解讀</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <svg className="w-5 h-5 text-gold-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                <span>無限次對話諮詢</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <svg className="w-5 h-5 text-gold-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                <span>可分享的命運卡片</span>
-              </li>
+            <ul className="space-y-3 text-sm text-gray-300 mb-8">
+              <li className="flex items-start gap-3">{checkIcon}<span><strong className="text-gold-500/90">無限次</strong>深度解讀</span></li>
+              <li className="flex items-start gap-3">{checkIcon}<span>命盤 / 合盤 / 日運全功能</span></li>
+              <li className="flex items-start gap-3">{checkIcon}<span>無限次 AI 命理師對話</span></li>
+              <li className="flex items-start gap-3">{checkIcon}<span>東西方跨傳統融合</span></li>
+              <li className="flex items-start gap-3">{checkIcon}<span>30天全功能，到期自動停止</span></li>
             </ul>
 
             <Link
               href="/pay?plan=pro"
-              className="block w-full text-center py-3.5 rounded-xl border border-gold-500/30 text-gold-500 font-bold hover:bg-gold-500/5 hover:border-gold-500/50 transition-all duration-300 press-effect"
+              className="block w-full text-center py-3 rounded-xl border border-gold-500/30 text-gold-500 font-bold hover:bg-gold-500/5 hover:border-gold-500/50 transition-all duration-300 press-effect"
             >
-              訂閱專業版
+              開通專業版
             </Link>
-            <p className="text-xs text-gray-600 text-center mt-3">隨時取消，無隱藏費用。</p>
-          </div>
-
-          {/* -- Master (¥199) -- */}
-          <div className="relative glass-card rounded-2xl p-8 sm:p-10 card-hover slide-up slide-up-delay-3">
-            {/* Badge */}
-            <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
-              <span className="px-5 py-1.5 rounded-full bg-gray-800 border border-gray-700 text-gray-400 text-xs font-bold tracking-wider uppercase">
-                即將推出
-              </span>
-            </div>
-
-            <div className="mb-8 mt-2">
-              <div className="w-14 h-14 rounded-2xl bg-gray-800/50 border border-gray-700 flex items-center justify-center mb-5">
-                <span className="text-2xl chinese-char text-gray-400">{'\u5E2B'}</span>
-              </div>
-              <h3 className="font-display text-2xl font-semibold text-gray-200 mb-1">大師版</h3>
-              <p className="text-sm text-gray-500">終極命理解讀</p>
-            </div>
-
-            <div className="mb-8">
-              <span className="text-5xl font-bold text-gray-100 font-display tracking-tight">&yen;199</span>
-              <span className="text-sm text-gray-500 ml-2">/月</span>
-            </div>
-
-            <div className="divider-gold mb-8" />
-
-            <ul className="space-y-4 text-sm text-gray-400 mb-10">
-              <li className="flex items-start gap-3">
-                <svg className="w-5 h-5 text-gold-500/70 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                <span>包含專業版所有功能</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <svg className="w-5 h-5 text-gold-500/70 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                <span>優先分析與擴展深度解讀</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <svg className="w-5 h-5 text-gold-500/70 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                <span>可下載 PDF 命理報告</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <svg className="w-5 h-5 text-gold-500/70 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                <span>流年與大運預測</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <svg className="w-5 h-5 text-gold-500/70 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                <span>合盤與緣分分析</span>
-              </li>
-            </ul>
-
-            <button
-              disabled
-              className="block w-full text-center py-3.5 rounded-xl border border-gray-700 text-gray-600 font-medium cursor-not-allowed"
-            >
-              通知我
-            </button>
+            <p className="text-xs text-gray-600 text-center mt-2.5">到期自動停止，無隱藏費用</p>
           </div>
         </div>
       </section>

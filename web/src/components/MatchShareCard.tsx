@@ -17,26 +17,26 @@ export default function MatchShareCard({ compatibility, nameA, nameB }: MatchSha
   const [copied, setCopied] = useState(false);
 
   const handleCopyText = async () => {
-    const text = `${nameA} x ${nameB} | Destiny Match by Daimon
+    const text = `${nameA} × ${nameB} | Daimon 命運配對
 
-Compatibility Score: ${compatibility.overallScore}/100
+契合度: ${compatibility.overallScore}/100
 
-Day Masters: ${compatibility.dayMasterRelation.stemA} (${compatibility.dayMasterRelation.elementA}) x ${compatibility.dayMasterRelation.stemB} (${compatibility.dayMasterRelation.elementB})
+日主: ${compatibility.dayMasterRelation.stemA} (${compatibility.dayMasterRelation.elementA}) × ${compatibility.dayMasterRelation.stemB} (${compatibility.dayMasterRelation.elementB})
 ${compatibility.dayMasterRelation.elementRelation}
 
-Emotional: ${compatibility.categoryScores.emotional}/100
-Intellectual: ${compatibility.categoryScores.intellectual}/100
-Physical: ${compatibility.categoryScores.physical}/100
-Spiritual: ${compatibility.categoryScores.spiritual}/100
-Practical: ${compatibility.categoryScores.practical}/100
+情感: ${compatibility.categoryScores.emotional}/100
+智識: ${compatibility.categoryScores.intellectual}/100
+感應: ${compatibility.categoryScores.physical}/100
+靈性: ${compatibility.categoryScores.spiritual}/100
+務實: ${compatibility.categoryScores.practical}/100
 
-Strengths:
+優勢:
 ${compatibility.strengths.map(s => `+ ${s}`).join('\n')}
 
-Challenges:
+挑戰:
 ${compatibility.challenges.map(c => `! ${c}`).join('\n')}
 
-Discover your destiny match at daimon.app`;
+解讀你的命運配對 👉 daimon.app`;
 
     try {
       await navigator.clipboard.writeText(text);
@@ -55,11 +55,11 @@ Discover your destiny match at daimon.app`;
   };
 
   const handleNativeShare = async () => {
-    const text = `${nameA} x ${nameB} — Compatibility: ${compatibility.overallScore}/100. Discover your destiny match at daimon.app`;
+    const text = `${nameA} × ${nameB} — 契合度: ${compatibility.overallScore}/100 | 解讀你的命運配對 👉 daimon.app`;
     if (navigator.share) {
       try {
         await navigator.share({
-          title: `${nameA} x ${nameB} | Destiny Match`,
+          title: `${nameA} × ${nameB} | Daimon 命運配對`,
           text,
           url: window.location.href,
         });
@@ -111,7 +111,7 @@ Discover your destiny match at daimon.app`;
         <div className="relative z-10">
           {/* Header */}
           <div className="text-center mb-4">
-            <div className="text-gold-500 text-[10px] tracking-[0.2em] uppercase mb-2">Destiny Match</div>
+            <div className="text-gold-500 text-[10px] tracking-[0.2em] uppercase mb-2">DAIMON · 命運配對</div>
             <div className="flex items-center justify-center gap-3 mb-3">
               <span className="text-white text-sm font-semibold">{nameA}</span>
               <span className="text-gold-500/50 text-xs chinese-char">x</span>
@@ -177,7 +177,7 @@ Discover your destiny match at daimon.app`;
               { label: 'Practical', cn: '务实', score: categoryScores.practical },
             ].map((cat) => (
               <div key={cat.label} className="flex items-center gap-2">
-                <span className="text-[10px] text-gray-500 w-16">{cat.label}</span>
+                <span className="text-[10px] text-gray-500 w-16">{cat.cn}</span>
                 <div className="flex-1 bg-white/[0.03] rounded-full h-1.5 overflow-hidden">
                   <div
                     className="h-full rounded-full"
@@ -196,7 +196,7 @@ Discover your destiny match at daimon.app`;
           {/* Footer */}
           <div className="h-px bg-gradient-to-r from-transparent via-gold-500/20 to-transparent mb-2" />
           <div className="flex items-center justify-between text-[10px] text-gray-600">
-            <span>Discover your destiny</span>
+            <span>掃碼解讀你的命運</span>
             <span className="text-gradient-gold font-medium" style={{ letterSpacing: '0.15em', fontSize: '10px' }}>DAIMON.APP</span>
           </div>
         </div>
@@ -213,14 +213,14 @@ Discover your destiny match at daimon.app`;
               <svg className="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
-              Copied!
+              已複製！
             </>
           ) : (
             <>
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
               </svg>
-              Copy Summary
+              複製文字
             </>
           )}
         </button>

@@ -4,10 +4,12 @@ import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import BirthForm from '@/components/BirthForm';
 import { getProfile, saveProfile, UserProfile } from '@/lib/user-profile';
-import { isPro } from '@/lib/subscription';
+import { isPro, canUseReading, useReading } from '@/lib/subscription';
 import InlinePaywall from '@/components/InlinePaywall';
 import { DailyDestiny } from '@/lib/bazi/daily';
 import { useLocale } from '@/components/LocaleProvider';
+import { generateDailyCard, shareOrDownloadCanvas, DailyCardData } from '@/lib/share-image';
+import PushPrompt from '@/components/PushPrompt';
 
 // ==================== Score Ring Component ====================
 
@@ -123,12 +125,14 @@ export default function DailyPage() {
   const [userIsPro, setUserIsPro] = useState(false);
   const [profileChecked, setProfileChecked] = useState(false);
   const [shareCopied, setShareCopied] = useState(false);
+  const [generatingCard, setGeneratingCard] = useState(false);
 
   const handleShareDaily = async () => {
     if (!daily) return;
     const score = daily.scores.overall;
     const ganZhi = daily.liuRi.ganZhi;
-    const text = `今日運勢 ${score}/100 | ${ganZhi}日 × 我的命盤 | 看看你的 👉 daimon-aqa.pages.dev/daily`;
+    const origin = typeof window !== 'undefined' ? window.location.origin : 'https://daimon-app.vercel.app';
+    const text = `今日運勢 ${score}/100 | ${ganZhi}日 × 我的命盤 | 看看你的 👉 ${origin}/daily`;
     if (navigator.share) {
       try {
         await navigator.share({ text });
@@ -146,11 +150,41 @@ export default function DailyPage() {
     }
   };
 
+  const handleGenerateCard = async () => {
+    if (!daily) return;
+    setGeneratingCard(true);
+    try {
+      const elementCn: Record<string, string> = { Wood: '木', Fire: '火', Earth: '土', Metal: '金', Water: '水' };
+      const cardData: DailyCardData = {
+        date: todayStr,
+        ganZhi: daily.liuRi.ganZhi,
+        element: elementCn[daily.liuRi.elementEn as string] || daily.liuRi.elementEn,
+        nayin: daily.liuRi.nayin,
+        overall: daily.scores.overall,
+        career: daily.scores.career,
+        relationships: daily.scores.relationships,
+        health: daily.scores.health,
+        wealth: daily.scores.wealth,
+        luckyColors: daily.luckyColors,
+        luckyDirections: daily.luckyDirections,
+        tenGod: daily.dayMasterRelation.tenGod,
+        favorability: daily.dayMasterRelation.favorability,
+        userName: profile?.name,
+      };
+      const canvas = await generateDailyCard(cardData);
+      const dateStr = new Date().toISOString().slice(0, 10);
+      await shareOrDownloadCanvas(canvas, `daimon-daily-${dateStr}.png`);
+    } catch (err) {
+      console.error('Failed to generate card:', err);
+    }
+    setGeneratingCard(false);
+  };
+
   // Check profile on mount
   useEffect(() => {
     const saved = getProfile();
     setProfile(saved);
-    setUserIsPro(isPro());
+    setUserIsPro(isPro() || canUseReading());
     if (!saved) {
       setShowForm(true);
       setLoading(false);
@@ -207,6 +241,7 @@ export default function DailyPage() {
                 const parsed = JSON.parse(data);
                 if (parsed.daily) {
                   setDaily(parsed.daily);
+                  if (!isPro()) useReading();
                   setLoading(false);
                 }
                 if (parsed.text) {
@@ -224,6 +259,7 @@ export default function DailyPage() {
         const data = await response.json();
         if (data.daily) {
           setDaily(data.daily);
+          if (!isPro()) useReading();
         }
       }
 
@@ -405,7 +441,7 @@ export default function DailyPage() {
             <span className="text-3xl chinese-char text-gold-500">{daily.liuRi.ganZhi}</span>
           </div>
           <p className="text-xs text-gray-600">
-            {daily.liuRi.elementEn} 日 &middot; {daily.liuRi.nayin} ({daily.liuRi.nayinEn})
+            {{ Wood: '木', Fire: '火', Earth: '土', Metal: '金', Water: '水' }[daily.liuRi.elementEn as string] || daily.liuRi.elementEn} 日 &middot; {daily.liuRi.nayin} ({daily.liuRi.nayinEn})
           </p>
           <p className="text-xs text-gray-700 mt-0.5">
             {daily.liuYue.ganZhi} 月 &middot; {daily.liuNian.ganZhi} 年
@@ -423,23 +459,48 @@ export default function DailyPage() {
                 ? 'bg-red-500/10 text-red-400 border border-red-500/20'
                 : 'bg-gray-500/10 text-gray-400 border border-gray-500/20'
             }`}>
-              {daily.dayMasterRelation.tenGod} ({daily.dayMasterRelation.tenGodEn})
+              {daily.dayMasterRelation.tenGod}
               {daily.dayMasterRelation.favorability === 'favorable' && ' — 吉'}
               {daily.dayMasterRelation.favorability === 'unfavorable' && ' — 凶'}
             </span>
           </div>
         </div>
 
-        {/* Share Button */}
-        <div className="slide-up slide-up-delay-2">
+        {/* Share Buttons */}
+        <div className="slide-up slide-up-delay-2 flex gap-3">
+          <button
+            onClick={handleGenerateCard}
+            disabled={generatingCard}
+            className="flex-1 py-3 rounded-lg font-semibold text-sm transition-all duration-300 bg-gradient-to-r from-gold-500 to-gold-700 text-void hover:from-gold-400 hover:to-gold-600 glow-gold-soft press-effect flex items-center justify-center gap-2 disabled:opacity-60"
+          >
+            {generatingCard ? (
+              <span className="flex items-center gap-2">
+                <span className="loading-dot w-1.5 h-1.5 bg-void rounded-full inline-block" />
+                <span className="loading-dot w-1.5 h-1.5 bg-void rounded-full inline-block" />
+                <span className="loading-dot w-1.5 h-1.5 bg-void rounded-full inline-block" />
+              </span>
+            ) : (
+              <>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                生成運勢卡片
+              </>
+            )}
+          </button>
           <button
             onClick={handleShareDaily}
-            className="w-full py-3 rounded-lg font-semibold text-sm transition-all duration-300 bg-gradient-to-r from-gold-500 to-gold-700 text-void hover:from-gold-400 hover:to-gold-600 glow-gold-soft press-effect flex items-center justify-center gap-2"
+            className="py-3 px-4 rounded-lg border border-gray-700 text-sm text-gray-400 hover:border-gold-500/50 hover:text-gold-500 hover:bg-gold-500/5 transition-all press-effect"
           >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
-            </svg>
-            {shareCopied ? t('share.copied') : t('share.daily')}
+            {shareCopied ? (
+              <svg className="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+            ) : (
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+              </svg>
+            )}
           </button>
         </div>
 
@@ -488,7 +549,7 @@ export default function DailyPage() {
                     className="w-4 h-4 rounded-full border border-white/10"
                     style={{ background: getColorHex(color) }}
                   />
-                  <span className="text-xs text-gray-300">{color}</span>
+                  <span className="text-xs text-gray-300">{getColorCn(color)}</span>
                 </div>
               ))}
             </div>
@@ -600,6 +661,9 @@ export default function DailyPage() {
           </div>
         )}
 
+        {/* Push Notification Prompt */}
+        <PushPrompt />
+
         {/* Change Birth Data */}
         <div className="text-center pb-8">
           <button
@@ -615,6 +679,17 @@ export default function DailyPage() {
 }
 
 // ==================== Helpers ====================
+
+function getColorCn(name: string): string {
+  const map: Record<string, string> = {
+    Green: '綠', Emerald: '翠綠', Teal: '青',
+    Red: '紅', Purple: '紫', Orange: '橙',
+    Yellow: '黃', Brown: '棕', Beige: '米',
+    White: '白', Gold: '金', Silver: '銀',
+    Black: '黑', Blue: '藍', Navy: '藏藍',
+  };
+  return map[name] || name;
+}
 
 function getColorHex(name: string): string {
   const map: Record<string, string> = {

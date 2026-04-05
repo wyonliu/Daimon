@@ -62,9 +62,11 @@ export default function BottomNav() {
   const active = getActiveItem(pathname);
   const { t } = useLocale();
 
-  // Only show bottom nav on app pages (/daily, /match)
-  const showOnPaths = ['/daily', '/match'];
-  if (!showOnPaths.some(p => pathname.startsWith(p))) return null;
+  // Hide bottom nav on payment/pricing/invite pages; show on main pages only
+  const hideOnPaths = ['/pay', '/pricing', '/success', '/match/invite'];
+  if (hideOnPaths.some(p => pathname.startsWith(p))) return null;
+  const showOnPaths = ['/', '/daily', '/match', '/settings', '/reading'];
+  if (!showOnPaths.some(p => p === '/' ? pathname === '/' : pathname.startsWith(p))) return null;
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-gray-800/50 bg-void-lighter/95 backdrop-blur-lg safe-bottom">

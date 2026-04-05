@@ -6,23 +6,23 @@ export interface UserPlan {
   maxFreeReadings: number;
   expiresAt?: string; // ISO date
   sessionId?: string;
-  monthKey?: string; // "YYYY-MM" for monthly reset tracking
+  dayKey?: string; // "YYYY-MM-DD" for daily reset tracking
 }
 
 const STORAGE_KEY = 'daimon_user_plan';
-const MAX_FREE_READINGS = 3;
+const MAX_FREE_READINGS_PER_DAY = 2;
 
-function getCurrentMonthKey(): string {
+function getCurrentDayKey(): string {
   const now = new Date();
-  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
 }
 
 function getDefaultPlan(): UserPlan {
   return {
     plan: 'free',
     freeReadingsUsed: 0,
-    maxFreeReadings: MAX_FREE_READINGS,
-    monthKey: getCurrentMonthKey(),
+    maxFreeReadings: MAX_FREE_READINGS_PER_DAY,
+    dayKey: getCurrentDayKey(),
   };
 }
 
@@ -35,11 +35,17 @@ export function getUserPlan(): UserPlan {
 
     const parsed: UserPlan = JSON.parse(stored);
 
-    // Monthly reset for free users
-    const currentMonth = getCurrentMonthKey();
-    if (parsed.plan === 'free' && parsed.monthKey !== currentMonth) {
+    // Daily reset for free users (also handles legacy monthly keys)
+    const currentDay = getCurrentDayKey();
+    const needsReset = parsed.plan === 'free' && (
+      parsed.dayKey !== currentDay ||
+      // Migrate from old monthly format (e.g. "2026-04" → "2026-04-03")
+      (parsed.dayKey && parsed.dayKey.length <= 7)
+    );
+    if (needsReset) {
       parsed.freeReadingsUsed = 0;
-      parsed.monthKey = currentMonth;
+      parsed.dayKey = currentDay;
+      parsed.maxFreeReadings = MAX_FREE_READINGS_PER_DAY;
       setUserPlan(parsed);
     }
 
@@ -53,7 +59,9 @@ export function getUserPlan(): UserPlan {
     }
 
     // Ensure maxFreeReadings is set
-    parsed.maxFreeReadings = MAX_FREE_READINGS;
+    if (!parsed.maxFreeReadings) {
+      parsed.maxFreeReadings = MAX_FREE_READINGS_PER_DAY;
+    }
 
     return parsed;
   } catch {
@@ -80,7 +88,7 @@ export function useReading(): void {
   const plan = getUserPlan();
   if (plan.plan === 'pro' || plan.plan === 'master') return;
   plan.freeReadingsUsed += 1;
-  plan.monthKey = getCurrentMonthKey();
+  plan.dayKey = getCurrentDayKey();
   setUserPlan(plan);
 }
 
@@ -93,9 +101,9 @@ export function activatePro(sessionId: string, planType: 'pro' | 'master' = 'pro
   const plan: UserPlan = {
     plan: planType,
     freeReadingsUsed: 0,
-    maxFreeReadings: MAX_FREE_READINGS,
+    maxFreeReadings: MAX_FREE_READINGS_PER_DAY,
     sessionId,
-    monthKey: getCurrentMonthKey(),
+    dayKey: getCurrentDayKey(),
     // Set expiry to ~30 days from now for MVP
     // In production, this would be managed by LemonSqueezy webhooks
     expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),

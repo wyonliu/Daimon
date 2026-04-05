@@ -6,8 +6,10 @@ import { BaziResult } from '@/lib/bazi/calculator';
 import { CompatibilityResult, CrossBranchInteraction } from '@/lib/bazi/compatibility';
 import MatchShareCard from '@/components/MatchShareCard';
 import InlinePaywall from '@/components/InlinePaywall';
-import { isPro } from '@/lib/subscription';
+import { isPro, canUseReading, useReading } from '@/lib/subscription';
 import { useLocale } from '@/components/LocaleProvider';
+import { getInviteUrl } from '@/lib/invite';
+import { generateMatchCard, shareOrDownloadCanvas, MatchCardData } from '@/lib/share-image';
 
 // ==================== Types ====================
 
@@ -378,11 +380,14 @@ export default function MatchPage() {
   const [aiReading, setAiReading] = useState('');
   const [showShare, setShowShare] = useState(false);
   const [userIsPro, setUserIsPro] = useState(false);
+  const [inviteUrl, setInviteUrl] = useState<string | null>(null);
+  const [inviteCopied, setInviteCopied] = useState(false);
+  const [generatingCard, setGeneratingCard] = useState(false);
 
   const resultsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setUserIsPro(isPro());
+    setUserIsPro(isPro() || canUseReading());
   }, []);
 
   const canSubmit = personA.year && personA.month && personA.day && personB.year && personB.month && personB.day;
@@ -444,6 +449,7 @@ export default function MatchPage() {
         setCompatibility(data.compatibility);
         setBaziA(data.baziA);
         setBaziB(data.baziB);
+        if (!isPro()) useReading();
         setLoading(false);
         return;
       }
@@ -476,6 +482,7 @@ export default function MatchPage() {
               setCompatibility(parsed.compatibility);
               setBaziA(parsed.baziA);
               setBaziB(parsed.baziB);
+              if (!isPro()) useReading();
               setLoading(false);
             } else if (parsed.type === 'text' && parsed.text) {
               fullText += parsed.text;
@@ -498,10 +505,75 @@ export default function MatchPage() {
 
   const [shareCopied, setShareCopied] = useState(false);
 
+  // Generate invite URL when compatibility loads
+  useEffect(() => {
+    if (compatibility && !inviteUrl) {
+      const url = getInviteUrl({
+        nameA,
+        yearA: parseInt(personA.year),
+        monthA: parseInt(personA.month),
+        dayA: parseInt(personA.day),
+        hourA: personA.hour ? parseInt(personA.hour) : null,
+        genderA: personA.gender,
+      });
+      setInviteUrl(url);
+    }
+  }, [compatibility, inviteUrl, nameA, personA]);
+
+  const handleShareInvite = async () => {
+    if (!inviteUrl || !compatibility) return;
+    const text = `${nameA} 想知道和你的緣分配對 — 輸入你的生辰，揭曉命中注定的連結 👉 ${inviteUrl}`;
+    if (navigator.share) {
+      try {
+        await navigator.share({ text });
+      } catch {
+        // user cancelled
+      }
+    } else {
+      try {
+        await navigator.clipboard.writeText(text);
+        setInviteCopied(true);
+        setTimeout(() => setInviteCopied(false), 2500);
+      } catch {
+        // clipboard not available
+      }
+    }
+  };
+
+  const handleGenerateMatchCard = async () => {
+    if (!compatibility) return;
+    setGeneratingCard(true);
+    try {
+      const cardData: MatchCardData = {
+        nameA,
+        nameB,
+        overallScore: compatibility.overallScore,
+        stemA: compatibility.dayMasterRelation.stemA,
+        stemB: compatibility.dayMasterRelation.stemB,
+        elementA: compatibility.dayMasterRelation.elementA,
+        elementB: compatibility.dayMasterRelation.elementB,
+        elementRelation: compatibility.dayMasterRelation.elementRelation,
+        emotional: compatibility.categoryScores.emotional,
+        intellectual: compatibility.categoryScores.intellectual,
+        physical: compatibility.categoryScores.physical,
+        spiritual: compatibility.categoryScores.spiritual,
+        practical: compatibility.categoryScores.practical,
+        strengths: compatibility.strengths,
+        inviteCode: inviteUrl ? 'yes' : undefined,
+      };
+      const canvas = await generateMatchCard(cardData);
+      await shareOrDownloadCanvas(canvas, `daimon-match-${nameA}-${nameB}.png`);
+    } catch (err) {
+      console.error('Failed to generate match card:', err);
+    }
+    setGeneratingCard(false);
+  };
+
   const handleShare = async () => {
     if (!compatibility) return;
     const score = compatibility.overallScore;
-    const text = `我和 ${nameB} 的八字配對分數是 ${score}/100！來看看你們的緣分 👉 daimon-aqa.pages.dev/match`;
+    const origin = typeof window !== 'undefined' ? window.location.origin : 'https://daimon-app.vercel.app';
+    const text = `我和 ${nameB} 的八字配對分數是 ${score}/100！來看看你們的緣分 👉 ${origin}/match`;
     if (navigator.share) {
       try {
         await navigator.share({ text });
@@ -769,26 +841,76 @@ export default function MatchPage() {
               />
             )}
 
+            {/* Invite Section — viral loop core */}
+            {inviteUrl && (
+              <div className="glass-card rounded-2xl p-5 border border-gold-500/20">
+                <div className="flex items-center gap-2.5 mb-3">
+                  <div className="w-8 h-8 rounded-full bg-gold-500/10 flex items-center justify-center flex-shrink-0">
+                    <span className="text-lg chinese-char text-gold-500">{'\u7de3'}</span>
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-semibold text-gray-200">邀請對方查看緣分</h3>
+                    <p className="text-xs text-gray-500">發送邀請連結，讓對方輸入生辰揭曉配對</p>
+                  </div>
+                </div>
+                <button
+                  onClick={handleShareInvite}
+                  className="w-full py-3 rounded-lg font-semibold text-sm bg-gradient-to-r from-gold-700 via-gold-500 to-gold-700 text-void hover:from-gold-600 hover:via-gold-400 hover:to-gold-600 transition-all press-effect btn-shimmer flex items-center justify-center gap-2"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                  </svg>
+                  {inviteCopied ? '已複製邀請連結！' : '發送緣分邀請'}
+                </button>
+              </div>
+            )}
+
             {/* Share Section */}
-            <div className="flex flex-col gap-3">
+            <div className="flex gap-3">
               <button
-                onClick={handleShare}
-                className="w-full py-3.5 rounded-lg font-semibold text-base transition-all duration-300 bg-gradient-to-r from-gold-500 to-gold-700 text-void hover:from-gold-400 hover:to-gold-600 glow-gold-soft press-effect flex items-center justify-center gap-2"
+                onClick={handleGenerateMatchCard}
+                disabled={generatingCard}
+                className="flex-1 py-3 rounded-lg font-semibold text-sm transition-all duration-300 bg-gradient-to-r from-gold-500/90 to-gold-700/90 text-void hover:from-gold-400 hover:to-gold-600 press-effect flex items-center justify-center gap-2 disabled:opacity-60"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
-                </svg>
-                {shareCopied ? t('share.copied') : t('share.match')}
+                {generatingCard ? (
+                  <span className="flex items-center gap-2">
+                    <span className="loading-dot w-1.5 h-1.5 bg-void rounded-full inline-block" />
+                    <span className="loading-dot w-1.5 h-1.5 bg-void rounded-full inline-block" />
+                    <span className="loading-dot w-1.5 h-1.5 bg-void rounded-full inline-block" />
+                  </span>
+                ) : (
+                  <>
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    生成配對卡片
+                  </>
+                )}
               </button>
               <button
-                onClick={() => setShowShare(!showShare)}
-                className="w-full py-2.5 rounded-lg border border-gray-700 text-sm text-gray-400 hover:border-gold-500/50 hover:text-gold-500 hover:bg-gold-500/5 transition-all duration-200 flex items-center justify-center gap-2 press-effect"
+                onClick={handleShare}
+                className="py-3 px-4 rounded-lg border border-gray-700 text-sm text-gray-400 hover:border-gold-500/50 hover:text-gold-500 hover:bg-gold-500/5 transition-all press-effect"
               >
-                {showShare ? '隱藏分享卡片' : '分享卡片'}
+                {shareCopied ? (
+                  <svg className="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                ) : (
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                  </svg>
+                )}
               </button>
             </div>
 
-            {/* Share Card */}
+            {/* Detailed Share Card (toggle) */}
+            <button
+              onClick={() => setShowShare(!showShare)}
+              className="w-full py-2.5 rounded-lg border border-gray-700/50 text-xs text-gray-500 hover:border-gold-500/30 hover:text-gold-500/70 transition-all press-effect"
+            >
+              {showShare ? '隱藏詳細分享卡片' : '查看詳細分享卡片'}
+            </button>
+
             {showShare && compatibility && (
               <div className="fade-in">
                 <MatchShareCard

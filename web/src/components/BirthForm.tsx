@@ -40,7 +40,7 @@ export default function BirthForm({ onSubmit, loading }: BirthFormProps) {
       month: parseInt(month),
       day: parseInt(day),
       hour: hour ? parseInt(hour) : null,
-      name: name || 'Seeker',
+      name: name || '求問者',
       gender,
     });
   };

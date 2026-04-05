@@ -1,7 +1,8 @@
 {
-  "name": "Daimon — Destiny Engine",
+  "name": "Daimon — 東西方命理引擎",
   "short_name": "Daimon",
-  "description": "Precision destiny analysis. BaZi meets Western Astrology.",
+  "description": "專業級八字命理與西洋占星分析引擎。東西方命理傳統，一次深度解讀。",
+  "lang": "zh-Hant",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0a0a16",

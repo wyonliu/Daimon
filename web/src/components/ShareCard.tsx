@@ -22,15 +22,16 @@ export default function ShareCard({ bazi, zodiac, name }: ShareCardProps) {
 
   const handleShare = async () => {
     // Create shareable text
-    const text = `${name}'s Destiny Chart | Daimon
-${zodiac.sunSign.symbol} ${zodiac.sunSign.name} Sun · ${bazi.dayMaster.stem} ${bazi.dayMaster.elementEn} Day Master
+    const elementCn: Record<string, string> = { Wood: '木', Fire: '火', Earth: '土', Metal: '金', Water: '水' };
+    const text = `${name} 的命運解讀 | Daimon
+${zodiac.sunSign.symbol} ${zodiac.sunSign.name} · ${bazi.dayMaster.stem} ${elementCn[bazi.dayMaster.elementEn] || bazi.dayMaster.elementEn} 日主
 
-Four Pillars: ${bazi.year.stem}${bazi.year.branch} ${bazi.month.stem}${bazi.month.branch} ${bazi.day.stem}${bazi.day.branch} ${bazi.hour.stem}${bazi.hour.branch}
-${bazi.year.animal} Year · ${bazi.dayMaster.polarity === 'yang' ? 'Yang' : 'Yin'} ${bazi.dayMaster.elementEn}
+四柱: ${bazi.year.stem}${bazi.year.branch} ${bazi.month.stem}${bazi.month.branch} ${bazi.day.stem}${bazi.day.branch} ${bazi.hour.stem}${bazi.hour.branch}
+${bazi.year.animal}年 · ${bazi.dayMaster.polarity === 'yang' ? '陽' : '陰'}${elementCn[bazi.dayMaster.elementEn] || bazi.dayMaster.elementEn}
 
 ${bazi.dayMaster.description}
 
-Discover your destiny at daimon.app`;
+解讀你的命運 👉 daimon.app`;
 
     try {
       await navigator.clipboard.writeText(text);
@@ -80,7 +81,7 @@ Discover your destiny at daimon.app`;
           {/* Header */}
           <div className="flex items-center justify-between mb-6">
             <div>
-              <div className="text-gold-500 text-xs tracking-wider uppercase mb-1">Daimon Destiny Chart</div>
+              <div className="text-gold-500 text-xs tracking-wider uppercase mb-1">DAIMON · 命運解讀</div>
               <div className="text-white text-lg font-semibold">{name}</div>
             </div>
             <div className="text-right">
@@ -95,7 +96,7 @@ Discover your destiny at daimon.app`;
               const pillar = bazi[p];
               return (
                 <div key={p} className="text-center">
-                  <div className="text-xs text-gray-600 mb-1">{p === 'hour' ? '时' : p === 'day' ? '日' : p === 'month' ? '月' : '年'}</div>
+                  <div className="text-xs text-gray-600 mb-1">{p === 'hour' ? '時' : p === 'day' ? '日' : p === 'month' ? '月' : '年'}</div>
                   <div className="text-xl chinese-char" style={{ color: elementColors[pillar.stemElementEn] }}>
                     {pillar.stem}
                   </div>
@@ -109,15 +110,15 @@ Discover your destiny at daimon.app`;
 
           {/* Day Master */}
           <div className="bg-void-lighter/50 rounded-xl p-4 mb-4" style={{ borderLeft: `3px solid ${dayMasterColor}` }}>
-            <div className="text-xs text-gray-500 mb-1">Day Master · 日主</div>
+            <div className="text-xs text-gray-500 mb-1">日主</div>
             <div className="flex items-center gap-2">
               <span className="text-2xl chinese-char" style={{ color: dayMasterColor }}>{bazi.dayMaster.stem}</span>
               <div>
                 <span className="text-sm text-gray-300">
-                  {bazi.dayMaster.polarity === 'yang' ? 'Yang' : 'Yin'} {bazi.dayMaster.elementEn}
+                  {bazi.dayMaster.polarity === 'yang' ? '陽' : '陰'} {{ Wood: '木', Fire: '火', Earth: '土', Metal: '金', Water: '水' }[bazi.dayMaster.elementEn] || bazi.dayMaster.elementEn}
                 </span>
                 <span className="text-xs text-gray-500 block">
-                  {bazi.dayMasterStrength === 'strong' ? 'Strong' : bazi.dayMasterStrength === 'weak' ? 'Needs support' : 'Balanced'}
+                  {bazi.dayMasterStrength === 'strong' ? '身強' : bazi.dayMasterStrength === 'weak' ? '身弱' : '中和'}
                 </span>
               </div>
             </div>
@@ -141,7 +142,7 @@ Discover your destiny at daimon.app`;
           {/* Footer */}
           <div className="h-px bg-gradient-to-r from-transparent via-gold-500/20 to-transparent mb-3" />
           <div className="flex items-center justify-between text-xs text-gray-600">
-            <span>{bazi.birthInfo.solar} · {bazi.year.animal} Year</span>
+            <span>{bazi.birthInfo.solar} · {bazi.year.animal}年</span>
             <span className="text-gradient-gold font-medium" style={{ letterSpacing: '0.15em', fontSize: '11px' }}>DAIMON.APP</span>
           </div>
         </div>
@@ -158,14 +159,14 @@ Discover your destiny at daimon.app`;
               <svg className="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
-              Copied!
+              已複製！
             </>
           ) : (
             <>
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
               </svg>
-              Copy Chart Summary
+              複製命盤摘要
             </>
           )}
         </button>
@@ -173,7 +174,7 @@ Discover your destiny at daimon.app`;
           onClick={() => {
             const url = window.location.href;
             if (navigator.share) {
-              navigator.share({ title: `${name}'s Destiny Chart | Daimon`, url });
+              navigator.share({ title: `${name} 的命運解讀 | Daimon`, url });
             } else {
               navigator.clipboard.writeText(url);
               setCopied(true);

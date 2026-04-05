@@ -97,12 +97,12 @@ export default function SettingsPage() {
                 <span className="text-sm text-gray-500">{t('settings.birth')}</span>
                 <span className="text-sm text-gray-200">
                   {profile.year}/{profile.month}/{profile.day}
-                  {profile.hour !== null ? ` at ${profile.hour}:00` : ''}
+                  {profile.hour !== null ? (locale === 'zh-TW' ? ` ${profile.hour}:00 ${t('settings.atHour')}` : ` ${t('settings.atHour')} ${profile.hour}:00`) : ''}
                 </span>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-sm text-gray-500">{t('settings.gender')}</span>
-                <span className="text-sm text-gray-200 capitalize">{profile.gender}</span>
+                <span className="text-sm text-gray-200 capitalize">{profile.gender === 'male' ? t('settings.male') : t('settings.female')}</span>
               </div>
               <div className="divider-gold my-4" />
               <button
@@ -147,7 +147,7 @@ export default function SettingsPage() {
             <div className="space-y-3">
               <div className="flex justify-between items-center">
                 <span className="text-sm text-gray-500">{t('settings.plan')}</span>
-                <span className="text-sm text-gray-200">Free</span>
+                <span className="text-sm text-gray-200">{t('settings.free')}</span>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-sm text-gray-500">{t('settings.readingsLeft')}</span>

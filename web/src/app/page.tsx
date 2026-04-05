@@ -1,19 +1,29 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import BirthForm from '@/components/BirthForm';
-import { saveProfile } from '@/lib/user-profile';
+import OnboardingFlow from '@/components/OnboardingFlow';
+import { saveProfile, hasProfile } from '@/lib/user-profile';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function Home() {
   const [loading, setLoading] = useState(false);
+  const [showOnboarding, setShowOnboarding] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const router = useRouter();
   const { t } = useLocale();
 
+  // Check if user is new (no profile saved)
+  useEffect(() => {
+    setMounted(true);
+    if (!hasProfile()) {
+      setShowOnboarding(true);
+    }
+  }, []);
+
   const handleSubmit = async (data: { year: number; month: number; day: number; hour: number | null; name: string; gender: 'male' | 'female' }) => {
     setLoading(true);
-    // Save profile for Daily Destiny feature
     saveProfile({
       name: data.name || '求問者',
       year: data.year,
@@ -35,6 +45,49 @@ export default function Home() {
     }
     router.push(`/reading?${params.toString()}`);
   };
+
+  const handleOnboardingComplete = (data: {
+    year: number; month: number; day: number; hour: number | null;
+    name: string; gender: 'male' | 'female'; interests: string[];
+  }) => {
+    // Save profile
+    saveProfile({
+      name: data.name || '求問者',
+      year: data.year,
+      month: data.month,
+      day: data.day,
+      hour: data.hour,
+      gender: data.gender,
+      savedAt: new Date().toISOString(),
+    });
+
+    // Save interests for personalized readings
+    if (typeof window !== 'undefined' && data.interests.length > 0) {
+      try {
+        localStorage.setItem('daimon_interests', JSON.stringify(data.interests));
+      } catch {
+        // ignore
+      }
+    }
+
+    // Navigate to reading
+    const params = new URLSearchParams({
+      y: String(data.year),
+      m: String(data.month),
+      d: String(data.day),
+      n: data.name,
+      g: data.gender,
+    });
+    if (data.hour !== null) {
+      params.set('h', String(data.hour));
+    }
+    router.push(`/reading?${params.toString()}`);
+  };
+
+  // Show onboarding for new users
+  if (mounted && showOnboarding) {
+    return <OnboardingFlow onComplete={handleOnboardingComplete} />;
+  }
 
   return (
     <main className="min-h-screen flex flex-col">
