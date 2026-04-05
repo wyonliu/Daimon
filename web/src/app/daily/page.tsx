@@ -9,7 +9,6 @@ import InlinePaywall from '@/components/InlinePaywall';
 import { DailyDestiny } from '@/lib/bazi/daily';
 import { useLocale } from '@/components/LocaleProvider';
 import { generateDailyCard, shareOrDownloadCanvas, DailyCardData } from '@/lib/share-image';
-import PushPrompt from '@/components/PushPrompt';
 
 // ==================== Score Ring Component ====================
 
@@ -660,9 +659,6 @@ export default function DailyPage() {
             )}
           </div>
         )}
-
-        {/* Push Notification Prompt */}
-        <PushPrompt />
 
         {/* Change Birth Data */}
         <div className="text-center pb-8">

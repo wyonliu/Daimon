@@ -24,6 +24,7 @@ export default function InlinePaywall({
   const trialPayUrl = `/pay?plan=trial&returnUrl=${encodeURIComponent(currentPath)}`;
   const deepPayUrl = `/pay?plan=deep&returnUrl=${encodeURIComponent(currentPath)}`;
   const proPayUrl = `/pay?plan=pro&returnUrl=${encodeURIComponent(currentPath)}`;
+  const masterPayUrl = `/pay?plan=master&returnUrl=${encodeURIComponent(currentPath)}`;
 
   // Delayed urgency hint — appears after 3s
   useEffect(() => {
@@ -133,36 +134,44 @@ export default function InlinePaywall({
           </div>
         )}
 
-        {/* Three-tier pricing */}
-        <div className="mt-6 space-y-3 max-w-xs mx-auto">
-          {/* Primary: ¥9.9 結緣價 */}
+        {/* Four-tier Ariely decoy */}
+        <div className="mt-6 space-y-2.5 max-w-xs mx-auto">
+          {/* High anchor: ¥128 master */}
           <Link
-            href={trialPayUrl}
-            className="w-full py-3.5 rounded-xl bg-gradient-to-r from-gold-700 via-gold-500 to-gold-700 text-void font-bold text-base press-effect btn-shimmer block text-center"
+            href={masterPayUrl}
+            className="w-full py-2.5 rounded-xl border border-gold-500/15 text-gold-500/60 font-medium text-xs hover:bg-gold-500/5 press-effect block text-center"
           >
-            <span>查閱完整報告 — 結緣價 ¥9.9</span>
-            <span className="block text-[10px] font-normal opacity-70 mt-0.5">單次完整命盤解讀</span>
+            <span>命主尊享 90 天 — <span className="line-through text-gray-600">¥177</span> <span className="text-gold-500/80">¥128</span></span>
+            <span className="block text-[10px] text-gray-600 mt-0.5">平均每月 ¥42 · 全功能</span>
           </Link>
 
-          {/* Decoy: ¥35 */}
-          <Link
-            href={deepPayUrl}
-            className="w-full py-2.5 rounded-xl border border-gold-500/20 text-gold-500/80 font-medium text-sm hover:bg-gold-500/5 hover:border-gold-500/35 press-effect block text-center"
-          >
-            <span>深度解讀 — ¥35</span>
-            <span className="block text-[10px] text-gray-500 mt-0.5">命盤 + 合盤 · 各 3 次</span>
-          </Link>
-
-          {/* Target: ¥70/月 */}
+          {/* TARGET: ¥59 pro — primary CTA */}
           <Link
             href={proPayUrl}
-            className="w-full py-2.5 rounded-xl border border-gold-500/15 bg-gold-500/5 text-gold-500/70 font-medium text-sm hover:bg-gold-500/10 press-effect block text-center relative"
+            className="w-full py-3.5 rounded-xl bg-gradient-to-r from-gold-700 via-gold-500 to-gold-700 text-void font-bold text-base press-effect btn-shimmer block text-center relative"
           >
-            <div className="absolute -top-2 right-4">
-              <span className="px-2 py-0.5 rounded-full bg-gradient-to-r from-gold-700 to-gold-500 text-void text-[9px] font-bold">最超值</span>
+            <div className="absolute -top-2.5 left-1/2 -translate-x-1/2">
+              <span className="px-2.5 py-0.5 rounded-full bg-void border border-gold-500/50 text-gold-500 text-[10px] font-bold tracking-wider">命主推薦</span>
             </div>
-            <span>專業通行 — ¥70/月</span>
-            <span className="block text-[10px] text-gray-500 mt-0.5">無限解讀 + 無限對話 + 日運</span>
+            <span>命主專業 30 天 — ¥59</span>
+            <span className="block text-[10px] font-normal opacity-75 mt-0.5">無限解讀 + 無限 AI 對話 + 日運</span>
+          </Link>
+
+          {/* Decoy: ¥49 */}
+          <Link
+            href={deepPayUrl}
+            className="w-full py-2.5 rounded-xl border border-gold-500/25 text-gold-500/75 font-medium text-xs hover:bg-gold-500/5 press-effect block text-center"
+          >
+            <span>深度解讀 5 次 — ¥49</span>
+            <span className="block text-[10px] text-gray-500 mt-0.5">次數有限 · 不含 AI 對話</span>
+          </Link>
+
+          {/* Entry: ¥9.9 */}
+          <Link
+            href={trialPayUrl}
+            className="w-full py-2 block text-center text-xs text-gray-500 hover:text-gold-500/80 press-effect"
+          >
+            或結緣查閱單次 — <span className="text-gold-500/80 font-medium">¥9.9</span>
           </Link>
         </div>
 

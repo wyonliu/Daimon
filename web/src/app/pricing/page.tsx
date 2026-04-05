@@ -153,59 +153,59 @@ function PricingContent() {
             <p className="text-xs text-gray-600 text-center mt-2.5">一次性費用，即時生效</p>
           </div>
 
-          {/* -- ¥35 x3 -- */}
+          {/* -- ¥49 深度解讀 x5 (decoy) -- */}
           <div className="glass-card rounded-2xl p-7 sm:p-8 card-hover slide-up slide-up-delay-2">
             <div className="mb-6">
               <div className="w-12 h-12 rounded-2xl bg-gold-500/10 border border-gold-500/25 flex items-center justify-center mb-4">
                 <span className="text-xl chinese-char text-gold-500">{'\u547D'}</span>
               </div>
               <h3 className="font-display text-xl font-semibold text-gray-200 mb-1">深度解讀</h3>
-              <p className="text-xs text-gray-500">命盤 + 合盤 + 日運，各一次</p>
+              <p className="text-xs text-gray-500">次數制，深入探索核心議題</p>
             </div>
 
             <div className="mb-6">
-              <span className="text-4xl font-bold text-gray-100 font-display">&yen;35</span>
-              <span className="text-sm text-gray-500 ml-2">3 次</span>
+              <span className="text-4xl font-bold text-gray-100 font-display">&yen;49</span>
+              <span className="text-sm text-gray-500 ml-2">5 次</span>
             </div>
 
             <div className="divider-gold mb-6" />
 
             <ul className="space-y-3 text-sm text-gray-300 mb-8">
-              <li className="flex items-start gap-3">{checkIcon}<span><strong className="text-gold-500/90">3 次</strong>完整深度報告</span></li>
+              <li className="flex items-start gap-3">{checkIcon}<span><strong className="text-gold-500/90">5 次</strong>完整深度報告</span></li>
               <li className="flex items-start gap-3">{checkIcon}<span>命盤 / 合盤 / 日運均可使用</span></li>
               <li className="flex items-start gap-3">{checkIcon}<span>東西方跨傳統融合解讀</span></li>
               <li className="flex items-start gap-3">{checkIcon}<span>AI 命理師個性化報告</span></li>
-              <li className="flex items-start gap-3">{checkIcon}<span>平均每次不到 ¥12</span></li>
+              <li className="flex items-start gap-3">{crossIcon}<span className="text-gray-600">不含無限 AI 對話</span></li>
             </ul>
 
             <Link
-              href="/pay?plan=single"
+              href="/pay?plan=deep"
               className="block w-full text-center py-3 rounded-xl border border-gold-500/30 text-gold-500 font-bold hover:bg-gold-500/5 hover:border-gold-500/50 transition-all duration-300 press-effect"
             >
-              查閱 3 次報告
+              查閱 5 次報告
             </Link>
             <p className="text-xs text-gray-600 text-center mt-2.5">一次性費用，無需訂閱</p>
           </div>
 
-          {/* -- Pro ¥70/mo -- */}
-          <div className="relative glass-card rounded-2xl p-7 sm:p-8 card-hover slide-up slide-up-delay-3">
+          {/* -- Pro ¥59/30天 (TARGET — highlighted) -- */}
+          <div className="relative glass-card rounded-2xl p-7 sm:p-8 card-hover border-gold-500/40 shadow-[0_0_80px_rgba(200,169,110,0.1)] slide-up slide-up-delay-3">
             <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
-              <span className="px-5 py-1.5 rounded-full bg-gray-800 border border-gold-500/30 text-gold-500 text-xs font-bold tracking-wider">
-                最超值
+              <span className="px-5 py-1.5 rounded-full bg-gradient-to-r from-gold-700 via-gold-500 to-gold-700 text-void text-xs font-bold tracking-wider shadow-lg">
+                命主推薦
               </span>
             </div>
 
             <div className="mb-6 mt-2">
-              <div className="w-12 h-12 rounded-2xl bg-gold-500/10 border border-gold-500/25 flex items-center justify-center mb-4">
+              <div className="w-12 h-12 rounded-2xl bg-gold-500/15 border border-gold-500/35 flex items-center justify-center mb-4 glow-gold-soft">
                 <span className="text-xl chinese-char text-gold-500">{'\u9053'}</span>
               </div>
-              <h3 className="font-display text-xl font-semibold text-gray-200 mb-1">專業通行</h3>
+              <h3 className="font-display text-xl font-semibold text-gold-500 mb-1">命主專業</h3>
               <p className="text-xs text-gray-500">無限次探索命運的每一個維度</p>
             </div>
 
             <div className="mb-6">
-              <span className="text-4xl font-bold text-gray-100 font-display">&yen;70</span>
-              <span className="text-sm text-gray-500 ml-2">/ 月</span>
+              <span className="text-4xl font-bold text-gradient-gold font-display">&yen;59</span>
+              <span className="text-sm text-gray-500 ml-2">/ 30 天</span>
             </div>
 
             <div className="divider-gold mb-6" />
@@ -213,19 +213,50 @@ function PricingContent() {
             <ul className="space-y-3 text-sm text-gray-300 mb-8">
               <li className="flex items-start gap-3">{checkIcon}<span><strong className="text-gold-500/90">無限次</strong>深度解讀</span></li>
               <li className="flex items-start gap-3">{checkIcon}<span>命盤 / 合盤 / 日運全功能</span></li>
-              <li className="flex items-start gap-3">{checkIcon}<span>無限次 AI 命理師對話</span></li>
+              <li className="flex items-start gap-3">{checkIcon}<span><strong className="text-gold-500/90">無限次</strong> AI 命理師對話</span></li>
               <li className="flex items-start gap-3">{checkIcon}<span>東西方跨傳統融合</span></li>
-              <li className="flex items-start gap-3">{checkIcon}<span>30天全功能，到期自動停止</span></li>
+              <li className="flex items-start gap-3">{checkIcon}<span>僅比 5 次版多 &yen;10</span></li>
             </ul>
 
             <Link
               href="/pay?plan=pro"
-              className="block w-full text-center py-3 rounded-xl border border-gold-500/30 text-gold-500 font-bold hover:bg-gold-500/5 hover:border-gold-500/50 transition-all duration-300 press-effect"
+              className="block w-full text-center py-3.5 rounded-xl bg-gradient-to-r from-gold-700 via-gold-500 to-gold-700 hover:from-gold-600 hover:via-gold-400 hover:to-gold-600 text-void font-bold text-base glow-gold-soft hover:glow-gold press-effect btn-shimmer transition-all duration-300"
             >
-              開通專業版
+              開通命主專業
             </Link>
             <p className="text-xs text-gray-600 text-center mt-2.5">到期自動停止，無隱藏費用</p>
           </div>
+        </div>
+
+        {/* -- High anchor: ¥128 Master 90 天 -- */}
+        <div className="max-w-3xl mx-auto mt-8 sm:mt-10">
+          <Link
+            href="/pay?plan=master"
+            className="relative block rounded-2xl border border-gold-500/25 bg-gradient-to-r from-void-lighter/90 via-void to-void-lighter/90 p-6 sm:p-7 press-effect hover:border-gold-500/45 transition-all overflow-hidden group"
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gold-500/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-gold-500/20 to-gold-700/10 border border-gold-500/35 flex items-center justify-center flex-shrink-0">
+                  <span className="text-xl chinese-char text-gold-500">{'\u5929'}</span>
+                </div>
+                <div>
+                  <div className="flex items-center gap-2 mb-1">
+                    <h3 className="font-display text-lg font-semibold text-gold-500">命主尊享 90 天</h3>
+                    <span className="px-2 py-0.5 rounded-full bg-gold-500/10 border border-gold-500/25 text-gold-500 text-[10px] font-bold">最超值</span>
+                  </div>
+                  <p className="text-xs text-gray-500 leading-relaxed">全功能 90 天通行 · 平均每月 &yen;42 · 比專業版省 <span className="text-gold-500/80 font-medium">&yen;49</span></p>
+                </div>
+              </div>
+              <div className="flex items-center gap-4 sm:flex-col sm:items-end sm:gap-1">
+                <div>
+                  <span className="text-3xl font-bold text-gradient-gold font-display">&yen;128</span>
+                  <span className="text-xs text-gray-600 ml-1 line-through">&yen;177</span>
+                </div>
+                <span className="text-xs text-gold-500/80 font-medium">開通尊享 &rarr;</span>
+              </div>
+            </div>
+          </Link>
         </div>
       </section>
 

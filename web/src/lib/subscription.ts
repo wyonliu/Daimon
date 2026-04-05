@@ -97,16 +97,16 @@ export function isPro(): boolean {
   return plan.plan === 'pro' || plan.plan === 'master';
 }
 
-export function activatePro(sessionId: string, planType: 'pro' | 'master' = 'pro'): void {
+export function activatePro(sessionId: string, planType: 'pro' | 'master' = 'pro', durationDays?: number): void {
+  // Default: pro = 30 days, master = 90 days
+  const days = durationDays ?? (planType === 'master' ? 90 : 30);
   const plan: UserPlan = {
     plan: planType,
     freeReadingsUsed: 0,
     maxFreeReadings: MAX_FREE_READINGS_PER_DAY,
     sessionId,
     dayKey: getCurrentDayKey(),
-    // Set expiry to ~30 days from now for MVP
-    // In production, this would be managed by LemonSqueezy webhooks
-    expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+    expiresAt: new Date(Date.now() + days * 24 * 60 * 60 * 1000).toISOString(),
   };
   setUserPlan(plan);
 }

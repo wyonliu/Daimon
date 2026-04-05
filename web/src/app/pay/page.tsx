@@ -6,11 +6,12 @@ import { useLocale } from '@/components/LocaleProvider';
 import { grantSingleReading, activatePro } from '@/lib/subscription';
 import Image from 'next/image';
 
-// Plan configs
+// Plan configs — four-tier Ariely decoy pricing
 const PLANS = {
   trial: { price: '9.9', label: '結緣解讀', char: '\u7B54', readings: 1 },
-  single: { price: '35', label: '深度解讀', char: '\u547D', readings: 3 },
-  pro: { price: '70', label: '專業通行', char: '\u9053', readings: Infinity },
+  deep: { price: '49', label: '深度解讀', char: '\u547D', readings: 5 },
+  pro: { price: '59', label: '命主專業', char: '\u9053', readings: Infinity },
+  master: { price: '128', label: '命主尊享', char: '\u5929', readings: Infinity },
 } as const;
 
 type PlanType = keyof typeof PLANS;
@@ -36,10 +37,12 @@ function PayContent() {
   const handleUnlock = () => {
     setUnlocking(true);
     if (plan === 'pro') {
-      activatePro(`alipay_${Date.now()}`, 'pro');
+      activatePro(`alipay_${Date.now()}`, 'pro'); // 30 days unlimited
+    } else if (plan === 'master') {
+      activatePro(`alipay_${Date.now()}`, 'master'); // 90 days unlimited
     } else {
-      // trial = 1 reading, single = 3 readings
-      const grants = plan === 'single' ? 3 : 1;
+      // trial = 1 reading, deep = 5 readings
+      const grants = plan === 'deep' ? 5 : 1;
       for (let i = 0; i < grants; i++) {
         grantSingleReading();
       }
@@ -58,8 +61,8 @@ function PayContent() {
       { icon: '\u{2728}', text: '十神格局 · 五行強弱 · 命運走向' },
       { icon: '\u{1F4AC}', text: 'AI 命理師個性化解讀' },
     ],
-    single: [
-      { icon: '\u{1F4DC}', text: '3 次完整命運深度解讀' },
+    deep: [
+      { icon: '\u{1F4DC}', text: '5 次完整命運深度解讀' },
       { icon: '\u{1F300}', text: '命盤 / 合盤 / 日運均可使用' },
       { icon: '\u{2728}', text: '十神 · 神煞 · 大運 · 五行全維度' },
       { icon: '\u{1F4AC}', text: 'AI 命理師個性化解讀報告' },
@@ -69,6 +72,13 @@ function PayContent() {
       { icon: '\u{1F4DC}', text: '命盤 / 合盤 / 日運全功能通行' },
       { icon: '\u{1F4AC}', text: '無限次 AI 命理師對話諮詢' },
       { icon: '\u{1F300}', text: '東西方跨傳統融合解讀' },
+    ],
+    master: [
+      { icon: '\u{1F451}', text: '90天全功能命主尊享通行' },
+      { icon: '\u{267E}\u{FE0F}', text: '無限次深度解讀與合盤推演' },
+      { icon: '\u{1F4AC}', text: '無限次 AI 命理師深度對話' },
+      { icon: '\u{1F308}', text: '東西方跨傳統融合 + 每日運勢推送' },
+      { icon: '\u{1F48E}', text: '平均每月僅 ¥42，最超值選擇' },
     ],
   };
 
@@ -122,10 +132,12 @@ function PayContent() {
                   <div className="absolute inset-0 rounded-full border border-gold-500/20 animate-ping" style={{ animationDuration: '2.5s' }} />
                 </div>
                 <h1 className="text-2xl font-bold text-gray-100 font-display mb-1.5">
-                  {plan === 'pro' ? '開啟命理之道' : '您的命運報告已生成'}
+                  {plan === 'master' ? '開啟命主之道' : plan === 'pro' ? '開啟命理之道' : '您的命運報告已生成'}
                 </h1>
                 <p className="text-sm text-gray-500">
-                  {plan === 'pro'
+                  {plan === 'master'
+                    ? '90天尊享通行，與命運深度對話'
+                    : plan === 'pro'
                     ? '無限次探索命運的每一個維度'
                     : '命盤已排定，以下內容已推演完成'}
                 </p>
@@ -137,7 +149,7 @@ function PayContent() {
             {/* What you're getting */}
             <div className="px-6 py-5">
               <p className="text-xs text-gold-500/50 uppercase tracking-wider mb-4 font-medium">
-                {plan === 'pro' ? '專業版權益' : '報告包含以下內容'}
+                {plan === 'master' ? '尊享版權益' : plan === 'pro' ? '專業版權益' : '報告包含以下內容'}
               </p>
               <div className="space-y-3.5">
                 {benefits.map((b, i) => (
@@ -176,11 +188,21 @@ function PayContent() {
                 onClick={() => setStep('pay')}
                 className="w-full py-4 rounded-xl bg-gradient-to-r from-gold-700 via-gold-500 to-gold-700 text-void font-bold text-base hover:from-gold-600 hover:via-gold-400 hover:to-gold-600 transition-all press-effect btn-shimmer"
               >
-                {plan === 'trial' ? '結緣查閱' : plan === 'pro' ? '開通專業版' : '查閱完整報告'}
+                {plan === 'trial'
+                  ? '結緣查閱'
+                  : plan === 'pro'
+                  ? '開通命主專業版'
+                  : plan === 'master'
+                  ? '開通命主尊享版'
+                  : '查閱完整報告'}
               </button>
 
               <p className="text-xs text-gray-600 text-center mt-3">
-                {plan === 'pro' ? '30天全功能，到期自動停止' : '一次性費用，即時生效，無需訂閱'}
+                {plan === 'pro'
+                  ? '30天全功能，到期自動停止'
+                  : plan === 'master'
+                  ? '90天全功能，到期自動停止'
+                  : '一次性費用，即時生效，無需訂閱'}
               </p>
 
               {/* Upsell hint for trial users */}
@@ -189,7 +211,15 @@ function PayContent() {
                   onClick={() => router.push(`/pay?plan=pro&returnUrl=${encodeURIComponent(returnUrl)}`)}
                   className="w-full mt-3 text-xs text-gray-600 hover:text-gold-500/70 transition-colors text-center"
                 >
-                  或選擇全功能通行 &yen;70/月 &rarr;
+                  或選擇命主專業版 &yen;59/月 &rarr;
+                </button>
+              )}
+              {plan === 'pro' && (
+                <button
+                  onClick={() => router.push(`/pay?plan=master&returnUrl=${encodeURIComponent(returnUrl)}`)}
+                  className="w-full mt-3 text-xs text-gray-600 hover:text-gold-500/70 transition-colors text-center"
+                >
+                  升級命主尊享 &yen;128/90天（省 &yen;49）&rarr;
                 </button>
               )}
             </div>

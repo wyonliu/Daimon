@@ -4,23 +4,44 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import BirthForm from '@/components/BirthForm';
 import OnboardingFlow from '@/components/OnboardingFlow';
-import { saveProfile, hasProfile } from '@/lib/user-profile';
+import { saveProfile, hasProfile, getProfile, UserProfile } from '@/lib/user-profile';
+import Link from 'next/link';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function Home() {
   const [loading, setLoading] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [profile, setProfileState] = useState<UserProfile | null>(null);
   const router = useRouter();
   const { t } = useLocale();
 
   // Check if user is new (no profile saved)
   useEffect(() => {
     setMounted(true);
-    if (!hasProfile()) {
+    const p = getProfile();
+    if (!p) {
       setShowOnboarding(true);
+    } else {
+      setProfileState(p);
     }
   }, []);
+
+  // Quick action: re-run last reading with saved profile
+  const handleContinueReading = () => {
+    if (!profile) return;
+    const params = new URLSearchParams({
+      y: String(profile.year),
+      m: String(profile.month),
+      d: String(profile.day),
+      n: profile.name,
+      g: profile.gender,
+    });
+    if (profile.hour !== null) {
+      params.set('h', String(profile.hour));
+    }
+    router.push(`/reading?${params.toString()}`);
+  };
 
   const handleSubmit = async (data: { year: number; month: number; day: number; hour: number | null; name: string; gender: 'male' | 'female' }) => {
     setLoading(true);
@@ -108,48 +129,124 @@ export default function Home() {
             </div>
           </div>
 
-          <h1 className="font-display text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight mb-6 slide-up slide-up-delay-1">
-            <span className="text-gradient-gold">{t('hero.title')}</span>
-          </h1>
+          {profile ? (
+            <>
+              <h1 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-3 slide-up slide-up-delay-1">
+                <span className="text-gradient-gold">歡迎回來，{profile.name}</span>
+              </h1>
+              <p className="text-sm sm:text-base text-gray-500 mb-10 slide-up slide-up-delay-2">
+                你的命盤已保存 · {profile.year}/{String(profile.month).padStart(2, '0')}/{String(profile.day).padStart(2, '0')}
+              </p>
+            </>
+          ) : (
+            <>
+              <h1 className="font-display text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight mb-6 slide-up slide-up-delay-1">
+                <span className="text-gradient-gold">{t('hero.title')}</span>
+              </h1>
 
-          <p className="text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed mb-4 slide-up slide-up-delay-2">
-            {t('hero.subtitle')}
-          </p>
+              <p className="text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed mb-4 slide-up slide-up-delay-2">
+                {t('hero.subtitle')}
+              </p>
 
-          <div className="flex items-center justify-center gap-3 text-xs text-gray-500 mb-10 slide-up slide-up-delay-2">
-            <span>{t('hero.trust1')}</span>
-            <span className="text-gold-500/30">&middot;</span>
-            <span>{t('hero.trust2')}</span>
-            <span className="text-gold-500/30">&middot;</span>
-            <span>{t('hero.trust3')}</span>
-          </div>
+              <div className="flex items-center justify-center gap-3 text-xs text-gray-500 mb-10 slide-up slide-up-delay-2">
+                <span>{t('hero.trust1')}</span>
+                <span className="text-gold-500/30">&middot;</span>
+                <span>{t('hero.trust2')}</span>
+                <span className="text-gold-500/30">&middot;</span>
+                <span>{t('hero.trust3')}</span>
+              </div>
 
-          <a
-            href="#reading"
-            className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-gradient-to-r from-gold-700 via-gold-500 to-gold-700 text-void font-semibold text-lg glow-gold-soft hover:glow-gold press-effect btn-shimmer transition-all duration-300 slide-up slide-up-delay-3"
-          >
-            {t('hero.cta')}
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </a>
+              <a
+                href="#reading"
+                className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-gradient-to-r from-gold-700 via-gold-500 to-gold-700 text-void font-semibold text-lg glow-gold-soft hover:glow-gold press-effect btn-shimmer transition-all duration-300 slide-up slide-up-delay-3"
+              >
+                {t('hero.cta')}
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </a>
+            </>
+          )}
         </div>
       </section>
 
-      {/* Birth Form */}
-      <section id="reading" className="px-4 pb-20 sm:pb-28 scroll-mt-8">
-        <div className="max-w-lg mx-auto">
-          <div className="text-center mb-10">
-            <h2 className="font-display text-2xl sm:text-3xl font-bold text-gradient-gold mb-3">
-              {t('home.formTitle')}
-            </h2>
-            <p className="text-sm text-gray-500">
-              {t('home.formSubtitle')}
-            </p>
+      {/* Returning user: quick actions */}
+      {profile && (
+        <section id="reading" className="px-4 pb-12 sm:pb-20 scroll-mt-8">
+          <div className="max-w-lg mx-auto space-y-3">
+            {/* Primary: Continue last reading */}
+            <button
+              onClick={handleContinueReading}
+              className="w-full p-5 rounded-2xl bg-gradient-to-r from-gold-700 via-gold-500 to-gold-700 text-void press-effect btn-shimmer text-left flex items-center justify-between group"
+            >
+              <div>
+                <div className="font-bold text-base">查看我的命盤</div>
+                <div className="text-xs opacity-80 mt-0.5">八字四柱 · AI 深度解讀</div>
+              </div>
+              <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+
+            {/* Secondary: Daily fortune */}
+            <Link
+              href="/daily"
+              className="block w-full p-5 rounded-2xl bg-void-lighter border border-gold-500/20 press-effect hover:border-gold-500/40 transition-all group"
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="font-bold text-base text-gold-500">今日運勢</div>
+                  <div className="text-xs text-gray-500 mt-0.5">每日流日 · 開運指南</div>
+                </div>
+                <svg className="w-5 h-5 text-gold-500/60 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            </Link>
+
+            {/* Tertiary: Match */}
+            <Link
+              href="/match"
+              className="block w-full p-5 rounded-2xl bg-void-lighter border border-gray-800 press-effect hover:border-gold-500/30 transition-all group"
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="font-bold text-base text-gray-200">合盤配對</div>
+                  <div className="text-xs text-gray-500 mt-0.5">與 TA 的命運契合度分析</div>
+                </div>
+                <svg className="w-5 h-5 text-gray-500 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            </Link>
+
+            {/* Change birth data */}
+            <button
+              onClick={() => setShowOnboarding(true)}
+              className="w-full text-center pt-3 text-xs text-gray-600 hover:text-gold-500/70 transition-colors"
+            >
+              重新填寫生辰資料
+            </button>
           </div>
-          <BirthForm onSubmit={handleSubmit} loading={loading} />
-        </div>
-      </section>
+        </section>
+      )}
+
+      {/* New user: Birth Form */}
+      {!profile && (
+        <section id="reading" className="px-4 pb-20 sm:pb-28 scroll-mt-8">
+          <div className="max-w-lg mx-auto">
+            <div className="text-center mb-10">
+              <h2 className="font-display text-2xl sm:text-3xl font-bold text-gradient-gold mb-3">
+                {t('home.formTitle')}
+              </h2>
+              <p className="text-sm text-gray-500">
+                {t('home.formSubtitle')}
+              </p>
+            </div>
+            <BirthForm onSubmit={handleSubmit} loading={loading} />
+          </div>
+        </section>
+      )}
 
       {/* Divider */}
       <div className="divider-gold mx-auto w-full max-w-4xl" />

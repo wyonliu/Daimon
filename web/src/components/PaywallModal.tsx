@@ -19,6 +19,7 @@ export default function PaywallModal({ onDismiss, readingsUsed = 2, maxReadings 
   const trialPayUrl = `/pay?plan=trial&returnUrl=${returnUrl}`;
   const deepPayUrl = `/pay?plan=deep&returnUrl=${returnUrl}`;
   const proPayUrl = `/pay?plan=pro&returnUrl=${returnUrl}`;
+  const masterPayUrl = `/pay?plan=master&returnUrl=${returnUrl}`;
 
   // Exit offer: when user tries to dismiss, show special offer first
   const handleDismiss = useCallback(() => {
@@ -148,36 +149,44 @@ export default function PaywallModal({ onDismiss, readingsUsed = 2, maxReadings 
           </div>
         )}
 
-        {/* Three-tier pricing with decoy */}
-        <div className="space-y-3 mb-5">
-          {/* Tier 1: ¥9.9 結緣價 — anchor */}
+        {/* Four-tier Ariely decoy: ¥9.9 entry · ¥49 decoy · ¥59 TARGET · ¥128 high anchor */}
+        <div className="space-y-2.5 mb-5">
+          {/* High anchor: ¥128 master — 90 days unlimited */}
           <Link
-            href={trialPayUrl}
-            className="block w-full py-3 rounded-xl bg-gradient-to-r from-gold-700 via-gold-500 to-gold-700 text-void font-bold text-base press-effect btn-shimmer text-center"
+            href={masterPayUrl}
+            className="block w-full py-2.5 rounded-xl border border-gold-500/15 text-gold-500/60 font-medium text-xs hover:bg-gold-500/5 press-effect text-center"
           >
-            <span>查閱完整報告 — 結緣價 ¥9.9</span>
-            <span className="block text-[10px] font-normal opacity-70 mt-0.5">單次完整命盤解讀</span>
+            <span>命主尊享 90 天 — <span className="line-through text-gray-600">¥177</span> <span className="text-gold-500/80">¥128</span></span>
+            <span className="block text-[10px] text-gray-600 mt-0.5">平均每月 ¥42 · 全功能</span>
           </Link>
 
-          {/* Tier 2: ¥35 深度解讀 — DECOY (makes ¥70 look reasonable) */}
-          <Link
-            href={deepPayUrl}
-            className="block w-full py-3 rounded-xl border-2 border-gold-500/30 text-gold-500 font-medium text-sm hover:bg-gold-500/5 press-effect text-center relative"
-          >
-            <span>深度解讀 — ¥35</span>
-            <span className="block text-[10px] text-gray-500 mt-0.5">命盤 + 合盤 · 各 3 次</span>
-          </Link>
-
-          {/* Tier 3: ¥70 全功能 — target */}
+          {/* TARGET: ¥59 pro — recommended, visually dominant */}
           <Link
             href={proPayUrl}
-            className="block w-full py-3 rounded-xl border border-gold-500/20 bg-gold-500/5 text-gold-500/80 font-medium text-sm hover:bg-gold-500/10 press-effect text-center relative"
+            className="block w-full py-3.5 rounded-xl bg-gradient-to-r from-gold-700 via-gold-500 to-gold-700 text-void font-bold text-base press-effect btn-shimmer text-center relative"
           >
-            <div className="absolute -top-2.5 right-4">
-              <span className="px-2 py-0.5 rounded-full bg-gradient-to-r from-gold-700 to-gold-500 text-void text-[10px] font-bold">最超值</span>
+            <div className="absolute -top-2.5 left-1/2 -translate-x-1/2">
+              <span className="px-2.5 py-0.5 rounded-full bg-void border border-gold-500/50 text-gold-500 text-[10px] font-bold tracking-wider">命主推薦</span>
             </div>
-            <span>專業通行 — ¥70/月</span>
-            <span className="block text-[10px] text-gray-500 mt-0.5">無限解讀 + 無限對話 + 日運</span>
+            <span>命主專業 30 天 — ¥59</span>
+            <span className="block text-[10px] font-normal opacity-75 mt-0.5">無限解讀 + 無限 AI 對話 + 日運</span>
+          </Link>
+
+          {/* DECOY: ¥49 deep — strictly worse than ¥59 */}
+          <Link
+            href={deepPayUrl}
+            className="block w-full py-2.5 rounded-xl border border-gold-500/25 text-gold-500/75 font-medium text-xs hover:bg-gold-500/5 press-effect text-center"
+          >
+            <span>深度解讀 5 次 — ¥49</span>
+            <span className="block text-[10px] text-gray-500 mt-0.5">次數有限 · 不含 AI 對話</span>
+          </Link>
+
+          {/* Entry: ¥9.9 trial */}
+          <Link
+            href={trialPayUrl}
+            className="block w-full py-2 text-center text-xs text-gray-500 hover:text-gold-500/80 press-effect"
+          >
+            或結緣查閱單次 — <span className="text-gold-500/80 font-medium">¥9.9</span>
           </Link>
         </div>
 
